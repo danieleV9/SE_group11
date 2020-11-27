@@ -44,4 +44,54 @@ public class PlannerDAO {
         }
         return null;
     }
+
+    public PlannerModel createPlanner(String username, String password){
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "";
+            if(!usernameExists(username)){ //se username non è già utilizzato
+                query = "insert into pianificatore(usernamepl, passwordpl) values ('?','?')";
+                pst = con.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setString(2, password);
+                pst.execute();
+               
+                PlannerModel pl = new PlannerModel(username,password);
+                return pl;
+            }     
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+        }
+        return null;
+    }
+    
+    public void updatePlannerPassword(PlannerModel pl, String password){ 
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "update pianificatore set passwordpl='?' where usernamepl=?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, pl.getUsername());
+                pst.setString(2, password);
+                pst.execute();   
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+        }
+    }
+    
+    public boolean usernameExists(String username){// in usernames ci sono tutti gli username utilizzati
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "select * from usernames where username=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            rs = pst.executeQuery();
+            if(rs.next()){
+                if(username==rs.getString("username"))
+                return true; //l'username è già utilizzato!
+            }
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+        }
+        return false; //username non trovato, può essere utilizzato
+    }
 }

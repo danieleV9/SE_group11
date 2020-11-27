@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import connectionDB.ConnectionDatabase;
+import java.sql.Types;
 import model.MaintainerModel;
 
 /**
@@ -42,5 +43,59 @@ public class MaintainerDAO {
             System.out.println(""+ex);
         }
         return null;
+    }
+    
+        public MaintainerModel createMaintainer(String username, String password){
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "";
+            if(!usernameExists(username)){ //se username non è già utilizzato
+                query = "insert into manutentore(disponibilitaore, disponibilitagiorno, usernamema, passwordma) values ('?','?',?','?')";
+                pst = con.prepareStatement(query);
+                pst.setNull(1, Types.NULL);
+                pst.setNull(2, Types.NULL);
+                pst.setString(3, username);
+                pst.setString(4, password);
+                pst.execute();
+               
+                MaintainerModel ma = new MaintainerModel(username,password);
+                return ma;
+            }     
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+        }
+        return null;
+    }
+        
+    public void updateMaintainerPassword(MaintainerModel ma, String password){ 
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "update manutentore set passwordma='?' where usernamema=?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, ma.getUsername());
+                pst.setString(2, password);
+                pst.execute();   
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+        }
+    }
+            
+            
+    
+    public boolean usernameExists(String username){// in usernames ci sono tutti gli username utilizzati
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "select * from usernames where username=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            rs = pst.executeQuery();
+            if(rs.next()){
+                if(username==rs.getString("username"))
+                return true; //l'username è già utilizzato!
+            }
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+        }
+        return false; //username non trovato, può essere utilizzato
     }
 }
