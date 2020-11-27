@@ -4,12 +4,8 @@
  * and open the template in the editor.
  */
 package view;
-import view.AdminHomeView;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-import connectionDB.ConnectionDatabase;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -20,9 +16,6 @@ public class LoginView extends javax.swing.JFrame {
     /**
      * Creates new form LoginView
      */
-    Connection con;
-    PreparedStatement pst;
-    ResultSet rs;
     
     public LoginView() {
         initComponents();
@@ -87,12 +80,6 @@ public class LoginView extends javax.swing.JFrame {
         jLabel4.setText("Select User");
 
         jTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jTextField1.setText("inserire nome utente");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jPasswordField1.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
 
@@ -101,19 +88,9 @@ public class LoginView extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton1.setText("LOGIN");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jButton2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton2.setText("CANCEL");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -172,86 +149,6 @@ public class LoginView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        //Cancel Button
-        System.exit(0);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //Login Button Code
-        String username = jTextField1.getText();
-        String password = jPasswordField1.getText();
-        String role = jComboBox1.getSelectedItem().toString();
-        
-        if(username.equals("")||password.equals("")||role.equals("Select")){
-            JOptionPane.showMessageDialog(rootPane, "Some Fields Are Empty", "Error", 1);
-        }
-        else{
-            try{
-                con = ConnectionDatabase.getConnection();
-                String query = "";
-                if(role.equalsIgnoreCase("System Administrator")){
-                    query = "select * from amministratore where usernamesa=? and passwordsa=?";
-                    pst = con.prepareStatement(query);
-                    pst.setString(1, username);
-                    pst.setString(2, password);
-                    rs = pst.executeQuery();
-                    if(rs.next()){
-                        String user = rs.getString("usernamesa");
-                        AdminHomeView ad = new AdminHomeView(user);
-                        ad.setVisible(true);
-                        setVisible(false);
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(rootPane, "Username or password not matched", "Login Error", 1);
-                    }
-                }
-                else if(role.equalsIgnoreCase("Planner")){
-                    query = "select * from pianificatore where usernamepl=? and passwordpl=?";
-                    pst = con.prepareStatement(query);
-                    pst.setString(1, username);
-                    pst.setString(2, password);
-                    rs = pst.executeQuery();
-                    if(rs.next()){
-                        String user = rs.getString("usernamepl");
-                        PlannerHomeView pl = new PlannerHomeView(user);
-                        pl.setVisible(true);
-                        setVisible(false);
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(rootPane, "Username or password not matched", "Login Error", 1);
-                    }
-                }
-                else{
-                    query = "select * from manutentore where usernamema=? and passwordma=?";
-                    pst = con.prepareStatement(query);
-                    pst.setString(1, username);
-                    pst.setString(2, password);
-                    rs = pst.executeQuery();
-                    if(rs.next()){
-                        String user = rs.getString("usernamema");
-                        MaintainerHomeView ma = new MaintainerHomeView(user);
-                        ma.setVisible(true);
-                        setVisible(false);
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(rootPane, "Username or password not matched", "Login Error", 1);
-                    }
-                }
-                
-                
-            }catch(Exception ex){
-                System.out.println(""+ex);
-            }
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -301,4 +198,24 @@ public class LoginView extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+public String getUsername(){
+    return jTextField1.getText();
+}
+public String getPassowrd(){
+    return jPasswordField1.getText();
+}
+public String getRole(){
+    return jComboBox1.getSelectedItem().toString();
+}
+public void displayErrorMessage(String errorMessage){
+    JOptionPane.showMessageDialog(this, errorMessage);
+}
+public void addLoginListener(ActionListener listener){
+    jButton1.addActionListener(listener);
+}
+public void addCancelListener(ActionListener listener){
+    jButton2.addActionListener(listener);
+}
+
 }

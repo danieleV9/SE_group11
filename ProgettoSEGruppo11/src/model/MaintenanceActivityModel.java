@@ -1,3 +1,5 @@
+package model;
+
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
  *
  * @author HP
  */
-public class MaintenanceActivity {
+public class MaintenanceActivityModel {
     private int WeekNum;
     private boolean interuptible;
     private int id_Activity;
@@ -23,7 +25,7 @@ public class MaintenanceActivity {
     private List<Materiali> materiali;
     private Site area;
 
-    public MaintenanceActivity(int WeekNum, boolean interuptible, int id_Activity, String description, 
+    public MaintenanceActivityModel(int WeekNum, boolean interuptible, int id_Activity, String description, 
                                 String tipology, String type, int EstimatedTime, String workspaceNotes, 
                                 Procedure procedura, List<Materiali> materiali, Site area) {
         this.WeekNum = WeekNum;
@@ -39,7 +41,7 @@ public class MaintenanceActivity {
         this.area=area;
     }
 
-    public MaintenanceActivity(int id_Activity, String tipology, int week) {
+    public MaintenanceActivityModel(int id_Activity, String tipology, int week) {
         this.id_Activity = id_Activity;
         this.tipology = tipology;
         this.WeekNum = week;

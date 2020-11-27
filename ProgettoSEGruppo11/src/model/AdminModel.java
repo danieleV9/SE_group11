@@ -5,6 +5,8 @@
  */
 package model;
 
+import dao.AdminDAO;
+
 /**
  *
  * @author dava9
@@ -13,12 +15,12 @@ public class AdminModel {
     private String username;
     private String password;
 
+    
     public AdminModel(String username, String password) {
         this.username = username;
         this.password = password;
     }
     
-
     public String getUsername() {
         return username;
     }
@@ -35,6 +37,13 @@ public class AdminModel {
         this.password = password;
     }
     
+    public AdminModel findAdmin(String username, String password, String role) throws Exception{
+        AdminDAO dao = new AdminDAO();
+        AdminModel ad = dao.findAdmin(username, password, role);
+        return ad;
+    }
+    
+
     
     /*
     Connection con;
