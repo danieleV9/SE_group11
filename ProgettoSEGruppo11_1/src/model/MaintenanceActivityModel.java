@@ -39,11 +39,19 @@ public class MaintenanceActivity {
         this.area=area;
     }
 
+<<<<<<< Updated upstream:ProgettoSEGruppo11/src/model/MaintenanceActivityModel.java
     public MaintenanceActivity(int id_Activity, String tipology, int week) {
+=======
+    public MaintenanceActivityModel(int WeekNum, int id_Activity, String description, String tipology, String wokspaceNotes) {
+        this.WeekNum = WeekNum;
+>>>>>>> Stashed changes:ProgettoSEGruppo11_1/src/model/MaintenanceActivityModel.java
         this.id_Activity = id_Activity;
+        this.description = description;
         this.tipology = tipology;
-        this.WeekNum = week;
+        this.workspaceNotes=workspaceNotes;
     }
+
+
 
 
 
@@ -125,6 +133,14 @@ public class MaintenanceActivity {
 
     public void setMateriali(List<Materiali> materiali) {
         this.materiali = materiali;
+    }
+
+    public Site getArea() {
+        return area;
+    }
+
+    public void setArea(Site area) {
+        this.area = area;
     }
     
     

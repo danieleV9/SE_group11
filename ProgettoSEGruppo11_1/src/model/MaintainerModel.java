@@ -5,6 +5,8 @@
  */
 package model;
 
+import dao.MaintainerDAO;
+
 /**
  *
  * @author lyuba
@@ -34,5 +36,10 @@ public class MaintainerModel {
         this.password = password;
     }
     
+    public MaintainerModel findMaintainer(String username, String password, String role) throws Exception{
+        MaintainerDAO dao = new MaintainerDAO();
+        MaintainerModel ad = dao.findMaintainer(username, password, role);
+        return ad;
+    }
     
 }

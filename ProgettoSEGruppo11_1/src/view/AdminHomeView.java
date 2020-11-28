@@ -204,4 +204,37 @@ public class AdminHomeView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
+<<<<<<< Updated upstream:ProgettoSEGruppo11/src/view/AdminHomeView.java
+=======
+
+
+
+public void displayErrorMessage(String errorMessage){
+    JOptionPane.showMessageDialog(this, errorMessage);
+}
+public void addUserListener(ActionListener listener){
+    jButton1.addActionListener(listener);
+}
+public void addAccessListener(ActionListener listener){
+    jButton2.addActionListener(listener);
+}
+public void addMaterialListener(ActionListener listener){
+    jButton3.addActionListener(listener);
+}
+public void addSitesListener(ActionListener listener){
+    jButton4.addActionListener(listener);
+}
+public void addProceduresListener(ActionListener listener){
+    jButton5.addActionListener(listener);
+}
+public void addCompetencesListener(ActionListener listener){
+    jButton6.addActionListener(listener);
+}
+public void addMaintenanceListener(ActionListener listener){
+    jButton7.addActionListener(listener);
+}
+public void addLogoutListener(ActionListener listener){
+    jButton8.addActionListener(listener);
+}
+>>>>>>> Stashed changes:ProgettoSEGruppo11_1/src/view/AdminHomeView.java
 }

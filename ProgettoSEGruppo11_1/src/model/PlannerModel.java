@@ -5,6 +5,10 @@
  */
 package model;
 
+import dao.PlannerDAO;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author lyuba
@@ -34,6 +38,17 @@ public class PlannerModel {
         this.password = password;
     }
     
+    public PlannerModel findPlanner(String username, String password, String role) throws Exception{
+        PlannerDAO dao = new PlannerDAO();
+        PlannerModel ad = dao.findPlanner(username, password, role);
+        return ad;
+    }
     
+    public List<PlannerModel> listPlanners(){
+        PlannerDAO dao = new PlannerDAO();
+        List<PlannerModel> list = new ArrayList<>();
+        list = dao.listPlanners();
+        return list;
+    }
     
 }
