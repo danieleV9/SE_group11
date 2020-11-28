@@ -316,9 +316,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Back"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backHomeActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="insertMaterial">
           <Properties>
@@ -327,9 +324,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Insert material"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertMaterialActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

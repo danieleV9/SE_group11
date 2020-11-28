@@ -13,7 +13,7 @@ import java.sql.*;
 
 /**
  *
- * @author HP
+ * @author jenni
  */
 public class PlannerCreateView extends javax.swing.JDialog {
 Connection conn=null;
@@ -120,19 +120,9 @@ PreparedStatement pst1= null;
 
         backHome.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         backHome.setText("Back");
-        backHome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backHomeActionPerformed(evt);
-            }
-        });
 
         insertMaterial.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         insertMaterial.setText("Insert material");
-        insertMaterial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertMaterialActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -255,7 +245,7 @@ PreparedStatement pst1= null;
     }// </editor-fold>//GEN-END:initComponents
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
-        String area = areaField.getText();
+      /*String area = areaField.getText();
         String tipology = tipologyField.getText();
         String estimatedTime = timeField.getText();
         int time = Integer.parseInt(estimatedTime);
@@ -297,25 +287,13 @@ PreparedStatement pst1= null;
         
     } catch(Exception ex){
          JOptionPane.showMessageDialog(null,ex);
-    }
+    }*/
     }//GEN-LAST:event_createActionPerformed
 
     private void weekFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weekFieldMouseClicked
         
     }//GEN-LAST:event_weekFieldMouseClicked
-
-    private void backHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backHomeActionPerformed
-        PlannerHomeView ad2 = new PlannerHomeView();
-        ad2.setVisible(true);
-        setVisible(false);
-    }//GEN-LAST:event_backHomeActionPerformed
-
-    private void insertMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertMaterialActionPerformed
-        PlannerMaterialView ad1 = new PlannerMaterialView();  
-        ad1.setVisible(true); 
-        setVisible(true);
-    }//GEN-LAST:event_insertMaterialActionPerformed
-
+/**/
     /**
      * @param args the command line arguments
      */
