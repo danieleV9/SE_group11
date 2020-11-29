@@ -2,6 +2,7 @@ package model;
 import java.util.List;
 import model.Materiali;
 import model.Procedure;
+import model.Site;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,11 +24,11 @@ public class MaintenanceActivityModel {
     private String workspaceNotes;
     private Procedure procedura;
     private List<Materiali> materiali;
-    private String area;
+    private Site area;
 
     public MaintenanceActivityModel(int WeekNum, boolean interuptible, int id_Activity, String description, 
                                 String tipology, String type, int EstimatedTime, String workspaceNotes, 
-                                Procedure procedura, List<Materiali> materiali, String area) {
+                                Procedure procedura, List<Materiali> materiali, Site area) {
         this.WeekNum = WeekNum;
         this.interuptible = interuptible;
         this.id_Activity = id_Activity;
@@ -42,15 +43,12 @@ public class MaintenanceActivityModel {
     }
 
 
-    public MaintenanceActivityModel(int WeekNum, int id_Activity,String tipology, String description,String workspaceNotes,String area,int estimatedTime) {
+    public MaintenanceActivityModel(int WeekNum, int id_Activity, String description, String tipology, String wokspaceNotes) {
         this.WeekNum = WeekNum;
         this.id_Activity = id_Activity;
         this.description = description;
         this.tipology = tipology;
         this.workspaceNotes=workspaceNotes;
-        this.area=area;
-        this.EstimatedTime=estimatedTime;
-        
     }
 
 
@@ -137,15 +135,13 @@ public class MaintenanceActivityModel {
         this.materiali = materiali;
     }
 
-    public String getArea() {
+    public Site getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(Site area) {
         this.area = area;
     }
-
-  
     
     
 }
