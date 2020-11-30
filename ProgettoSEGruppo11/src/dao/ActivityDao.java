@@ -65,9 +65,32 @@ private List<MaintenanceActivityModel> listActivity;
     }
 
    
-    public void insertActivity(MaintenanceActivityModel a) {
-      
+    public void insertActivity(int numberWeek,String workNotes,String type,String factory,String tipology,int time,String description,String area) {
+    try {
+        conn = ConnectionDatabase.getConnection();
+        String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
+                + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
+                + "dataattivita,statoticket) values (?,?,?,0,(NEXTVAL(idattivita)+1),?,?,?,?,?,?,?,?,?)";
+        pst= conn.prepareStatement(query);
+        pst.setInt(1,numberWeek);
+        pst.setString(2,workNotes);
+        pst.setString(3,type);
+      //pst.setBoolean(4,true);
+        pst.setString(4,factory);
+        pst.setString(5,area);
+        pst.setNull(6,Types.NULL);
+        pst.setString(7,tipology);
+        pst.setNull(8,Types.NULL);
+        pst.setInt(9, time);
+        pst.setString(10,description);
+        pst.setNull(11,Types.NULL);
+        pst.setNull(12,Types.NULL);
+        
+        pst.executeUpdate();
+    } catch (SQLException ex) {
+        System.out.println("Errore nell'inserimento dell'attività");
     }
+}
 
     public MaintenanceActivityModel viewActivity(int id) {
       String query = "select * from attivita_manutenzione where idattivita="+id; 
