@@ -23,25 +23,29 @@ public class AdminDAO {
     ResultSet rs;
     
     public AdminModel findAdmin(String username, String password, String role){
+        if(role.equalsIgnoreCase("System Administrator") && !username.equals("") && !password.equals("")){
         try{
-                con = ConnectionDatabase.getConnection();
-                String query = "";
-                if(role.equalsIgnoreCase("System Administrator")){
-                    query = "select * from amministratore where usernamesa=? and passwordsa=?";
-                    pst = con.prepareStatement(query);
-                    pst.setString(1, username);
-                    pst.setString(2, password);
-                    rs = pst.executeQuery();
-                    if(rs.next()){
-                        String user = rs.getString("usernamesa");
-                        String pass = rs.getString("passwordsa");
-                        AdminModel a = new AdminModel(user,pass);
-                        return a;
-                    }
+            con = ConnectionDatabase.getConnection();
+            String query = "";
+                query = "select * from amministratore where usernamesa=? and passwordsa=?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setString(2, password);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                    String user = rs.getString("usernamesa");
+                    String pass = rs.getString("passwordsa");
+                    AdminModel a = new AdminModel(user,pass);
+                    return a;
                 }
-                }catch(SQLException ex){
+            
+            }catch(SQLException ex){
                 System.out.println(""+ex);
+                return null;
             }
+        }
         return null;
     }
+    
+    
 }

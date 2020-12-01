@@ -6,6 +6,8 @@
 package model;
 
 import dao.MaintainerDAO;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -41,5 +43,41 @@ public class MaintainerModel {
         MaintainerModel ad = dao.findMaintainer(username, password, role);
         return ad;
     }
+    
+    public MaintainerModel findMaintainer(String username){
+        MaintainerDAO dao = new MaintainerDAO();
+        MaintainerModel ad = dao.findMaintainer(username);
+        return ad;
+    }
+    
+    public List<MaintainerModel> listMaintainers(){ //getsate
+        MaintainerDAO dao = new MaintainerDAO();
+        List<MaintainerModel> list = new ArrayList<>();
+        list = dao.listMaintainers();
+        return list;
+    }
+    
+    public boolean deleteMaintainer(String username){
+        MaintainerDAO dao = new MaintainerDAO();
+        return dao.deleteMaintainer(username);
+    }
+    
+    public boolean createMaintainer(String username, String password){
+        MaintainerDAO dao = new MaintainerDAO();
+        boolean ad = dao.createMaintainer(username, password);
+        return ad;
+    }
+
+    public boolean updateMainatainerPassword(String username, String newpass){
+        MaintainerDAO dao = new MaintainerDAO();
+        return dao.updateMaintainerPassword(username, newpass);
+    }
+
+    @Override
+    public String toString() {
+            return "MaintainerModel{" + "username=" + username + ", password=" + password + '}';
+    }
+   
+    
     
 }

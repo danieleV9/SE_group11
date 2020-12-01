@@ -26,6 +26,13 @@ public class LoginController{
     private PlannerModel modelP;
     private MaintainerModel modelM;
     
+   /* public LoginController(LoginView view, AdminModel modelA){
+        this.view = view;
+        this.modelA = modelA;
+        this.view.addLoginListener(new LoginListener());
+        this.view.addCancelListener(new CancelListener());
+        view.setVisible(true);
+    }*/
 
     public LoginController(LoginView view, AdminModel modelA, PlannerModel modelP, MaintainerModel modelM) {
         this.view = view;
@@ -63,10 +70,10 @@ public class LoginController{
                                 System.out.println("query return null");
                             }
                             else{
-                                AdminHomeView adHome = new AdminHomeView(username);
+                                AdminHomeView adHome = new AdminHomeView();
                                 /*quando creiamo la nuova view dobbiamo istanziare anche il relativo controller per mantenere
                                 il riferimento alla view appena creata*/
-                                AdminHomeController controllerHome = new AdminHomeController(adHome,modelA);
+                                AdminHomeController controllerHome = new AdminHomeController(adHome,modelA,username);
                                 adHome.setVisible(true);
                                 view.setVisible(false);
                             }       break;
@@ -80,6 +87,7 @@ public class LoginController{
                             }
                             else{
                                 PlannerHomeView plHome = new PlannerHomeView(username);
+                                PlannerHomeController phc = new PlannerHomeController(plHome,ad);
                                 plHome.setVisible(true);
                                 view.setVisible(false);
                             }       break;

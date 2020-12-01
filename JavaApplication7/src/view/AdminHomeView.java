@@ -8,6 +8,8 @@ package view;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
+
+
 /**
  *
  * @author dava9
@@ -19,11 +21,7 @@ public class AdminHomeView extends javax.swing.JFrame {
      */
     public AdminHomeView() {
         initComponents();
-    }
-    
-    public AdminHomeView(String username) {
-        initComponents();
-        jLabel1.setText("Benvenuto nella tua area Amministratore, "+username);
+        
     }
 
     /**
@@ -220,8 +218,10 @@ public class AdminHomeView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-
-
+public void setLabel1(String s){
+    jLabel1.setText("Benvenuto nella tua area Amministratore, "+s);
+}
+    
 public void displayErrorMessage(String errorMessage){
     JOptionPane.showMessageDialog(this, errorMessage);
 }

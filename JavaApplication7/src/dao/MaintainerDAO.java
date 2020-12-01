@@ -27,10 +27,12 @@ public class MaintainerDAO {
     Statement st;
     
     public MaintainerModel findMaintainer(String username, String password, String role){
+        if(!usernameExists(username))
+            return null; //se l'username non esiste
         try{
             con = ConnectionDatabase.getConnection();
             String query = "";
-            if(role.equalsIgnoreCase("Maintainer")){
+            if(role.equalsIgnoreCase("Maintainer") && !username.equals("") && !password.equals("")){
                 query = "select * from manutentore where usernamema=? and passwordma=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
@@ -42,66 +44,125 @@ public class MaintainerDAO {
                     MaintainerModel ma = new MaintainerModel(user,pass);
                     return ma;
                 }
-            }     
+                else 
+                    return null;
+            } else 
+                return null;
         }catch(SQLException ex){
             System.out.println(""+ex);
+            return null;
         }
-        return null;
+        
+    }
+    
+    
+    public MaintainerModel findMaintainer(String username){
+        if(!usernameExists(username))
+            return null;
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "";
+                if(!username.equals("")){
+                    query = "select * from manutentore where usernamema=?";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, username);
+                    rs = pst.executeQuery();
+                    if(rs.next()){
+                        String user = rs.getString("usernamema");
+                        String pass = rs.getString("passwordma");
+                        MaintainerModel ma = new MaintainerModel(user,pass);
+                        return ma;
+                    }else 
+                        return null;
+                }else
+                    return null;
+                 
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+            return null;
+        }
+        
     }
 
     
-        public MaintainerModel createMaintainer(String username, String password){
+    public boolean createMaintainer(String username, String password){
+        if(username.equals("") || password.equals(""))
+           // "Username e Password non possono essere vuoti";
+            return false;
         try{
             con = ConnectionDatabase.getConnection();
             String query = "";
             if(!usernameExists(username)){ //se username non è già utilizzato
-                query = "insert into manutentore(disponibilitaore, disponibilitagiorno, usernamema, passwordma) values ('?','?',?','?')";
+                query = "insert into manutentore(usernamema, passwordma) values (?,?)";
                 pst = con.prepareStatement(query);
-                pst.setNull(1, Types.NULL);
-                pst.setNull(2, Types.NULL);
-                pst.setString(3, username);
-                pst.setString(4, password);
+                pst.setString(1, username);
+                pst.setString(2, password);
                 pst.execute();
-               
-                MaintainerModel ma = new MaintainerModel(username,password);
-                return ma;
-            }     
+
+                return true;
+               // "Maintainer creato con successo";
+            }
+            else{
+                return false;//"Username già utilizzato";
+            }
         }catch(SQLException ex){
             System.out.println(""+ex);
+            return false;
         }
-        return null;
     }
         
-    public void updateMaintainerPassword(MaintainerModel ma, String password){ 
+    public boolean updateMaintainerPassword(String username, String password){ 
+        if(username.equals(""))
+            return false;
+        if(!usernameExists(username))
+            return false;
         try{
             con = ConnectionDatabase.getConnection();
-            String query = "update manutentore set passwordma='?' where usernamema=?";
+            if(!usernameExists(username))
+                return false;
+            else{
+                String query = "update manutentore set passwordma=? where usernamema=?";
                 pst = con.prepareStatement(query);
-                pst.setString(1, ma.getUsername());
-                pst.setString(2, password);
-                pst.execute();   
+                pst.setString(2, username);
+                pst.setString(1, password);
+                pst.execute(); 
+                return true;
+            }
         }catch(SQLException ex){
             System.out.println(""+ex);
+            return false;
         }
     }
             
             
     
     public boolean usernameExists(String username){// in usernames ci sono tutti gli username utilizzati
+        if(username.equals(""))
+            return false;
         try{
-            con = ConnectionDatabase.getConnection();
-            String query = "select * from usernames where username=?";
+            con= ConnectionDatabase.getConnection();
+            String query = "select count(*) from usernames where username=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
             rs = pst.executeQuery();
+            int risultato=0;
             if(rs.next()){
-                if(username==rs.getString("username"))
-                return true; //l'username è già utilizzato!
-            }
+                risultato=rs.getInt(1);
+                
+                if(risultato==0){//query va a buon fine ma non trova niente =>username non è utilizzato.
+                    System.out.println("Username non c'è");
+                    return false;
+                }
+                else { //risultato!=0
+                    System.out.println("risultato trovato:"+rs.getInt(1)+"corrispondenza");
+                    return true;
+                } //query va a buon fine e trova username
+            }else 
+                return true;
         }catch(SQLException ex){
-            System.out.println(""+ex);
+             System.out.println(ex);
+             return true;
         }
-        return false; //username non trovato, può essere utilizzato
     }
     
     public List<MaintainerModel> listMaintainers(){
@@ -119,8 +180,28 @@ public class MaintainerDAO {
             }
         }catch(Exception ex){
             System.out.println(""+ex);
+            return list;
         }
         return list;
+    }
+    
+    
+    public boolean deleteMaintainer(String username){
+        if(username.equals(""))
+            return false;
+        if(!usernameExists(username))
+            return false;
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "delete from manutentore where usernamema=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            pst.executeUpdate();
+            return true;
+        }catch(SQLException ex){
+           System.out.println(""+ex);
+           return false;
+        }
     }
 
 }

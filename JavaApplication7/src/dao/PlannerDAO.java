@@ -28,77 +28,131 @@ public class PlannerDAO {
     Statement st;
     
     public PlannerModel findPlanner(String username, String password, String role){
-        try{
-            con = ConnectionDatabase.getConnection();
-            String query = "";
-            if(role.equalsIgnoreCase("Planner")){
-                query = "select * from pianificatore where usernamepl=? and passwordpl=?";
-                pst = con.prepareStatement(query);
-                pst.setString(1, username);
-                pst.setString(2, password);
-                rs = pst.executeQuery();
-                if(rs.next()){
-                    String user = rs.getString("usernamepl");
-                    String pass = rs.getString("passwordpl");
-                    PlannerModel pl = new PlannerModel(user,pass);
-                    return pl;
-                }
-            }     
-        }catch(SQLException ex){
-            System.out.println(""+ex);
+        if(role.equalsIgnoreCase("Planner") && !username.equals("") && !password.equals("")){
+            try{
+                con = ConnectionDatabase.getConnection();
+                String query = "";
+
+                    query = "select * from pianificatore where usernamepl=? and passwordpl=?";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, username);
+                    pst.setString(2, password);
+                    rs = pst.executeQuery();
+                    if(rs.next()){
+                        String user = rs.getString("usernamepl");
+                        String pass = rs.getString("passwordpl");
+                        PlannerModel pl = new PlannerModel(user,pass);
+                        return pl;
+                    }else 
+                        return null;
+
+            }catch(SQLException ex){
+                System.out.println(""+ex);
+                return null;
+            }catch(Exception ex){
+                System.out.println(""+ex);
+                return null;
+            }
+        }else 
+            return null;
+    }
+    
+    public PlannerModel findPlanner(String username){
+        if(!username.equals("")){
+            try{
+                con = ConnectionDatabase.getConnection();
+                String query = "";
+
+                    query = "select * from pianificatore where usernamepl=?";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, username);
+                    rs = pst.executeQuery();
+                    if(rs.next()){
+                        String user = rs.getString("usernamepl");
+                        String pass = rs.getString("passwordpl");
+                        PlannerModel pl = new PlannerModel(user,pass);
+                        return pl;
+                    }
+
+            }catch(SQLException ex){
+                System.out.println(""+ex);
+                return null;
+            }
         }
         return null;
     }
 
 
-    public PlannerModel createPlanner(String username, String password){
+    public boolean createPlanner(String username, String password){
+        if(username.equals("") || password.equals(""))
+           // "Username e Password non possono essere vuoti";
+            return false;
         try{
             con = ConnectionDatabase.getConnection();
             String query = "";
             if(!usernameExists(username)){ //se username non è già utilizzato
-                query = "insert into pianificatore(usernamepl, passwordpl) values ('?','?')";
+                query = "insert into pianificatore(usernamepl, passwordpl) values (?,?)";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
                 pst.execute();
                
                 PlannerModel pl = new PlannerModel(username,password);
-                return pl;
-            }     
+                return true;// "Planner creato con successo";
+            }else{
+                return false; //"Username già utilizzato";
+            }
         }catch(SQLException ex){
             System.out.println(""+ex);
+            return false;
         }
-        return null;
     }
     
-    public void updatePlannerPassword(PlannerModel pl, String password){ 
+    public boolean updatePlannerPassword(String username, String password){
+        if(username.equals(""))
+            return false;
+        if(!usernameExists(username))
+            return false;
         try{
             con = ConnectionDatabase.getConnection();
-            String query = "update pianificatore set passwordpl='?' where usernamepl=?";
+            String query = "update pianificatore set passwordpl=? where usernamepl=?";
                 pst = con.prepareStatement(query);
-                pst.setString(1, pl.getUsername());
-                pst.setString(2, password);
-                pst.execute();   
+                pst.setString(2, username);
+                pst.setString(1, password);
+                pst.execute();
+                return true;
         }catch(SQLException ex){
             System.out.println(""+ex);
+            return false;
         }
     }
     
     public boolean usernameExists(String username){// in usernames ci sono tutti gli username utilizzati
         try{
-            con = ConnectionDatabase.getConnection();
-            String query = "select * from usernames where username=?";
+            con= ConnectionDatabase.getConnection();
+            String query = "select count(*) from usernames where username=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
             rs = pst.executeQuery();
+            int risultato=0;
             if(rs.next()){
-                if(username == null ? rs.getString("username") == null : username.equals(rs.getString("username")))
-                return true; //l'username è già utilizzato!
-            }
+                risultato=rs.getInt(1);
+                
+                if(risultato==0){//query va a buon fine ma non trova niente =>username non è utilizzato.
+                    System.out.println("Username non c'è");
+                    return false;
+                }
+                else { //risultato!=0
+                    System.out.println("risultato trovato:"+rs.getInt(1)+"corrispondenza");
+                    return true;
+                } //query va a buon fine e trova username
+            }else 
+                return true;
         }catch(SQLException ex){
-            System.out.println(""+ex);
+             System.out.println(ex);
+             return true;
         }
-        return false; //username non trovato, può essere utilizzato
+        
     }
     
     public List<PlannerModel> listPlanners(){
@@ -120,4 +174,21 @@ public class PlannerDAO {
         return list;
     }
 
+    public boolean deletePlanner(String username){
+        if(username.equals(""))
+            return false;
+        if(!usernameExists(username))
+            return false;
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "delete from pianificatore where usernamepl=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            pst.executeUpdate();
+            return true;
+        }catch(SQLException ex){
+           System.out.println(""+ex);
+           return false;
+        }
+    }
 }
