@@ -10,5 +10,8 @@ package model;
  * @author HP
  */
 public class Procedure {
+
+    public Procedure() {
+    }
     
 }

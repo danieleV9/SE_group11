@@ -60,7 +60,7 @@ public class PlannerActivityViewController {
             ActivityInfoView vi = new ActivityInfoView(); //passa a nuova interfaccia
             ActivityInfoViewController controller2 = new ActivityInfoViewController(mo,vi);
             controller2.assegnaGestori();     
-            controller2.popolaInfo(ma);
+            controller2.popolaInfo(mo);
             vi.setVisible(true);
             view.setVisible(false); 
           }
@@ -74,7 +74,9 @@ public class PlannerActivityViewController {
           PlannerHomeView pv = new PlannerHomeView();
           PlannerModel pm = new PlannerModel("","");
           PlannerHomeController phc = new PlannerHomeController(pv,pm);
+
           phc.assegnaGestore();
+
           pv.setVisible(true);
           view.setVisible(false);
           
@@ -98,8 +100,8 @@ public class PlannerActivityViewController {
             int id = m.getId_Activity();
             String id2=String.valueOf(id);
             int estimatedTime= m.getEstimatedTime();
-            String time=String.valueOf(estimatedTime);
-            String area= m.getArea();   
+            String time=String.valueOf(estimatedTime);      
+            String area = m.getFabbrica()+" - "+m.getArea();
             String tipology= m.getTipology();
             int week = m.getWeekNum();
             String week2=String.valueOf(week);

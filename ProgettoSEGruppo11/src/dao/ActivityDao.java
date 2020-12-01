@@ -55,8 +55,9 @@ private List<MaintenanceActivityModel> listActivity;
             String descrizione = rs.getString("descrizione");
             String notelavoro= rs.getString("notelavoro");
             String area= rs.getString("area");
+            String fabbrica=rs.getString("fabbrica");
             int tempostimato = rs.getInt("tempostimato");
-            list.add(new MaintenanceActivityModel(settimana,id,tipo,descrizione,notelavoro,area,tempostimato));
+            list.add(new MaintenanceActivityModel(settimana,id,tipo,descrizione,notelavoro,area,tempostimato,fabbrica));
             }
        } catch (SQLException ex) {
             System.out.println("errore");
@@ -93,35 +94,32 @@ private List<MaintenanceActivityModel> listActivity;
 }
 
     public MaintenanceActivityModel viewActivity(int id) {
-      String query = "select * from attivita_manutenzione where idattivita="+id; 
-      String tipo=null;
-      int settimana=0;
-      String descrizione=null;
-      String notelavoro=null;
-      String area=null; 
-      int tempostimato=0;
+      String query = "select * from attivita_manutenzione where idattivita=?"; 
       try {
        conn = ConnectionDatabase.getConnection();
-       st= conn.createStatement();    
-       rs= st.executeQuery(query);
+       pst= conn.prepareStatement(query);    
+       pst.setInt(1,id);
+       rs= pst.executeQuery();
        while(rs.next()){
-         tipo = rs.getString("tipoattivita");
-         settimana = rs.getInt("settimana");
-         descrizione = rs.getString("descrizione");
-         notelavoro=rs.getString("notelavoro");
-         area = rs.getString("area");
-         tempostimato=rs.getInt("tempostimato");
+        String tipo = rs.getString("tipoattivita");
+        int settimana = rs.getInt("settimana");
+        String descrizione = rs.getString("descrizione");
+        String notelavoro=rs.getString("notelavoro");
+        String area = rs.getString("area");
+        String fabbrica= rs.getString("fabbrica");
+        int tempostimato=rs.getInt("tempostimato");
+        return new MaintenanceActivityModel(settimana,id,tipo,descrizione,notelavoro,area,tempostimato,fabbrica);
         }
       } catch (SQLException ex) {
          System.out.println("Errore");
-     }  return new MaintenanceActivityModel(settimana,id,tipo,descrizione,notelavoro,area,tempostimato);
+     }  return null;
     }
 
    
     public void aggiornaNote( String note , int id) {
+     String query = "update attivita_manutenzione set notelavoro=? where idattivita=?";  
      try {  
       conn = ConnectionDatabase.getConnection();
-      String query = "update attivita_manutenzione set notelavoro=? where idattivita=?"; 
       pst= conn.prepareStatement(query); 
       pst.setString(1,note);
       pst.setInt(2,id);
@@ -135,17 +133,21 @@ private List<MaintenanceActivityModel> listActivity;
     
 
     public  boolean deleteActivity(int id) {   
-      String query = "delete from attivita_manutenzione where idattivita=" +id;
+      String query = "delete from attivita_manutenzione where idattivita=?";
       try {
         conn = ConnectionDatabase.getConnection();
-        st= conn.createStatement(); 
-        st.execute(query);
-        return true;
+        if(this.viewActivity(id)==null){
+         return false;
+        }
+        pst= conn.prepareStatement(query); 
+        pst.setInt(1,id);
+        pst.execute();
+        return true;     
       } catch (SQLException ex) {
         System.out.println("Errore nell'eliminazione");
         return false;
-     }
-    }
+    }  
+   }
 
     
     

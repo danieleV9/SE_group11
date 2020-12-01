@@ -60,7 +60,7 @@ public class ActivityInfoViewController {
    }
 
     void popolaInfo(MaintenanceActivityModel a) {   
-        view.getActivityText().setText( a.getId_Activity()+" - " + a.getArea()+" - "+a.getTipology()+" - "+a.getEstimatedTime()+" min");
+        view.getActivityText().setText( a.getId_Activity()+" - " + a.getFabbrica()+" - "+ a.getArea()+" - "+a.getTipology()+" - "+a.getEstimatedTime()+" min");
         view.getDescriptionArea().setText(a.getDescription());
         view.getNotesArea().setText(a.getWorkspaceNotes());
         view.getWeekText().setText(String.valueOf(a.getWeekNum()));

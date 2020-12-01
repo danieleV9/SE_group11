@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/HP/Documents/GitHub/SE_group11/ProgettoSEGruppo11/src/controller/PlannerActivityViewController.java</file>
+            <file>file:/C:/Users/HP/Documents/GitHub/SE_group11/ProgettoSEGruppo11/test/model/MaintenanceActivityModelTest.java</file>
             <file>file:/C:/Users/HP/Documents/GitHub/SE_group11/ProgettoSEGruppo11/src/view/PlannerActivityView.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/SE_group11/ProgettoSEGruppo11/src/controller/ActivityInfoViewController.java</file>
-            <file>file:/C:/Users/HP/Documents/GitHub/SE_group11/ProgettoSEGruppo11/src/NewMain.java</file>
+            <file>file:/C:/Users/HP/Documents/GitHub/SE_group11/ProgettoSEGruppo11/src/view/MaintainerHomeView.java</file>
+            <file>file:/C:/Users/HP/Documents/GitHub/SE_group11/ProgettoSEGruppo11/src/model/MaintenanceActivityModel.java</file>
         </group>
     </open-files>
 </project-private>

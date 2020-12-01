@@ -25,10 +25,11 @@ public class MaintenanceActivityModel {
     private Procedure procedura;
     private List<Materiali> materiali;
     private String area;
+    private String Fabbrica;
 
     public MaintenanceActivityModel(int WeekNum, boolean interuptible, int id_Activity, String description, 
                                 String tipology, String type, int EstimatedTime, String workspaceNotes, 
-                                Procedure procedura, List<Materiali> materiali, String area) {
+                                Procedure procedura, List<Materiali> materiali, String area,String fabbrica) {
         this.WeekNum = WeekNum;
         this.interuptible = interuptible;
         this.id_Activity = id_Activity;
@@ -40,10 +41,11 @@ public class MaintenanceActivityModel {
         this.procedura = procedura;
         this.materiali = materiali;
         this.area=area;
+        this.Fabbrica=fabbrica;
     }
 
 
-    public MaintenanceActivityModel(int WeekNum, int id_Activity,String tipology, String description,String workspaceNotes,String area,int estimatedTime) {
+    public MaintenanceActivityModel(int WeekNum, int id_Activity,String tipology, String description,String workspaceNotes,String area,int estimatedTime,String fabbrica) {
         this.WeekNum = WeekNum;
         this.id_Activity = id_Activity;
         this.description = description;
@@ -51,10 +53,19 @@ public class MaintenanceActivityModel {
         this.workspaceNotes=workspaceNotes;
         this.area=area;
         this.EstimatedTime=estimatedTime;
+        this.Fabbrica=fabbrica;
         
     }
 
     public MaintenanceActivityModel() {
+    }
+
+    public String getFabbrica() {
+        return Fabbrica;
+    }
+
+    public void setFabbrica(String Fabbrica) {
+        this.Fabbrica = Fabbrica;
     }
 
 
