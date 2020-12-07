@@ -203,5 +203,43 @@ public class MaintainerDAO {
            return false;
         }
     }
+    
+    
+     public boolean addCompetence(String username, String description){
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "insert into competenze_ma(usernamema,descrizione) values(?,?)";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            pst.setString(2,description);
+            pst.executeUpdate();
+            return true;
+        }catch(SQLException ex){
+           System.out.println(""+ex);
+           return false;
+        }
+    }
+     
+     public boolean hasCompetences(String username,String description){
+         try{
+            con = ConnectionDatabase.getConnection();
+            String query = "select count(*) from competenze_ma where usernamema=? and descrizione=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            pst.setString(2,description);
+            rs=pst.executeQuery();
+            int risultato=0;
+            if(rs.next()){
+                risultato=rs.getInt(1); 
+                if(risultato==0)
+                    return false;
+                else return true;
+             }
+            } catch(SQLException ex){
+           System.out.println(""+ex);
+           return false;
+           }
+           return false;
+     }
 
 }

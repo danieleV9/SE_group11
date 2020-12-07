@@ -78,6 +78,14 @@ public class MaintainerModel {
             return "MaintainerModel{" + "username=" + username + ", password=" + password + '}';
     }
    
+    public boolean addCompetence(String username,String description){
+      MaintainerDAO dao = new MaintainerDAO();
+      return dao.addCompetence(username,description);
+    }
     
+    public boolean hasCompetences(String username,String description){
+        MaintainerDAO dao = new MaintainerDAO();
+        return dao.hasCompetences(username,description);
+    }
     
 }

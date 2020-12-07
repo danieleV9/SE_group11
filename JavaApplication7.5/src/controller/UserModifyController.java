@@ -7,8 +7,12 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import model.MaintainerModel;
 import model.PlannerModel;
+import model.SkillModel;
 import view.AdminHomeView;
 import view.ModifyUserView;
 import view.UsersListView;
@@ -60,6 +64,7 @@ public class UserModifyController {
         }
     }
     
+    
     public class ModifyPassListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
@@ -109,7 +114,15 @@ public class UserModifyController {
     public class DeleteCompListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
-            System.out.println("ciao");
+          JTable table=view.getjTable1();
+          SkillModel skill = new SkillModel();
+          DefaultTableModel model = view.getModeltab();
+          int selezionato = table.getSelectedRow();
+          if(selezionato != -1){
+          String descrizione =  table.getValueAt(selezionato, 0).toString();
+          if(skill.deleteSkill(username, descrizione))
+             model.removeRow(selezionato);
+           } else view.displayErrorMessage("Select A Skill !");
         }
     }
     public class NewCompListener implements ActionListener {
@@ -121,7 +134,38 @@ public class UserModifyController {
     public class ConfirmCompListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
-            System.out.println("ciao");
+           String description = view.getjComboBox1().getSelectedItem().toString();
+           if(description == "Select a skill"){
+               view.displayErrorMessage("Select a skill!");
+            }
+            else if(modelma.hasCompetences(username, description)){
+            view.displayErrorMessage("The Maintainer has already this skill!");
+            } 
+           else if(modelma.addCompetence(username,description)){
+               String [] newrow = {description};
+               view.getModeltab().addRow(newrow); 
+               view.displayErrorMessage("Skill has been inserted succesfully!");
+            }
         }
+    }
+        public void populateCompetences(){
+        SkillModel skill = new SkillModel();
+        List<SkillModel> list = skill.listSkills();  
+        for(int i=0;i<list.size();i++){
+           String competenza = list.get(i).toString();
+           view.getjComboBox1().addItem(competenza);
+           System.out.println(competenza);        
+        }      
+    }
+    
+    public void populateCompetences(String username){
+        SkillModel skill = new SkillModel();
+        List<SkillModel> list = skill.listSkillsMA(username);
+        for(int i=0;i<list.size();i++){
+           String descrizioneCompetenza = list.get(i).getDescription();   
+           String idcompetenza=String.valueOf(list.get(i).getIdSkill());
+           String [] row = {descrizioneCompetenza};
+           view.getModeltab().addRow(row);
+       }
     }
 }

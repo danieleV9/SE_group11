@@ -22,6 +22,13 @@ public class SkillModel {
         this.idSkill = idSkill;
         this.description = description;
     }
+        
+    public SkillModel() {
+    }
+
+    public SkillModel(String description) {
+        this.description=description;
+    }
 
     public int getIdSkill() {
         return idSkill;
@@ -37,12 +44,22 @@ public class SkillModel {
         list = dao.listSkills();
         return list;
     }
+    
+    public List<SkillModel> listSkillsMA(String username) {
+        SkillDAO dao = new SkillDAO();
+        List<SkillModel> list = new ArrayList<>();
+        return dao.listSkillsMA(username); 
+    }
 
     public boolean deleteSkill(int idSkill) {
         SkillDAO dao = new SkillDAO();
         return dao.deleteSkill(idSkill);
     }
-
+    
+    public boolean deleteSkill(String username,String descrizione) {
+      SkillDAO dao = new SkillDAO();
+      return dao.deleteSkill(username,descrizione);
+    }
     public boolean modifySkill(int idSkill, String descrizione) {
         SkillDAO dao = new SkillDAO();
         return dao.modifySkill(idSkill, descrizione);
@@ -51,6 +68,11 @@ public class SkillModel {
     public void insertSkill(String description) {
         SkillDAO ad = new SkillDAO();
         ad.insertSkill(description);
+    }
+    
+    @Override
+    public String toString() {
+        return description;
     }
 
 }

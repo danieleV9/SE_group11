@@ -64,6 +64,21 @@ public class SkillDAO {
             return false;
         }
     }
+    
+        public boolean deleteSkill(String username, String description) {
+        try {
+            con = ConnectionDatabase.getConnection();
+            String query = "delete from competenze_ma where usernamema=? and descrizione=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            pst.setString(2, description);
+            pst.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+            return false;
+        }
+    }
 
     public boolean modifySkill(int idSkill, String description) {
         try {
@@ -91,4 +106,23 @@ public class SkillDAO {
             System.out.println("Errore nell'inserimento della competenza");
         }
     }
+       //RESTITUISCE LA LISTA DI SKILL DI UN DETERMINATO MAINTAINER
+     public List<SkillModel> listSkillsMA(String username) {
+        List<SkillModel> list = new ArrayList<>();
+        try {
+            con = ConnectionDatabase.getConnection();
+            String query = "select * from competenze_ma where usernamema=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                String description = rs.getString("descrizione");
+                list.add(new SkillModel(description));
+            }
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+        }
+        return list;
+    }
+    
 }
