@@ -30,12 +30,15 @@ public class PlannerActivityViewController {
     public PlannerActivityViewController(MaintenanceActivityModel ma, PlannerActivityView view) {
         this.ma=ma;
         this.view=view;
+        this.view.addBackListener(new BackListener()); //tasto indietro
+        this.view.addDeleteListener(new DeleteListener()); //tasto delete
+        this.view.addInfoListener(new InfoListener()); //tasto visualizzainfo
+        this.view.addItemListener(new itemListener()); //cambiamento settimana selezionata
+        populateTable();
     }
     
- public void assegnaGestori() {
-     
-    //Gestore eliminazione
-    ActionListener deleteListener = new ActionListener() {
+   //gestore cancellazione
+   public class DeleteListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
           JTable table=view.getjTable1();
@@ -43,15 +46,15 @@ public class PlannerActivityViewController {
           if(selezionato != -1){
           int id =  Integer.valueOf(table.getValueAt(selezionato, 1).toString());//id dell'attività da rimuovere dal DB
           if(ma.deleteActivity(id)){
-             DefaultTableModel model = view.getModelTab();
-             model.removeRow(selezionato);
-          }        
-        }
+            DefaultTableModel model = view.getModelTab();
+            model.removeRow(selezionato);
+           }        
+         }
+      } 
     } 
-    
-    } ;
+   
    //Gestore visualizzazione Info 
-    ActionListener infoListener = new ActionListener(){
+    public class InfoListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
           JTable table=view.getjTable1();
@@ -61,29 +64,27 @@ public class PlannerActivityViewController {
             MaintenanceActivityModel mo= ma.viewActivity(id);
             ActivityInfoView vi = new ActivityInfoView(); //passa a nuova interfaccia
             ActivityInfoViewController controller2 = new ActivityInfoViewController(mo,vi);
-            controller2.assegnaGestori();     
-            controller2.popolaInfo(mo);
             vi.setVisible(true);
             view.setVisible(false); 
           }
         }
-    };  
+    } 
     
-    
-    ActionListener backButton = new ActionListener(){
+    //gestore Go Back
+    public class BackListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
           PlannerHomeView pv = new PlannerHomeView();
           PlannerModel pm = new PlannerModel("","");
           PlannerHomeController phc = new PlannerHomeController(pv,pm);
           pv.setVisible(true);
-          view.setVisible(false);
-          
+          view.setVisible(false); 
         }
-    };
+    }
     
-    ItemListener itemListener = new ItemListener(){
-        @Override
+    
+    public class itemListener implements ItemListener{
+       @Override
        public void itemStateChanged(ItemEvent event) {
           if (event.getStateChange() == ItemEvent.SELECTED) {
              Object item = event.getItem();
@@ -99,16 +100,9 @@ public class PlannerActivityViewController {
              populateTable(numWeek);
           }
        }   
-    };
+    }
             
-
-   //assegno ai bottoni gli Action Listener 
-   view.getDeleteButton().addActionListener(deleteListener);
-   view.getInfoButton().addActionListener(infoListener);
-   view.getBackHomeButton().addActionListener(backButton);
-   view.getSelection().addItemListener(itemListener);
-   
- } 
+ 
  
  public void populateTable(){
      List<MaintenanceActivityModel> list;
@@ -124,19 +118,11 @@ public class PlannerActivityViewController {
         int week = m.getWeekNum();
         String week2=String.valueOf(week);
         String [] row = {week2,id2,area,tipology,time};
-        /*String[] row2 = {null};
-        if(i!=0 ){
-         if(week != list.get(i-1).getWeekNum()){
-         modelTab.addRow(row2);
-         } 
-        }
-        else modelTab.addRow(row2);*/
         view.getModelTab().addRow(row);
      }
  }
  
   public void populateTable(int weekNum){
-      
      List<MaintenanceActivityModel> list;
      list=ma.getAllActivity(weekNum);
      for(int i=0; i<list.size(); i++){
@@ -150,13 +136,6 @@ public class PlannerActivityViewController {
         int week = m.getWeekNum();
         String week2=String.valueOf(week);
         String [] row = {week2,id2,area,tipology,time};
-        /*String[] row2 = {null};
-        if(i!=0 ){
-         if(week != list.get(i-1).getWeekNum()){
-         modelTab.addRow(row2);
-         } 
-        }
-        else modelTab.addRow(row2);*/
         view.getModelTab().addRow(row);
      }
  }

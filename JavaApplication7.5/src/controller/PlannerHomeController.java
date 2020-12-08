@@ -56,8 +56,6 @@ public class PlannerHomeController {
             PlannerActivityView ad1 = new PlannerActivityView();
             MaintenanceActivityModel ma = new MaintenanceActivityModel();
             PlannerActivityViewController pv = new PlannerActivityViewController(ma, ad1);
-            pv.assegnaGestori();
-            pv.populateTable();
             ad1.setVisible(true);
             view.setVisible(false);
         }

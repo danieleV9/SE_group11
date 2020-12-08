@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 package view;
+import controller.PlannerActivityViewController;
 import dao.ActivityDao;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import model.MaintenanceActivityModel;
 import java.util.List;
 import javax.swing.JButton;
@@ -250,5 +253,21 @@ DefaultTableModel modelTab = new DefaultTableModel();
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    public void addDeleteListener(ActionListener listener) {
+       deleteButton.addActionListener(listener);
+    }
+
+    public void addBackListener(ActionListener listener) {
+       backHomeButton.addActionListener(listener);
+    }
+
+    public void addInfoListener(ActionListener listener) {
+       infoButton.addActionListener(listener);
+    }
+
+    public void addItemListener(ItemListener listener) {
+       jComboBox1.addItemListener(listener);
+    }
 
 }

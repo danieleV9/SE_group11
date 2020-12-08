@@ -24,41 +24,33 @@ public class ActivityInfoViewController {
     public ActivityInfoViewController(MaintenanceActivityModel ma, ActivityInfoView view) {
         this.ma=ma;
         this.view=view;
+        this.view.addBackListener(new BackListener());//tasto indietro
+        this.view.addUpdateListener(new UpdateListener()); //tasto per aggiornare note
+        popolaInfo(ma);
     }
-    
-     public void assegnaGestori() {
-        
-    //Gestore aggiornamento note
-    ActionListener updateNotesListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        String note = view.getNotesArea().getText();
-        int id = Integer.valueOf(view.getId().getText());
-        ma.aggiornaNote(note,id);
-        }
-    
-     };
-     
-    //Gestore goBack 
-    ActionListener goBackListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-           
-            PlannerActivityView listView = new PlannerActivityView();       
-            PlannerActivityViewController controller1 = new PlannerActivityViewController(ma,listView);
-            controller1.assegnaGestori();
-            controller1.populateTable();
-            listView.setVisible(true);
-            view.setVisible(false);
-        }
-    
-     };
-    
-    
-    view.getGoBackButton().addActionListener(goBackListener);
-    view.getUpdateNotesButton().addActionListener(updateNotesListener);
-   }
+   
 
+   public class BackListener implements ActionListener {
+       public void actionPerformed(ActionEvent e){
+         view.setVisible(false);
+         PlannerActivityView listView = new PlannerActivityView();       
+         PlannerActivityViewController controller1 = new PlannerActivityViewController(ma,listView);
+         listView.setVisible(true);
+         view.setVisible(false);  
+        }
+    } 
+
+    public class UpdateListener implements ActionListener {
+         public void actionPerformed(ActionEvent e){
+         String note = view.getNotesArea().getText();
+         int id = Integer.valueOf(view.getId().getText());
+         ma.aggiornaNote(note,id);
+         view.displayMessage("Notes updated succesfully");
+         
+        }
+    } 
+      
+    
     void popolaInfo(MaintenanceActivityModel a) {   
         view.getActivityText().setText( a.getId_Activity()+" - " + a.getFabbrica()+" - "+ a.getArea()+" - "+a.getTipology()+" - "+a.getEstimatedTime()+" min");
         view.getDescriptionArea().setText(a.getDescription());
