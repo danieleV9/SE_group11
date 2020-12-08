@@ -13,79 +13,60 @@ import java.util.List;
  *
  * @author lyuba
  */
-public class MaintainerModel {
-    private String username;
-    private String password;
+public class MaintainerModel extends EmployeeModel {
 
     public MaintainerModel(String username, String password) {
-        this.username = username;
-        this.password = password;
+        super(username, password);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public MaintainerModel findMaintainer(String username, String password, String role) throws Exception{
+    @Override
+    public UserModel findUser(String username, String password, String role) throws Exception {
         MaintainerDAO dao = new MaintainerDAO();
-        MaintainerModel ad = dao.findMaintainer(username, password, role);
+        MaintainerModel ad = (MaintainerModel) dao.findUser(username, password, role);
         return ad;
     }
-    
-    public MaintainerModel findMaintainer(String username){
+
+    @Override
+    public EmployeeModel findUsername(String username) {
         MaintainerDAO dao = new MaintainerDAO();
-        MaintainerModel ad = dao.findMaintainer(username);
+        MaintainerModel ad = (MaintainerModel) dao.findUsername(username);
         return ad;
     }
-    
-    public List<MaintainerModel> listMaintainers(){ //getsate
+
+    public List<MaintainerModel> listMaintainers() { //getsate
         MaintainerDAO dao = new MaintainerDAO();
         List<MaintainerModel> list = new ArrayList<>();
         list = dao.listMaintainers();
         return list;
     }
-    
-    public boolean deleteMaintainer(String username){
-        MaintainerDAO dao = new MaintainerDAO();
-        return dao.deleteMaintainer(username);
-    }
-    
-    public boolean createMaintainer(String username, String password){
-        MaintainerDAO dao = new MaintainerDAO();
-        boolean ad = dao.createMaintainer(username, password);
-        return ad;
-    }
 
-    public boolean updateMainatainerPassword(String username, String newpass){
+    @Override
+    public boolean deleteUser(String username) {
         MaintainerDAO dao = new MaintainerDAO();
-        return dao.updateMaintainerPassword(username, newpass);
+        return dao.deleteUser(username);
     }
 
     @Override
-    public String toString() {
-            return "MaintainerModel{" + "username=" + username + ", password=" + password + '}';
-    }
-   
-    public boolean addCompetence(String username,String description){
-      MaintainerDAO dao = new MaintainerDAO();
-      return dao.addCompetence(username,description);
-    }
-    
-    public boolean hasCompetences(String username,String description){
+    public boolean createUser(String username, String password) {
         MaintainerDAO dao = new MaintainerDAO();
-        return dao.hasCompetences(username,description);
+        boolean ad = dao.createUser(username, password);
+        return ad;
     }
-    
+
+    @Override
+    public boolean updateUserPassword(String username, String newpass) {
+        MaintainerDAO dao = new MaintainerDAO();
+        return dao.updateUserPassword(username, newpass);
+    }
+
+    public boolean addCompetence(String username, String description) {
+        MaintainerDAO dao = new MaintainerDAO();
+        return dao.addCompetence(username, description);
+    }
+
+    public boolean hasCompetences(String username, String description) {
+        MaintainerDAO dao = new MaintainerDAO();
+        return dao.hasCompetences(username, description);
+    }
+
 }

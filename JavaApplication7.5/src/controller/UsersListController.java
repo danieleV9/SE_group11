@@ -197,7 +197,7 @@ public class UsersListController {
                String username= view.getUsernameSelected1(selezionatoma); //username maintainer selezionato
                //System.out.println(username);
                // remove selected row from the model
-               if(mamodel.deleteMaintainer(username)){
+               if(mamodel.deleteUser(username)){
                     view.removeRow1(selezionatoma);
                }
            }else if (selezionatopl != -1) {
@@ -206,7 +206,7 @@ public class UsersListController {
                String username= view.getUsernameSelected(selezionatopl); //username planner selezionato
                //System.out.println(username);
                // remove selected row from the model
-               if(plmodel.deletePlanner(username)){
+               if(plmodel.deleteUser(username)){
                     view.removeRow(selezionatopl);
                }
            }else  //se non ho selezionato un planner o un maintainer
@@ -225,7 +225,7 @@ public class UsersListController {
                 }
                 else{
                     if(view.selectedPlannerCreate()){
-                        boolean result = plmodel.createPlanner(username, password);
+                        boolean result = plmodel.createUser(username, password);
                         if(result==false)
                         view.displayErrorMessage("This username exists yet.");
                         if(result==true){
@@ -235,7 +235,7 @@ public class UsersListController {
                         }
                     }
                     else if(view.selectedMaintainerCreate()){
-                        boolean result = mamodel.createMaintainer(username, password);
+                        boolean result = mamodel.createUser(username, password);
                         if(result==false)
                         view.displayErrorMessage("This username exists yet.");
                         if(result==true){

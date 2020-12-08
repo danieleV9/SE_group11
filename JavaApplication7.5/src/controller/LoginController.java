@@ -19,14 +19,14 @@ import view.PlannerHomeView;
  *
  * @author dava9
  */
-public class LoginController{
-    
+public class LoginController {
+
     private LoginView view;
     private AdminModel modelA;
     private PlannerModel modelP;
     private MaintainerModel modelM;
-    
-   /* public LoginController(LoginView view, AdminModel modelA){
+
+    /* public LoginController(LoginView view, AdminModel modelA){
         this.view = view;
         this.modelA = modelA;
         this.view.addLoginListener(new LoginListener());
@@ -43,21 +43,23 @@ public class LoginController{
         this.view.addCancelListener(new CancelListener());
         view.setVisible(true);
     }
-    
-    public class CancelListener implements ActionListener{
+
+    public class CancelListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     }
-    
+
     public class LoginListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             String username = "";
-            String password = "";  
+            String password = "";
             String role = "";
-            try{
+            try {
                 username = view.getUsername();
                 System.out.println(username);
                 password = view.getPassowrd();
@@ -65,58 +67,55 @@ public class LoginController{
                 role = view.getRole();
                 System.out.println(role);
                 switch (role) {
-                    case "System Administrator":
-                        {
-                            AdminModel ad = modelA.findAdmin(username, password, role);
-                            if(ad == null){
-                                view.displayErrorMessage("Username or password not matched");
-                                System.out.println("query return null");
-                            }
-                            else{
-                                AdminHomeView adHome = new AdminHomeView();
-                                /*quando creiamo la nuova view dobbiamo istanziare anche il relativo controller per mantenere
+                    case "System Administrator": {
+                        AdminModel ad = (AdminModel) modelA.findUser(username, password, role);
+                        if (ad == null) {
+                            view.displayErrorMessage("Username or password not matched");
+                            System.out.println("query return null");
+                        } else {
+                            AdminHomeView adHome = new AdminHomeView();
+                            /*quando creiamo la nuova view dobbiamo istanziare anche il relativo controller per mantenere
                                 il riferimento alla view appena creata*/
-                                AdminHomeController controllerHome = new AdminHomeController(adHome,modelA,username);
-                                adHome.setVisible(true);
-                                view.setVisible(false);
-                            }       break;
+                            AdminHomeController controllerHome = new AdminHomeController(adHome, modelA, username);
+                            adHome.setVisible(true);
+                            view.setVisible(false);
                         }
-                    case "Planner":
-                        {
-                            PlannerModel ad = modelP.findPlanner(username, password, role);
-                            if(ad == null){
-                                view.displayErrorMessage("Username or password not matched");
-                                System.out.println("query return null");
-                            }
-                            else{
-                                PlannerHomeView plHome = new PlannerHomeView(username);
-                                PlannerHomeController phc = new PlannerHomeController(plHome,ad);
-                                plHome.setVisible(true);
-                                view.setVisible(false);
-                            }       break;
+                        break;
+                    }
+                    case "Planner": {
+                        PlannerModel ad = (PlannerModel) modelP.findUser(username, password, role);
+                        if (ad == null) {
+                            view.displayErrorMessage("Username or password not matched");
+                            System.out.println("query return null");
+                        } else {
+                            PlannerHomeView plHome = new PlannerHomeView(username);
+                            PlannerHomeController phc = new PlannerHomeController(plHome, ad);
+                            plHome.setVisible(true);
+                            view.setVisible(false);
                         }
-                    case "Maintainer":
-                        {
-                            MaintainerModel ad = modelM.findMaintainer(username, password, role);
-                            if(ad == null){
-                                view.displayErrorMessage("Username or password not matched");
-                                System.out.println("query return null");
-                            }
-                            else{
-                                MaintainerHomeView maHome = new MaintainerHomeView(username);
-                                maHome.setVisible(true);
-                                view.setVisible(false);
-                            }       break;
+                        break;
+                    }
+                    case "Maintainer": {
+                        MaintainerModel ad = (MaintainerModel) modelM.findUser(username, password, role);
+                        if (ad == null) {
+                            view.displayErrorMessage("Username or password not matched");
+                            System.out.println("query return null");
+                        } else {
+                            MaintainerHomeView maHome = new MaintainerHomeView(username);
+                            maHome.setVisible(true);
+                            view.setVisible(false);
                         }
-                        
+                        break;
+                    }
+
                     default:
                         break;
                 }
-            }catch(Exception ex){
-                System.out.println(""+ex);
+            } catch (Exception ex) {
+                System.out.println("" + ex);
                 view.displayErrorMessage(ex.getMessage());
             }
         }
     }
-    
+
 }

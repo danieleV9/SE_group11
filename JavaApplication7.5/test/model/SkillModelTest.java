@@ -14,12 +14,13 @@ import static org.junit.Assert.*;
  * @author jenni
  */
 public class SkillModelTest {
+
     SkillModel instance = null;
-    
+
     public SkillModelTest() {
-        instance = new SkillModel(0,"");
+        instance = new SkillModel(0, "");
     }
-    
+
     /*@BeforeAll //viene eseguito prima dell’esecuzione di ogni test, 
                  //utile per settare precondizioni comuni a più di un caso di test
     public static void setUpClass() {
@@ -36,14 +37,13 @@ public class SkillModelTest {
     @AfterEach
     public void tearDown() {
     }*/
-
     /**
      * Test of getIdSkill method, of class SkillModel.
      */
     @Test
     public void testGetIdSkill() {
         System.out.println("getIdSkill");
-        instance = new SkillModel(12,"");
+        instance = new SkillModel(12, "");
         int expResult = 12;
         int result = instance.getIdSkill();
         assertEquals(expResult, result);
@@ -57,7 +57,7 @@ public class SkillModelTest {
     @Test
     public void testGetDescription() {
         System.out.println("getDescription");
-        instance = new SkillModel(0,"come stai?");
+        instance = new SkillModel(0, "come stai?");
         String expResult = "come stai?";
         String result = instance.getDescription();
         assertEquals(expResult, result);
@@ -86,12 +86,10 @@ public class SkillModelTest {
     public void testDeleteSkill() {
         System.out.println("deleteSkill");
         int idSkill = 0;
-        instance = new SkillModel(1,"");
+        instance = new SkillModel(1, "");
         boolean expResult = false;
         boolean result = instance.deleteSkill(idSkill);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**
@@ -100,13 +98,11 @@ public class SkillModelTest {
     @Test
     public void testModifySkill() {
         System.out.println("modifySkill");
-        int idSkill = 0;
-        String descrizione = "";
-        boolean expResult = false;
+        int idSkill = 2016;
+        String descrizione = "Capacità di intervento nel contesto";
+        boolean expResult = true;
         boolean result = instance.modifySkill(idSkill, descrizione);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**
@@ -115,11 +111,10 @@ public class SkillModelTest {
     @Test
     public void testInsertSkill() {
         System.out.println("insertSkill");
-        String description = "pippo";
-        instance = new SkillModel(0,"");
+        String description = "Padronanza delle risorse";
+        instance = new SkillModel(0, "");
         instance.insertSkill(description);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        assertEquals(description, instance.getDescription());
     }
-    
+
 }

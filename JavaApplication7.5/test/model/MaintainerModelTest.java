@@ -49,18 +49,18 @@ public class MaintainerModelTest {
     
     public void addMM(){
        MaintainerModel res= new MaintainerModel("","");
-       res= instance.findMaintainer("tizio");
+       res= (MaintainerModel) instance.findUsername("tizio");
        if(res == null)
-             instance.createMaintainer("tizio", "tizio");  
+             instance.createUser("tizio", "tizio");  
        else 
        {
            delMM();
-           instance.createMaintainer("tizio", "tizio");
+           instance.createUser("tizio", "tizio");
        }
     }
     
     public void delMM(){
-        instance.deleteMaintainer("tizio");
+        instance.deleteUser("tizio");
     }
     /**
      * Test of getUsername method, of class MaintainerModel.
@@ -125,7 +125,7 @@ public class MaintainerModelTest {
         MaintainerModel expResult = new MaintainerModel(username,password);
         MaintainerModel result = null;
         try {
-            result = instance.findMaintainer(username, password, role);
+            result = (MaintainerModel) instance.findUser(username, password, role);
             assertEquals("Maintainer non trovato",expResult.toString(),result.toString()); //deve stampare messaggio se test fallisce
         } catch (Exception ex) {
      
@@ -145,7 +145,7 @@ public class MaintainerModelTest {
         System.out.println(expResult.toString());
         MaintainerModel result = null;
         try {
-            result = instance.findMaintainer(username, password, role);
+            result = (MaintainerModel) instance.findUser(username, password, role);
         } catch (Exception ex) {
             Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -162,7 +162,7 @@ public class MaintainerModelTest {
         System.out.println("findMaintainer");
         String username = "";
         //MaintainerModel expResult = null;
-        MaintainerModel result = instance.findMaintainer(username); 
+        MaintainerModel result = (MaintainerModel) instance.findUsername(username); 
         assertNull(result);  
     }
 
@@ -188,7 +188,7 @@ public class MaintainerModelTest {
         System.out.println("deleteMaintainer");
         String username = "";
         boolean expResult = false; //perchè non posso avere un username vuoto
-        boolean result = instance.deleteMaintainer(username);
+        boolean result = instance.deleteUser(username);
         assertEquals(expResult, result);
     }
     
@@ -200,7 +200,7 @@ public class MaintainerModelTest {
         System.out.println("deleteMaintainer1");
         delMM();
         String username = "tizio";
-        boolean result = instance.deleteMaintainer(username);
+        boolean result = instance.deleteUser(username);
         assertFalse(result);
     }
     
@@ -212,7 +212,7 @@ public class MaintainerModelTest {
         System.out.println("deleteMaintainer2");
         addMM();
         String username = "tizio";
-        boolean result = instance.deleteMaintainer(username);
+        boolean result = instance.deleteUser(username);
         assertTrue(result);
     }
     
@@ -225,7 +225,7 @@ public class MaintainerModelTest {
         System.out.println("createMaintainer");
         String username = "";
         String password = "";
-        boolean result = instance.createMaintainer(username, password);
+        boolean result = instance.createUser(username, password);
         assertFalse(result); 
     }
     
@@ -237,7 +237,7 @@ public class MaintainerModelTest {
         System.out.println("createMaintainer1");
         String username = "";
         String password = "passGigi";
-        boolean result = instance.createMaintainer(username, password);
+        boolean result = instance.createUser(username, password);
         assertFalse(result);
     }
     
@@ -249,7 +249,7 @@ public class MaintainerModelTest {
         System.out.println("createMaintainer2");
         String username = "dfg";
         String password = "";
-        boolean result = instance.createMaintainer(username, password);
+        boolean result = instance.createUser(username, password);
         assertFalse(result);
     }
     
@@ -262,7 +262,7 @@ public class MaintainerModelTest {
         this.addMM();
         String username = "tizio";
         String password = "rizio";
-        boolean result = instance.createMaintainer(username, password);
+        boolean result = instance.createUser(username, password);
         assertFalse(result);
     }
     
@@ -275,7 +275,7 @@ public class MaintainerModelTest {
         this.delMM();
         String username = "tizio";
         String password = "tizio";
-        boolean result = instance.createMaintainer(username, password);
+        boolean result = instance.createUser(username, password);
         assertTrue(result);
     }
 
@@ -288,7 +288,7 @@ public class MaintainerModelTest {
         String username = "";
         String newpass = "cfgvhjnk";
         boolean expResult = false;
-        boolean result = instance.updateMainatainerPassword(username, newpass);
+        boolean result = instance.updateUserPassword(username, newpass);
         assertEquals(expResult, result);
         
     }
@@ -302,7 +302,7 @@ public class MaintainerModelTest {
         this.addMM();
         String username = "tizio";
         String newpass = "cfgvhjnk";
-        boolean result = instance.updateMainatainerPassword(username, newpass);
+        boolean result = instance.updateUserPassword(username, newpass);
         assertTrue(result);
         
     }

@@ -94,7 +94,7 @@ public class AdminModelTest {
      * Test of findAdmin method, of class AdminModel.
      */
     @Test
-    public void testFindAdmin() {
+    public void testFindAdmin() throws Exception {
         System.out.println("findAdmin");
         String username = "";
         String password = "";
@@ -102,7 +102,7 @@ public class AdminModelTest {
         AdminModel instance = null;
         instance= new AdminModel("","");
         AdminModel expResult = null;
-        AdminModel result = instance.findAdmin(username, password, role);
+        AdminModel result = (AdminModel) instance.findUser(username, password, role);
         assertEquals(expResult, result);
         
     }
@@ -110,7 +110,7 @@ public class AdminModelTest {
      * Test of findAdmin method, of class AdminModel.
      */
        @Test
-    public void testFindAdmin1() {
+    public void testFindAdmin1() throws Exception {
         System.out.println("findAdmin1");
         String username = "";
         String password = "";
@@ -119,7 +119,7 @@ public class AdminModelTest {
         instance= new AdminModel("","");
         instance= new AdminModel("","");
         AdminModel expResult = null;
-        AdminModel result = instance.findAdmin(username, password, role);
+        AdminModel result = (AdminModel) instance.findUser(username, password, role);
         assertEquals(expResult, result);
         
     }
@@ -127,7 +127,7 @@ public class AdminModelTest {
      * Test of findAdmin method, of class AdminModel.
      */
        @Test
-    public void testFindAdmin2() {
+    public void testFindAdmin2() throws Exception {
         System.out.println("findAdmin2");
         String username = "";
         String password = "carlox";
@@ -135,7 +135,7 @@ public class AdminModelTest {
         AdminModel instance = null;
         instance= new AdminModel("","");
         AdminModel expResult = null;
-        AdminModel result = instance.findAdmin(username, password, role);
+        AdminModel result = (AdminModel) instance.findUser(username, password, role);
         assertEquals(expResult, result);
         
     }
@@ -144,7 +144,7 @@ public class AdminModelTest {
      * Test of findAdmin method, of class AdminModel.
      */
      @Test
-    public void testFindAdmin3() {
+    public void testFindAdmin3() throws Exception {
         System.out.println("findAdmin3");
         String username = "";
         String password = "carlox";
@@ -152,9 +152,8 @@ public class AdminModelTest {
         AdminModel instance = null;
         instance= new AdminModel("","");
         AdminModel expResult = null;
-        AdminModel result = instance.findAdmin(username, password, role);
-        assertEquals(expResult, result);
-        
+        AdminModel result = (AdminModel) instance.findUser(username, password, role);
+        assertEquals(expResult, result);   
     }
 
 }

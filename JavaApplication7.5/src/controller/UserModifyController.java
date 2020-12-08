@@ -56,10 +56,10 @@ public class UserModifyController {
     public void fillTextField(){
         view.setUsername(getSelUsername());
         if(getSelRole().equals("Planner")){
-            view.setPassword(modelpl.findPlanner(getSelUsername()).getPassword());
+            view.setPassword(modelpl.findUsername(getSelUsername()).getPassword());
         }
         else{ //se sei maintainer
-            view.setPassword(modelma.findMaintainer(getSelUsername()).getPassword());
+            view.setPassword(modelma.findUsername(getSelUsername()).getPassword());
             view.showMaintainerStuff(true);
         }
     }
@@ -83,14 +83,14 @@ public class UserModifyController {
             }
             else{
                 if(getSelRole().equals("Planner")){
-                    if(modelpl.updatePlannerPassword(username, newpass)){
+                    if(modelpl.updateUserPassword(username, newpass)){
                         view.showNewPassword(false);
                         view.displayErrorMessage("Password updated succesfully!");
                         view.setPassword(newpass);
                     }
                 }
                 else{ //sei un maintainer
-                    if(modelma.updateMainatainerPassword(username, newpass)){
+                    if(modelma.updateUserPassword(username, newpass)){
                         view.showNewPassword(false);
                         view.displayErrorMessage("Password updated succesfully!");
                         view.setPassword(newpass);

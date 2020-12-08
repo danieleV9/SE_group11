@@ -17,12 +17,13 @@ import connectionDB.ConnectionDatabase;
  *
  * @author dava9
  */
-public class AdminDAO {
+public class AdminDAO implements UserDAO {
     Connection con;
     PreparedStatement pst;
     ResultSet rs;
     
-    public AdminModel findAdmin(String username, String password, String role){
+    @Override
+    public AdminModel findUser(String username, String password, String role){
         if(role.equalsIgnoreCase("System Administrator") && !username.equals("") && !password.equals("")){
         try{
             con = ConnectionDatabase.getConnection();

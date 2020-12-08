@@ -28,18 +28,18 @@ public class PlannerModelTest {
     
      public void addPM(){
          PlannerModel res= new PlannerModel("","");
-       res= instance.findPlanner("caio");
+       res= (PlannerModel) instance.findUsername("caio");
        if(res == null)
-             instance.createPlanner("caio", "caio");  
+             instance.createUser("caio", "caio");  
        else 
        {
            delPM();
-           instance.createPlanner("caio", "caio");
+           instance.createUser("caio", "caio");
        }
     }
     
     public void delPM(){
-        instance.deletePlanner("caio");
+        instance.deleteUser("caio");
     }
     /*
     @BeforeClass
@@ -121,7 +121,7 @@ public class PlannerModelTest {
         String password = "";
         String role = "";
         PlannerModel expResult = null;
-        PlannerModel result = instance.findPlanner(username, password, role);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
         assertNull(result);
     }
     
@@ -135,7 +135,7 @@ public class PlannerModelTest {
         String password = "";
         String role = "System Administrator";
         PlannerModel expResult = null;
-        PlannerModel result = instance.findPlanner(username, password, role);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
         assertNull(result);
     }
     
@@ -149,7 +149,7 @@ public class PlannerModelTest {
         String password = "";
         String role = "Maintainer";
         PlannerModel expResult = null;
-        PlannerModel result = instance.findPlanner(username, password, role);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
         assertNull(result);
     }
     /**
@@ -162,7 +162,7 @@ public class PlannerModelTest {
         String password = "";
         String role = "Planner";
         PlannerModel expResult = null;
-        PlannerModel result = instance.findPlanner(username, password, role);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
         assertNull(result);
     }
     
@@ -177,7 +177,7 @@ public class PlannerModelTest {
         String role = "Planner";
         PlannerModel expResult = null;
         PlannerModel result = null;
-        result=instance.findPlanner(username, password, role);
+        result=(PlannerModel) instance.findUser(username, password, role);
         assertNotNull(result);
     }
     
@@ -193,7 +193,7 @@ public class PlannerModelTest {
         String role = "Planner";
         PlannerModel expResult = new PlannerModel("caio","caio");
         PlannerModel result = null;
-        result=instance.findPlanner(username, password, role);
+        result=(PlannerModel) instance.findUser(username, password, role);
         assertEquals(expResult,result);
     }
     
@@ -205,7 +205,7 @@ public class PlannerModelTest {
         System.out.println("findPlanner");
         String username = "";
         PlannerModel expResult = null;
-        PlannerModel result = instance.findPlanner(username);
+        PlannerModel result = (PlannerModel) instance.findUsername(username);
         assertNull(result);
     }
     
@@ -218,7 +218,7 @@ public class PlannerModelTest {
         delPM();
         String username = "caio";
         PlannerModel expResult = null;
-        PlannerModel result = instance.findPlanner(username);
+        PlannerModel result = (PlannerModel) instance.findUsername(username);
         assertNull(result);
     }
     
@@ -231,7 +231,7 @@ public class PlannerModelTest {
         addPM();
         String username = "caio";
         PlannerModel expResult = new PlannerModel("caio","caio");
-        PlannerModel result = instance.findPlanner(username);
+        PlannerModel result = (PlannerModel) instance.findUsername(username);
         assertEquals(expResult.toString(),result.toString());
     }
     
@@ -262,7 +262,7 @@ public class PlannerModelTest {
         String username = "";
         String password = "";
         boolean expResult = false;
-        boolean result = instance.createPlanner(username, password);
+        boolean result = instance.createUser(username, password);
         assertEquals(expResult, result);
     }
 
@@ -276,7 +276,7 @@ public class PlannerModelTest {
         String username = "caio";
         String password = "password";
         boolean expResult = false;
-        boolean result = instance.createPlanner(username, password);
+        boolean result = instance.createUser(username, password);
         assertEquals(expResult, result);
     }
     
@@ -290,7 +290,7 @@ public class PlannerModelTest {
         String username = "caio";
         String password = "password";
         boolean expResult = true;
-        boolean result = instance.createPlanner(username, password);
+        boolean result = instance.createUser(username, password);
         assertEquals(expResult, result);
     }
     
@@ -302,7 +302,7 @@ public class PlannerModelTest {
         System.out.println("deletePlanner");
         String username = "";
         boolean expResult = false;
-        boolean result = instance.deletePlanner(username);
+        boolean result = instance.deleteUser(username);
         assertEquals(expResult, result);
     }
     
@@ -315,7 +315,7 @@ public class PlannerModelTest {
         addPM();
         String username = "caio";
         boolean expResult = true;
-        boolean result = instance.deletePlanner(username);
+        boolean result = instance.deleteUser(username);
         assertEquals(expResult, result);
     }
     
@@ -329,7 +329,7 @@ public class PlannerModelTest {
         String username = "";
         String newpass = "";
         boolean expResult = false;
-        boolean result = instance.updatePlannerPassword(username, newpass);
+        boolean result = instance.updateUserPassword(username, newpass);
         assertEquals(expResult, result);
     }
     
@@ -343,7 +343,7 @@ public class PlannerModelTest {
         String username = "caio";
         String newpass = "newpass";
         boolean expResult = false;
-        boolean result = instance.updatePlannerPassword(username, newpass);
+        boolean result = instance.updateUserPassword(username, newpass);
         assertEquals(expResult, result);
     }
     
@@ -357,7 +357,7 @@ public class PlannerModelTest {
         String username = "caio";
         String newpass = "newpass";
         boolean expResult = true;
-        boolean result = instance.updatePlannerPassword(username, newpass);
+        boolean result = instance.updateUserPassword(username, newpass);
         assertEquals(expResult, result);
     }
     
