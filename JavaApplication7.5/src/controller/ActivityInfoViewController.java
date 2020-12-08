@@ -8,9 +8,12 @@ package controller;
 import dao.ActivityDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import model.MaintainerModel;
 import model.MaintenanceActivityModel;
 import view.ActivityInfoView;
+import view.MaintainerAvailabilityView;
 import view.PlannerActivityView;
+import controller.MaintainerAvailabilityController;
 
 
 /**
@@ -26,10 +29,26 @@ public class ActivityInfoViewController {
         this.view=view;
         this.view.addBackListener(new BackListener());//tasto indietro
         this.view.addUpdateListener(new UpdateListener()); //tasto per aggiornare note
+        this.view.addForwardListener(new ForwardListener()); //tasto per validare attività e andare avanti
         popolaInfo(ma);
     }
    
-
+    
+    public class  ForwardListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e){
+            MaintainerAvailabilityView newView = new MaintainerAvailabilityView();
+            MaintainerModel m= new MaintainerModel("","");
+            MaintenanceActivityModel a= new MaintenanceActivityModel();
+            int id=Integer.valueOf(view.getId().getText());
+            a=a.viewActivity(id); //passo al controller l'attività con quell'id
+            MaintainerAvailabilityController controller =new MaintainerAvailabilityController(view,newView,a,m);
+            controller.populateView();
+            newView.setVisible(true);
+            view.setVisible(false);
+        }
+    }
+    
    public class BackListener implements ActionListener {
        public void actionPerformed(ActionEvent e){
          view.setVisible(false);
