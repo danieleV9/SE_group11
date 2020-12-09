@@ -66,8 +66,13 @@ public class SkillModel {
     }
 
     public void insertSkill(String description) {
-        SkillDAO ad = new SkillDAO();
-        ad.insertSkill(description);
+        SkillDAO dao = new SkillDAO();
+        dao.insertSkill(description);
+    }
+    
+    public SkillModel findSkill(int id){ 
+         SkillDAO dao = new SkillDAO();
+         return dao.findSkill(id);
     }
     
     @Override

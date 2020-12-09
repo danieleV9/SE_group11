@@ -90,7 +90,7 @@ public class ProcedureDao {
             rs= pst.executeQuery();
             while(rs.next()){
             int id = rs.getInt("idcompetenza");
-            String description = skill.getDescription(id);
+            String description = skill.findSkill(id).getDescription();
             list.add(new SkillModel(id,description));
             }
          } catch (SQLException ex) {

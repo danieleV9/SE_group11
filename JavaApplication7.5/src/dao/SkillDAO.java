@@ -109,6 +109,7 @@ public class SkillDAO {
        //RESTITUISCE LA LISTA DI SKILL DI UN DETERMINATO MAINTAINER
      public List<SkillModel> listSkillsMA(String username) {
         List<SkillModel> list = new ArrayList<>();
+        SkillModel skill= new SkillModel();
         try {
             con = ConnectionDatabase.getConnection();
             String query = "select * from competenze_ma where usernamema=?";
@@ -116,8 +117,9 @@ public class SkillDAO {
             pst.setString(1, username);
             rs = pst.executeQuery();
             while (rs.next()) {
-                String description = rs.getString("descrizione");
-                list.add(new SkillModel(description));
+                int idComp = rs.getInt("idcompetenza");
+                String description= skill.findSkill(idComp).getDescription();
+                list.add(new SkillModel(idComp,description));
             }
         } catch (SQLException ex) {
             System.out.println("" + ex);
@@ -125,4 +127,24 @@ public class SkillDAO {
         return list;
     }
     
+     public SkillModel findSkill(int id){ //
+        SkillModel skill= new SkillModel();
+        if(id!=0){
+            try{
+                con = ConnectionDatabase.getConnection();
+                String query = "select * from competenze where idcompetenza=?";
+                pst = con.prepareStatement(query);
+                pst.setInt(1, id);
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    String description = rs.getString("descrizione");
+                    skill= new SkillModel(id,description);
+                }
+                return skill;
+            }catch(SQLException ex){ 
+               return skill;
+            }
+        }else 
+            return skill;
+    }
 }
