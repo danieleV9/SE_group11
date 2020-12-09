@@ -8,6 +8,7 @@ package view;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.List;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.SkillModel;
 
@@ -362,5 +363,9 @@ public class MaintainerAvailabilityView extends javax.swing.JFrame {
     
     public DefaultTableModel getTable() {
         return this.modelTab1;
+    }
+    
+    public JTable getjTable(){
+        return this.jTable2;
     }
 }

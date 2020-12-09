@@ -42,6 +42,7 @@ public class ActivityInfoViewController {
             MaintenanceActivityModel a= new MaintenanceActivityModel();
             int id=Integer.valueOf(view.getId().getText());
             a=a.viewActivity(id); //passo al controller l'attività con quell'id
+            System.out.println(a.toString());
             MaintainerAvailabilityController controller =new MaintainerAvailabilityController(view,newView,a,m);
             controller.populateView();
             newView.setVisible(true);

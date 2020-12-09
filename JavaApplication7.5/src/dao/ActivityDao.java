@@ -119,25 +119,42 @@ private List<MaintenanceActivityModel> listActivity;
 }
 
     public MaintenanceActivityModel viewActivity(int id) {
-      String query = "select * from attivita_manutenzione where idattivita=?"; 
-      try {
-       conn = ConnectionDatabase.getConnection();
-       pst= conn.prepareStatement(query);    
-       pst.setInt(1,id);
-       rs= pst.executeQuery();
-       while(rs.next()){
-        String tipo = rs.getString("tipotipologia");
-        int settimana = rs.getInt("settimana");
-        String descrizione = rs.getString("descrizione");
-        String notelavoro=rs.getString("notelavoro");
-        String area = rs.getString("area");
-        String fabbrica= rs.getString("fabbrica");
-        int tempostimato=rs.getInt("tempostimato");
-        return new MaintenanceActivityModel(settimana,id,tipo,descrizione,notelavoro,area,tempostimato,fabbrica);
-        }
-      } catch (SQLException ex) {
+        String query = "select * from attivita_manutenzione where idattivita=?"; 
+        try {
+            conn = ConnectionDatabase.getConnection();
+            pst= conn.prepareStatement(query);    
+            pst.setInt(1,id);
+            rs= pst.executeQuery();
+            while(rs.next()){
+                String tipo = rs.getString("tipotipologia");
+                int settimana = rs.getInt("settimana");
+                String descrizione = rs.getString("descrizione");
+                String notelavoro=rs.getString("notelavoro");
+                String area = rs.getString("area");
+                String fabbrica= rs.getString("fabbrica");
+                int tempostimato=rs.getInt("tempostimato");
+                //String procedura = rs.getString("nomeprocedura");
+                return new MaintenanceActivityModel(settimana,id,tipo,descrizione,notelavoro,area,tempostimato,fabbrica);
+            }
+        } catch (SQLException ex) {
          System.out.println("Errore");
-     }  return null;
+        }  return null;
+    }
+    
+    public String findProcedura(int id) {
+        String query = "select nomeprocedura from attivita_manutenzione where idattivita=?"; 
+        try {
+            conn = ConnectionDatabase.getConnection();
+            pst= conn.prepareStatement(query);    
+            pst.setInt(1,id);
+            rs= pst.executeQuery();
+            while(rs.next()){
+                String procedura = rs.getString("nomeprocedura");
+                return procedura;
+            }
+        } catch (SQLException ex) {
+         System.out.println("Errore");
+        }  return null;
     }
 
    

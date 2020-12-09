@@ -69,4 +69,18 @@ public class MaintainerModel extends EmployeeModel {
         return dao.hasCompetences(username, description);
     }
 
+    @Override
+    public String toString() {
+            return "MaintainerModel{" + "username=" + super.getUsername() + ", password=" + super.getPassword() + '}';
+    }
+   
+    public String getDisponibilitaGiorno(String username,int week, int day){ 
+        MaintainerDAO dao=new MaintainerDAO();
+        return dao.getDisponibilitaGiorno(username, week, day);
+    }
+    
+    public List<MaintainerModel> listMaintainersDisponibili(){
+         MaintainerDAO dao=new MaintainerDAO();
+         return dao.listMaintainersDisponibili();
+    }
 }

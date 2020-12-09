@@ -254,5 +254,48 @@ public class MaintainerDAO implements EmployeeDAO {
         }
         return false;
     }
+    
+    public List<MaintainerModel> listMaintainersDisponibili(){
+        List<MaintainerModel> list = new ArrayList<>();
+        try{
+            con = ConnectionDatabase.getConnection();
+            String query = "select distinct manutentore from disponibilita_giorno";
+            st = con.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                String username = rs.getString("manutentore");
+                MaintainerModel maintainer = new MaintainerModel(username,"");
+                list.add(maintainer);
+            }
+        }catch(Exception ex){
+            System.out.println(""+ex);
+            return list;
+        }
+        return list;
+    }
+    
+    public String getDisponibilitaGiorno(String username,int week, int day){ //restituisce string di minuti in fasce orarie per quel giorno della settimana
+        String fasce="";
+        if(usernameExists(username) && week>0 && week<53 && day>0 && day<8){ //se username valido e giorno valido e settimana valida
+            try{
+                con= ConnectionDatabase.getConnection();
+                String query = "select fasce_orarie from disponibilita_giorno where manutentore=? and week=? and day=?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setInt(2, week);
+                pst.setInt(3, day);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                   fasce= rs.getString("fasce_orarie"); 
+                }else 
+                   fasce="";
+                return fasce;
+            }catch(SQLException ex){
+                 System.out.println(ex);
+                 return fasce;
+            }
+        }else 
+            return fasce;
+    }
 
 }

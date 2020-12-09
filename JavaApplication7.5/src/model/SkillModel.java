@@ -8,6 +8,7 @@ package model;
 import dao.SkillDAO;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -79,5 +80,28 @@ public class SkillModel {
     public String toString() {
         return description;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SkillModel other = (SkillModel) obj;
+        if (this.idSkill != other.idSkill) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 }

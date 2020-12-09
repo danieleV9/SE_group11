@@ -68,10 +68,6 @@ public class MaintenanceActivityModel {
         this.Fabbrica = Fabbrica;
     }
 
-
-
-
-
     public int getWeekNum() {
         return WeekNum;
     }
@@ -190,7 +186,14 @@ public class MaintenanceActivityModel {
         dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
     }
 
-  
-    
+    @Override
+    public String toString() {
+        return "MaintenanceActivityModel{" + "WeekNum=" + WeekNum + ", interuptible=" + interuptible + ", id_Activity=" + id_Activity + ", description=" + description + ", tipology=" + tipology + ", type=" + type + ", EstimatedTime=" + EstimatedTime + ", workspaceNotes=" + workspaceNotes + ", procedura=" + procedura + ", materiali=" + materiali + ", area=" + area + ", Fabbrica=" + Fabbrica + '}';
+    }
+
+    public String findProcedura(int id){
+        ActivityDao dao = new ActivityDao();
+        return dao.findProcedura(id);
+    }
     
 }
