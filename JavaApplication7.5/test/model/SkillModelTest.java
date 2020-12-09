@@ -21,6 +21,22 @@ public class SkillModelTest {
         instance = new SkillModel(0, "");
     }
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
     /*@BeforeAll //viene eseguito prima dell’esecuzione di ogni test, 
                  //utile per settare precondizioni comuni a più di un caso di test
     public static void setUpClass() {

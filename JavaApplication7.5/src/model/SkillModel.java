@@ -57,10 +57,7 @@ public class SkillModel {
         return dao.deleteSkill(idSkill);
     }
     
-    public boolean deleteSkill(String username,String descrizione) {
-      SkillDAO dao = new SkillDAO();
-      return dao.deleteSkill(username,descrizione);
-    }
+
     public boolean modifySkill(int idSkill, String descrizione) {
         SkillDAO dao = new SkillDAO();
         return dao.modifySkill(idSkill, descrizione);
@@ -74,6 +71,10 @@ public class SkillModel {
     public SkillModel findSkill(int id){ 
          SkillDAO dao = new SkillDAO();
          return dao.findSkill(id);
+    }
+    public SkillModel findSkill(String description){ 
+        SkillDAO dao = new SkillDAO();
+        return dao.findSkill(description);
     }
     
     @Override

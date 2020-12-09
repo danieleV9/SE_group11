@@ -25,6 +25,14 @@ public class MaintainerModelTest {
     public MaintainerModelTest() {
         
     }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
     @Before
     public void newMM(){
         instance= new MaintainerModel("","");
@@ -45,6 +53,10 @@ public class MaintainerModelTest {
     @AfterEach
     public void tearDown() {
     }*/
+
+    @After
+    public void tearDown() throws Exception {
+    }
 
     
     public void addMM(){
@@ -306,5 +318,53 @@ public class MaintainerModelTest {
         assertTrue(result);
         
     }
+
+
+    /**
+     * Test of addCompetence method, of class MaintainerModel.
+     */
+    @Test
+    public void testAddCompetence() {
+        System.out.println("addCompetence");
+        String username = "tizio";
+        int id = 0;
+        boolean expResult = true;
+        instance.addCompetence(username, id);
+        boolean result = instance.hasCompetences(username, id);
+        assertEquals(expResult, result);
+       
+    }
+
+    /**
+     * Test of hasCompetences method, of class MaintainerModel.
+     */
+    @Test
+    public void testHasCompetences() {
+        System.out.println("hasCompetences");
+        String username = "tizio";
+        int id = 0;
+        boolean expResult = true;
+        instance.addCompetence(username, id);
+        boolean result = instance.hasCompetences(username, id);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of removeCompetence method, of class MaintainerModel.
+     */
+    @Test
+    public void testRemoveCompetence() {
+        System.out.println("removeCompetence");
+        String username = "tizio";
+        int id = 0;
+        instance.removeCompetence(username, id);
+        boolean expResult = false;
+        boolean result = instance.hasCompetences(username, id);
+        assertEquals(expResult, result);
+
+    }
+
+
+  
     
 }

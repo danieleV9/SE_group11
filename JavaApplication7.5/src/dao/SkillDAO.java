@@ -65,21 +65,6 @@ public class SkillDAO {
         }
     }
     
-        public boolean deleteSkill(String username, String description) {
-        try {
-            con = ConnectionDatabase.getConnection();
-            String query = "delete from competenze_ma where usernamema=? and descrizione=?";
-            pst = con.prepareStatement(query);
-            pst.setString(1, username);
-            pst.setString(2, description);
-            pst.executeUpdate();
-            return true;
-        } catch (SQLException ex) {
-            System.out.println("" + ex);
-            return false;
-        }
-    }
-
     public boolean modifySkill(int idSkill, String description) {
         try {
             con = ConnectionDatabase.getConnection();
@@ -147,4 +132,26 @@ public class SkillDAO {
         }else 
             return skill;
     }
+     
+     public SkillModel findSkill(String description){ 
+        SkillModel skill= new SkillModel();
+        if(description!=null){
+            try{
+                con = ConnectionDatabase.getConnection();
+                String query = "select * from competenze where descrizione=?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, description);
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("idcompetenza");
+                    skill= new SkillModel(id,description);
+                }
+                return skill;
+            }catch(SQLException ex){ 
+               return skill;
+            }
+        } else 
+            return skill;
+    }
+     
 }

@@ -59,14 +59,18 @@ public class MaintainerModel extends EmployeeModel {
         return dao.updateUserPassword(username, newpass);
     }
 
-    public boolean addCompetence(String username, String description) {
+    public boolean addCompetence(String username, int id) {
         MaintainerDAO dao = new MaintainerDAO();
-        return dao.addCompetence(username, description);
+        return dao.addCompetence(username, id);
     }
 
-    public boolean hasCompetences(String username, String description) {
+    public boolean hasCompetences(String username, int id) {
         MaintainerDAO dao = new MaintainerDAO();
-        return dao.hasCompetences(username, description);
+        return dao.hasCompetences(username, id);
+    }
+    public boolean removeCompetence(String username, int id) {
+        MaintainerDAO dao = new MaintainerDAO();
+        return dao.removeCompetence(username, id);
     }
 
     @Override

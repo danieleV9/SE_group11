@@ -116,11 +116,13 @@ public class UserModifyController {
         public void actionPerformed(ActionEvent e){
           JTable table=view.getjTable1();
           SkillModel skill = new SkillModel();
+          MaintainerModel m = new MaintainerModel("","");
           DefaultTableModel model = view.getModeltab();
           int selezionato = table.getSelectedRow();
           if(selezionato != -1){
           String descrizione =  table.getValueAt(selezionato, 0).toString();
-          if(skill.deleteSkill(username, descrizione))
+          int id = skill.findSkill(descrizione).getIdSkill();
+          if(m.removeCompetence(username, id))
              model.removeRow(selezionato);
            } else view.displayErrorMessage("Select A Skill !");
         }
@@ -134,16 +136,18 @@ public class UserModifyController {
     public class ConfirmCompListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
+           SkillModel skill = new SkillModel();
            String description = view.getjComboBox1().getSelectedItem().toString();
+           int id = skill.findSkill(description).getIdSkill();
            if(description == "Select a skill"){
                view.displayErrorMessage("Select a skill!");
             }
-            else if(modelma.hasCompetences(username, description)){
-            view.displayErrorMessage("The Maintainer has already this skill!");
+            else if(modelma.hasCompetences(username, id)){
+              view.displayErrorMessage("The Maintainer has already this skill!");
             } 
-           else if(modelma.addCompetence(username,description)){
+           else if(modelma.addCompetence(username,id)){
                String [] newrow = {description};
-               view.getModeltab().addRow(newrow); 
+               view.getModeltab().addRow(newrow);
                view.displayErrorMessage("Skill has been inserted succesfully!");
             }
         }

@@ -216,13 +216,13 @@ public class MaintainerDAO implements EmployeeDAO {
         }
     }
 
-    public boolean addCompetence(String username, String description) {
+    public boolean addCompetence(String username,int id) {
         try {
             con = ConnectionDatabase.getConnection();
-            String query = "insert into competenze_ma(usernamema,descrizione) values(?,?)";
+            String query = "insert into competenze_ma(usernamema,idcompetenza) values(?,?)";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
-            pst.setString(2, description);
+            pst.setInt(2, id);
             pst.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -230,14 +230,30 @@ public class MaintainerDAO implements EmployeeDAO {
             return false;
         }
     }
-
-    public boolean hasCompetences(String username, String description) {
+    
+    
+    public boolean removeCompetence(String username, int id) {
         try {
             con = ConnectionDatabase.getConnection();
-            String query = "select count(*) from competenze_ma where usernamema=? and descrizione=?";
+            String query = "delete from competenze_ma where usernamema=? and idcompetenza=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
-            pst.setString(2, description);
+            pst.setInt(2, id);
+            pst.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+            return false;
+        }
+    }
+    
+    public boolean hasCompetences(String username, int id) {
+        try {
+            con = ConnectionDatabase.getConnection();
+            String query = "select count(*) from competenze_ma where usernamema=? and idcompetenza=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            pst.setInt(2, id);
             rs = pst.executeQuery();
             int risultato = 0;
             if (rs.next()) {
