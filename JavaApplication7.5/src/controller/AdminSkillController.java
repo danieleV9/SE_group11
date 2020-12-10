@@ -98,6 +98,8 @@ public class AdminSkillController {
                     view.displayErrorMessage("Insert a description!", "Attention");
                     System.out.println("query return null");
                 } else {
+                    AdminSkillController controllerUsers = new AdminSkillController(prev,view,model);
+                   // if(description.controllerUsers.populateTables();
                     skmodel.insertSkill(description);
                     view.displaySuccessfullyMessage("Skill Created Succesfully!");
                 }

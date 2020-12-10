@@ -5,7 +5,6 @@
  */
 package model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,17 +12,16 @@ import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-
 /**
  *
  * @author lyuba
  */
 public class MaintainerModelTest {
+
     MaintainerModel instance = null;
-        
-  
+
     public MaintainerModelTest() {
-        
+
     }
 
     @BeforeClass
@@ -33,12 +31,13 @@ public class MaintainerModelTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
+
     @Before
-    public void newMM(){
-        instance= new MaintainerModel("","");
+    public void newMM() {
+        instance = new MaintainerModel("", "");
     }
-    
-   /* @BeforeAll
+
+    /* @BeforeAll
     public static void setUpClass() {
     }
     
@@ -53,52 +52,49 @@ public class MaintainerModelTest {
     @AfterEach
     public void tearDown() {
     }*/
-
     @After
     public void tearDown() throws Exception {
     }
 
-    
-    public void addMM(){
-       MaintainerModel res= new MaintainerModel("","");
-       res= (MaintainerModel) instance.findUsername("tizio");
-       if(res == null)
-             instance.createUser("tizio", "tizio");  
-       else 
-       {
-           delMM();
-           instance.createUser("tizio", "tizio");
-       }
+    public void addMM() {
+        MaintainerModel res = new MaintainerModel("", "");
+        res = (MaintainerModel) instance.findUsername("tizio");
+        if (res == null) {
+            instance.createUser("tizio", "tizio");
+        } else {
+            delMM();
+            instance.createUser("tizio", "tizio");
+        }
     }
-    
-    public void delMM(){
+
+    public void delMM() {
         instance.deleteUser("tizio");
     }
+
     /**
      * Test of getUsername method, of class MaintainerModel.
      */
     @Test
-    public void testGetUsername() { 
+    public void testGetUsername() {
         System.out.println("getUsername");
-        instance= new MaintainerModel("anna","");
+        instance = new MaintainerModel("anna", "");
         String expResult = "anna";
         String result = instance.getUsername();
         assertEquals(expResult, result);
-        
-    }
 
+    }
 
     /**
      * Test of getPassword method, of class MaintainerModel.
      */
-    @Test 
+    @Test
     public void testGetPassword() {
         System.out.println("getPassword");
-        instance= new MaintainerModel("","pass");
+        instance = new MaintainerModel("", "pass");
         String expResult = "pass";
         String result = instance.getPassword();
         assertEquals(expResult, result);
-       
+
     }
 
     /**
@@ -109,19 +105,19 @@ public class MaintainerModelTest {
         System.out.println("setUsername");
         String username = "user1";
         instance.setUsername(username);
-        assertEquals("user1",instance.getUsername());
+        assertEquals("user1", instance.getUsername());
     }
 
     /**
      * Test of setPassword method, of class MaintainerModel.
      */
-    @Test(expected=AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void testSetPassword() {
         System.out.println("setPassword");
         String password = "";
-        instance= new MaintainerModel("","pass");
+        instance = new MaintainerModel("", "pass");
         instance.setPassword(password);
-        assertEquals("pass",instance.getPassword()); //mi aspetto che la password sia pass nel caso in cui il metodo fallisca
+        assertEquals("pass", instance.getPassword()); //mi aspetto che la password sia pass nel caso in cui il metodo fallisca
     }
 
     /**
@@ -134,26 +130,26 @@ public class MaintainerModelTest {
         String password = "tizio";
         addMM();
         String role = "Maintainer";
-        MaintainerModel expResult = new MaintainerModel(username,password);
+        MaintainerModel expResult = new MaintainerModel(username, password);
         MaintainerModel result = null;
         try {
             result = (MaintainerModel) instance.findUser(username, password, role);
-            assertEquals("Maintainer non trovato",expResult.toString(),result.toString()); //deve stampare messaggio se test fallisce
+            assertEquals("Maintainer non trovato", expResult.toString(), result.toString()); //deve stampare messaggio se test fallisce
         } catch (Exception ex) {
-     
+
         }
     }
-    
+
     /**
      * Test of findMaintainer method, of class MaintainerModel.
      */
-    @Test (expected=AssertionError.class)
+    @Test(expected = AssertionError.class)
     public void testFindMaintainer_3args1() {
         System.out.println("findMaintainer_3args1");
         String username = "";
         String password = "maintainer6";
         String role = "Maintainer";
-        MaintainerModel expResult = new MaintainerModel(username,password);
+        MaintainerModel expResult = new MaintainerModel(username, password);
         System.out.println(expResult.toString());
         MaintainerModel result = null;
         try {
@@ -161,9 +157,8 @@ public class MaintainerModelTest {
         } catch (Exception ex) {
             Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        assertEquals(expResult.toString(),result); 
-        
-       
+        assertEquals(expResult.toString(), result);
+
     }
 
     /**
@@ -174,8 +169,8 @@ public class MaintainerModelTest {
         System.out.println("findMaintainer");
         String username = "";
         //MaintainerModel expResult = null;
-        MaintainerModel result = (MaintainerModel) instance.findUsername(username); 
-        assertNull(result);  
+        MaintainerModel result = (MaintainerModel) instance.findUsername(username);
+        assertNull(result);
     }
 
     /**
@@ -185,11 +180,11 @@ public class MaintainerModelTest {
     public void testListMaintainers() { //supponendo che ci sia almeno un maintainer nella tabella 
         System.out.println("listMaintainers");
         List<MaintainerModel> expResult = new ArrayList<>();
-        expResult.add(new MaintainerModel("tizio","tizio"));
+        expResult.add(new MaintainerModel("tizio", "tizio"));
         addMM();
         List<MaintainerModel> result = instance.listMaintainers();
-        assertEquals(expResult.isEmpty(),result.isEmpty()); // le due liste non sono vuote
-        
+        assertEquals(expResult.isEmpty(), result.isEmpty()); // le due liste non sono vuote
+
     }
 
     /**
@@ -203,7 +198,7 @@ public class MaintainerModelTest {
         boolean result = instance.deleteUser(username);
         assertEquals(expResult, result);
     }
-    
+
     /**
      * Test of deleteMaintainer method, of class MaintainerModel.
      */
@@ -215,7 +210,7 @@ public class MaintainerModelTest {
         boolean result = instance.deleteUser(username);
         assertFalse(result);
     }
-    
+
     /**
      * Test of deleteMaintainer method, of class MaintainerModel.
      */
@@ -227,7 +222,6 @@ public class MaintainerModelTest {
         boolean result = instance.deleteUser(username);
         assertTrue(result);
     }
-    
 
     /**
      * Test of createMaintainer method, of class MaintainerModel.
@@ -238,10 +232,10 @@ public class MaintainerModelTest {
         String username = "";
         String password = "";
         boolean result = instance.createUser(username, password);
-        assertFalse(result); 
+        assertFalse(result);
     }
-    
-     /**
+
+    /**
      * Test of createMaintainer method, of class MaintainerModel.
      */
     @Test
@@ -252,7 +246,7 @@ public class MaintainerModelTest {
         boolean result = instance.createUser(username, password);
         assertFalse(result);
     }
-    
+
     /**
      * Test of createMaintainer method, of class MaintainerModel.
      */
@@ -264,8 +258,8 @@ public class MaintainerModelTest {
         boolean result = instance.createUser(username, password);
         assertFalse(result);
     }
-    
-     /**
+
+    /**
      * Test of createMaintainer method, of class MaintainerModel.
      */
     @Test
@@ -277,8 +271,8 @@ public class MaintainerModelTest {
         boolean result = instance.createUser(username, password);
         assertFalse(result);
     }
-    
-     /**
+
+    /**
      * Test of createMaintainer method, of class MaintainerModel.
      */
     @Test
@@ -302,9 +296,9 @@ public class MaintainerModelTest {
         boolean expResult = false;
         boolean result = instance.updateUserPassword(username, newpass);
         assertEquals(expResult, result);
-        
+
     }
-    
+
     /**
      * Test of updateMainatainerPassword method, of class MaintainerModel.
      */
@@ -316,14 +310,13 @@ public class MaintainerModelTest {
         String newpass = "cfgvhjnk";
         boolean result = instance.updateUserPassword(username, newpass);
         assertTrue(result);
-        
-    }
 
+    }
 
     /**
      * Test of addCompetence method, of class MaintainerModel.
      */
-    @Test
+    /*@Test
     public void testAddCompetence() {
         System.out.println("addCompetence");
         String username = "tizio";
@@ -331,8 +324,16 @@ public class MaintainerModelTest {
         boolean expResult = true;
         instance.addCompetence(username, id);
         boolean result = instance.hasCompetences(username, id);
+        assertEquals(expResult, result);       
+    }*/
+    @Test
+    public void testAddCompetence() {
+        System.out.println("addCompetence");
+        String username = "tizio";
+        int id = 2016;
+        boolean expResult = true;
+        boolean result = instance.addCompetence(username, id);
         assertEquals(expResult, result);
-       
     }
 
     /**
@@ -342,9 +343,9 @@ public class MaintainerModelTest {
     public void testHasCompetences() {
         System.out.println("hasCompetences");
         String username = "tizio";
-        int id = 0;
+        int id = 2013;
         boolean expResult = true;
-        instance.addCompetence(username, id);
+        //instance.addCompetence(username, id);
         boolean result = instance.hasCompetences(username, id);
         assertEquals(expResult, result);
     }
@@ -364,7 +365,4 @@ public class MaintainerModelTest {
 
     }
 
-
-  
-    
 }

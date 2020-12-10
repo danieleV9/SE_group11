@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="2" hostname="LAPTOP-HND4J6AB" name="model.MaintainerModelTest" skipped="0" tests="21" time="1.641" timestamp="2020-12-10T10:53:03">
+<testsuite errors="0" failures="3" hostname="LAPTOP-HND4J6AB" name="model.MaintainerModelTest" skipped="0" tests="21" time="1.364" timestamp="2020-12-10T16:08:32">
   <properties>
     <property name="libs.spring-framework300.classpath" value="C:\Program Files\NetBeans-12.1\netbeans\platform\modules\org-apache-commons-logging.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\cglib-2.2.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-aop-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-aspects-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-beans-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-context-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-context-support-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-core-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-expression-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-instrument-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-instrument-tomcat-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-jdbc-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-jms-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-orm-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-oxm-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-struts-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-test-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-tx-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-web-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-webmvc-3.2.18.RELEASE.jar;C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\spring-3.0\spring-webmvc-portlet-3.2.18.RELEASE.jar" />
     <property name="javac.test.classpath" value="C:\Users\jenni\Downloads\Telegram Desktop\AbsoluteLayout-RELEASE121.jar:C:\Program Files\NetBeans-12.1\netbeans\platform\modules\ext\hamcrest-core-1.3.jar:C:\Program Files\NetBeans-12.1\netbeans\platform\modules\ext\junit-4.12.jar:C:\Users\jenni\Downloads\Programmi installati\mysql-connector-java-8.0.21.jar:build/classes:C:\Program Files\NetBeans-12.1\netbeans\platform\modules\ext\hamcrest-core-1.3.jar:C:\Program Files\NetBeans-12.1\netbeans\platform\modules\ext\junit-4.12.jar:C:\Users\jenni\Downloads\Telegram Desktop\AbsoluteLayout-RELEASE121.jar" />
@@ -19,7 +19,7 @@
     <property name="libs.eclipselink.javadoc" value="C:\Program Files\NetBeans-12.1\netbeans\java\modules\ext\docs\javax.persistence-2.2.1-doc.zip" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-15.0.1\bin" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner model.MaintainerModelTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\jenni\Documents\GitHub\SE_group11\SE_group11\JavaApplication7.5\build\test\results\TEST-model.MaintainerModelTest.xml crashfile=C:\Users\jenni\Documents\GitHub\SE_group11\SE_group11\JavaApplication7.5\build\junitvmwatcher4787978365080005431.properties propsfile=C:\Users\jenni\Documents\GitHub\SE_group11\SE_group11\JavaApplication7.5\build\junit2046167009848059702.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner model.MaintainerModelTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\jenni\Documents\GitHub\SE_group11\SE_group11\JavaApplication7.5\build\test\results\TEST-model.MaintainerModelTest.xml crashfile=C:\Users\jenni\Documents\GitHub\SE_group11\SE_group11\JavaApplication7.5\build\junitvmwatcher472658968732174170.properties propsfile=C:\Users\jenni\Documents\GitHub\SE_group11\SE_group11\JavaApplication7.5\build\junit1443757912922734388.properties" />
     <property name="jdk.debug" value="release" />
     <property name="libs.spring-framework300.src" value="" />
     <property name="javadoc.use" value="true" />
@@ -42,7 +42,7 @@
     <property name="sun.java2d.noddraw" value="true" />
     <property name="sun.zip.disableMemoryMapping" value="true" />
     <property name="libs.maven-dependencies.maven-pom" value="" />
-    <property name="jnidispatch.path" value="C:\Users\jenni\AppData\Local\Temp\jna-101011342\jna6415428437077945097.dll" />
+    <property name="jnidispatch.path" value="C:\Users\jenni\AppData\Local\Temp\jna-101011342\jna11680254931451495473.dll" />
     <property name="libs.jsf12.src" value="" />
     <property name="libs.jsp-compilation.javadoc" value="" />
     <property name="libs.primefaces.javadoc" value="" />
@@ -418,85 +418,102 @@
     <property name="annotation.processing.run.all.processors" value="true" />
   </properties>
   <testcase classname="model.MaintainerModelTest" name="testCreateMaintainer" time="0.005" />
-  <testcase classname="model.MaintainerModelTest" name="testDeleteMaintainer1" time="0.343" />
-  <testcase classname="model.MaintainerModelTest" name="testDeleteMaintainer2" time="0.221" />
-  <testcase classname="model.MaintainerModelTest" name="testListMaintainers" time="0.06" />
-  <testcase classname="model.MaintainerModelTest" name="testSetPassword" time="0.001" />
-  <testcase classname="model.MaintainerModelTest" name="testGetPassword" time="0.001" />
-  <testcase classname="model.MaintainerModelTest" name="testFindMaintainer_3args1" time="0.001" />
+  <testcase classname="model.MaintainerModelTest" name="testDeleteMaintainer1" time="0.402" />
+  <testcase classname="model.MaintainerModelTest" name="testDeleteMaintainer2" time="0.203">
+    <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
+	at model.MaintainerModelTest.testDeleteMaintainer2(MaintainerModelTest.java:223)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+</failure>
+  </testcase>
+  <testcase classname="model.MaintainerModelTest" name="testListMaintainers" time="0.074" />
+  <testcase classname="model.MaintainerModelTest" name="testSetPassword" time="0.0" />
+  <testcase classname="model.MaintainerModelTest" name="testGetPassword" time="0.0" />
+  <testcase classname="model.MaintainerModelTest" name="testFindMaintainer_3args1" time="0.0" />
   <testcase classname="model.MaintainerModelTest" name="testCreateMaintainer1" time="0.0" />
   <testcase classname="model.MaintainerModelTest" name="testCreateMaintainer2" time="0.0" />
-  <testcase classname="model.MaintainerModelTest" name="testCreateMaintainer3" time="0.275" />
-  <testcase classname="model.MaintainerModelTest" name="testCreateMaintainer4" time="0.112" />
-  <testcase classname="model.MaintainerModelTest" name="testDeleteMaintainer" time="0.0" />
-  <testcase classname="model.MaintainerModelTest" name="testRemoveCompetence" time="0.012" />
+  <testcase classname="model.MaintainerModelTest" name="testCreateMaintainer3" time="0.246" />
+  <testcase classname="model.MaintainerModelTest" name="testCreateMaintainer4" time="0.113">
+    <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
+	at model.MaintainerModelTest.testCreateMaintainer4(MaintainerModelTest.java:285)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+</failure>
+  </testcase>
+  <testcase classname="model.MaintainerModelTest" name="testDeleteMaintainer" time="0.001" />
+  <testcase classname="model.MaintainerModelTest" name="testRemoveCompetence" time="0.009" />
   <testcase classname="model.MaintainerModelTest" name="testFindMaintainer_String" time="0.0" />
-  <testcase classname="model.MaintainerModelTest" name="testUpdateMainatainerPassword1" time="0.172" />
-  <testcase classname="model.MaintainerModelTest" name="testSetUsername" time="0.002" />
+  <testcase classname="model.MaintainerModelTest" name="testUpdateMainatainerPassword1" time="0.083" />
+  <testcase classname="model.MaintainerModelTest" name="testSetUsername" time="0.001" />
   <testcase classname="model.MaintainerModelTest" name="testGetUsername" time="0.001" />
-  <testcase classname="model.MaintainerModelTest" name="testAddCompetence" time="0.077">
+  <testcase classname="model.MaintainerModelTest" name="testAddCompetence" time="0.005">
     <failure message="expected:&lt;true&gt; but was:&lt;false&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;true&gt; but was:&lt;false&gt;
-	at model.MaintainerModelTest.testAddCompetence(MaintainerModelTest.java:334)
+	at model.MaintainerModelTest.testAddCompetence(MaintainerModelTest.java:336)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 </failure>
   </testcase>
-  <testcase classname="model.MaintainerModelTest" name="testFindMaintainer_3args" time="0.15" />
-  <testcase classname="model.MaintainerModelTest" name="testHasCompetences" time="0.047">
-    <failure message="expected:&lt;true&gt; but was:&lt;false&gt;" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: expected:&lt;true&gt; but was:&lt;false&gt;
-	at model.MaintainerModelTest.testHasCompetences(MaintainerModelTest.java:349)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-</failure>
-  </testcase>
-  <testcase classname="model.MaintainerModelTest" name="testUpdateMainatainerPassword" time="0.001" />
+  <testcase classname="model.MaintainerModelTest" name="testFindMaintainer_3args" time="0.07" />
+  <testcase classname="model.MaintainerModelTest" name="testHasCompetences" time="0.005" />
+  <testcase classname="model.MaintainerModelTest" name="testUpdateMainatainerPassword" time="0.0" />
   <system-out><![CDATA[createMaintainer
 deleteMaintainer1
 risultato trovato:1corrispondenza
-Username non c'è
-deleteMaintainer2
-Username non c'è
-Username non c'è
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
 risultato trovato:1corrispondenza
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
+deleteMaintainer2
+risultato trovato:1corrispondenza
+risultato trovato:1corrispondenza
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
+risultato trovato:1corrispondenza
+risultato trovato:1corrispondenza
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
 listMaintainers
-Username non c'è
-Username non c'è
+risultato trovato:1corrispondenza
+risultato trovato:1corrispondenza
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
+risultato trovato:1corrispondenza
 setPassword
 getPassword
 findMaintainer_3args1
-MaintainerModel{username=, password=maintainer6}
+model.MaintainerModel@5fdcaa40
 createMaintainer1
 createMaintainer2
 createMaintainer3
 risultato trovato:1corrispondenza
 risultato trovato:1corrispondenza
-Username non c'è
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
+risultato trovato:1corrispondenza
 risultato trovato:1corrispondenza
 createMaintainer4
 risultato trovato:1corrispondenza
-Username non c'è
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
+risultato trovato:1corrispondenza
 deleteMaintainer
 removeCompetence
 findMaintainer
 updateMainatainerPassword1
 risultato trovato:1corrispondenza
 risultato trovato:1corrispondenza
-Username non c'è
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
+risultato trovato:1corrispondenza
 risultato trovato:1corrispondenza
 risultato trovato:1corrispondenza
 setUsername
 getUsername
 addCompetence
-java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_COMPETENZE` FOREIGN KEY (`IDCOMPETENZA`) REFERENCES `competenze` (`IDCOMPETENZA`))
+java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'tizio-2016' for key 'PRIMARY'
 findMaintainer_3args
 risultato trovato:1corrispondenza
 risultato trovato:1corrispondenza
-Username non c'è
+java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_MANUTENT` FOREIGN KEY (`USERNAMEMA`) REFERENCES `manutentore` (`USERNAMEMA`))
+risultato trovato:1corrispondenza
 risultato trovato:1corrispondenza
 hasCompetences
-java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`applicazione`.`competenze_ma`, CONSTRAINT `FK_ASSOCIAT_ASSOCIATI_COMPETENZE` FOREIGN KEY (`IDCOMPETENZA`) REFERENCES `competenze` (`IDCOMPETENZA`))
 updateMainatainerPassword
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>

@@ -127,7 +127,7 @@ public class SkillModelTest {
     @Test
     public void testInsertSkill() {
         System.out.println("insertSkill");
-        String description = "Padronanz";
+        String description = "Conoscenza del robot Xy-z";
         boolean expResult = true;
         boolean result = instance.insertSkill(description);
         assertEquals(expResult,result);

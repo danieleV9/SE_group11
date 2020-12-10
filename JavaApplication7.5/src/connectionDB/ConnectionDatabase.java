@@ -7,6 +7,7 @@ package connectionDB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
@@ -24,5 +25,9 @@ public class ConnectionDatabase {
             System.out.println("" + ex);
         }
         return con;
+    }
+    
+    public static void closeConnection() throws SQLException{
+        con.close();
     }
 }
