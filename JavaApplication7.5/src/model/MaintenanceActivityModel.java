@@ -181,9 +181,10 @@ public class MaintenanceActivityModel {
       return dao.getAllActivity(numWeek);
     }
 
-    public void insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area) {
+    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area) {
         ActivityDao dao = new ActivityDao();
-        dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
+        boolean ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
+        return ad;
     }
 
     @Override

@@ -413,15 +413,16 @@ public class MaintenanceActivityModelTest {
         System.out.println("insertActivity");
         int numberWeek = 10;
         String workNotes = "";
-        String type = "chiamo";
-        String factory = "lola";
-        String area = "e";
-        String tipology = "so";
-        int time = 0;
-        String description = "spagnola";
+        String type = "pianificata";
+        String factory = "Fisciano";
+        String area = "Carpenteria";
+        String tipology = "elettronica";
+        int time = 10;
+        String description = "Conoscenza del robot XP";
+        boolean expResult = true;
         MaintenanceActivityModel instance = new MaintenanceActivityModel();
-        instance.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
-        
+        boolean result = instance.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
+        assertEquals(expResult,result);
     }
     
 }

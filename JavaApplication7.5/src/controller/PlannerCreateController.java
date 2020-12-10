@@ -23,6 +23,8 @@ public class PlannerCreateController {
     private final PlannerModel model;
     private final MaintenanceActivityModel mamodel;
 
+    private enum T {x, y};
+
     public PlannerCreateController(PlannerCreateView view, PlannerModel model) {
         this.view = view;
         this.model = model;
@@ -37,6 +39,8 @@ public class PlannerCreateController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String area = "";
+            T tipologi;
+            tipologi = T.x;
             String tipology = "";
             String factory = "";
             String type = "";
@@ -55,13 +59,13 @@ public class PlannerCreateController {
                 estimatedTime = view.getEstimatedTime();
                 weekNumber = view.getWeekNumber();
                 interruptible = view.getInterruptible();
-                if (description.equals("") || factory.equals("") || type.equals("") || weekNumber.equals("") || area.equals("") || tipology.equals("") || estimatedTime.equals("")) {
+                if (description.equals("") || factory.equals("") || type.equals("") || weekNumber.equals("") || area.equals("") || tipologi.equals("") || estimatedTime.equals("")) {
                     view.displayErrorMessage("fill all fields!", "Attention!");
                     System.out.println("query return null");
                 } else {
                     int time = Integer.parseInt(estimatedTime);
                     int numberWeek = Integer.parseInt(weekNumber);
-                    mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description,area);
+                    mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
                     view.displaySuccessfullyMessage("Activity Created Succesfully!");
                 }
             } catch (Exception ex) {

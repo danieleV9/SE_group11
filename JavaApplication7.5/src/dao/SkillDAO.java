@@ -80,7 +80,7 @@ public class SkillDAO {
         }
     }
 
-    public void insertSkill(String description) {
+    public boolean insertSkill(String description) {
         try {
             con = ConnectionDatabase.getConnection();
             String query = "INSERT INTO COMPETENZE (idcompetenza,descrizione) values ((NEXTVAL(idcompetenza)+1),?)";
@@ -89,7 +89,9 @@ public class SkillDAO {
             pst.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Errore nell'inserimento della competenza");
+            return false;
         }
+        return true;
     }
        //RESTITUISCE LA LISTA DI SKILL DI UN DETERMINATO MAINTAINER
      public List<SkillModel> listSkillsMA(String username) {

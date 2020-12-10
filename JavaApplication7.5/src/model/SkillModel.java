@@ -63,9 +63,10 @@ public class SkillModel {
         return dao.modifySkill(idSkill, descrizione);
     }
 
-    public void insertSkill(String description) {
+    public boolean insertSkill(String description) {
         SkillDAO dao = new SkillDAO();
-        dao.insertSkill(description);
+        boolean ad = dao.insertSkill(description);
+        return ad;
     }
     
     public SkillModel findSkill(int id){ 
