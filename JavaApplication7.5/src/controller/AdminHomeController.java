@@ -10,9 +10,11 @@ import java.awt.event.ActionListener;
 import model.AdminModel;
 import model.MaintainerModel;
 import model.PlannerModel;
+import model.ProcedureModel;
 import view.AdminHomeView;
 import view.AdminSkillView;
 import view.LoginView;
+import view.ProcedureView;
 import view.UsersListView;
 
 /**
@@ -79,7 +81,11 @@ public class AdminHomeController {
     public class ProceduresListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e){
-
+          ProcedureView procView = new ProcedureView();
+          ProcedureModel model = new ProcedureModel();
+          ProcedureController pc = new ProcedureController(view,procView,model);
+          procView.setVisible(true);
+          view.setVisible(false);
         }
     }
 
