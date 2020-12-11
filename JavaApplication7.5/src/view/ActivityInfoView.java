@@ -7,11 +7,13 @@ package view;
 
 import controller.ActivityInfoViewController;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import model.MaintenanceActivityModel;
+import model.SkillModel;
 
 /**
  *
@@ -59,11 +61,14 @@ public class ActivityInfoView extends javax.swing.JFrame {
         return weekText;
     }
     
+    public void setSkillArea(List<SkillModel> skillNeeded){ //skill dalle procedure associate alle attività
+        String x="";
+        for(SkillModel s: skillNeeded){
+            x=x+s.getDescription()+"\n";
+        }
+        skillArea.setText(x);
+    }
     
-    
-      
-      
-      
       /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

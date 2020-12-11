@@ -313,5 +313,28 @@ public class MaintainerDAO implements EmployeeDAO {
         }else 
             return fasce;
     }
-
+    
+    public int getNumGiorno(String username,int week, int day){ //restituisce string di minuti in fasce orarie per quel giorno della settimana
+        int numGiorno=0;
+        if(usernameExists(username) && week>0 && week<53 && day>0 && day<8){ //se username valido e giorno valido e settimana valida
+            try{
+                con= ConnectionDatabase.getConnection();
+                String query = "select numgiorno from disponibilita_giorno where manutentore=? and week=? and day=?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setInt(2, week);
+                pst.setInt(3, day);
+                rs = pst.executeQuery();
+                if(rs.next()){
+                   numGiorno= rs.getInt("numgiorno"); 
+                }else 
+                   numGiorno=0;
+                return numGiorno;
+            }catch(SQLException ex){
+                 System.out.println(ex);
+                 return numGiorno;
+            }
+        }else 
+            return numGiorno;
+    }
 }

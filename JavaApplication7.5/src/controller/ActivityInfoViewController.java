@@ -14,6 +14,9 @@ import view.ActivityInfoView;
 import view.MaintainerAvailabilityView;
 import view.PlannerActivityView;
 import controller.MaintainerAvailabilityController;
+import java.util.List;
+import model.ProcedureModel;
+import model.SkillModel;
 
 
 /**
@@ -42,11 +45,14 @@ public class ActivityInfoViewController {
             MaintenanceActivityModel a= new MaintenanceActivityModel();
             int id=Integer.valueOf(view.getId().getText());
             a=a.viewActivity(id); //passo al controller l'attività con quell'id
-            System.out.println(a.toString());
-            MaintainerAvailabilityController controller =new MaintainerAvailabilityController(view,newView,a,m);
-            controller.populateView();
-            newView.setVisible(true);
-            view.setVisible(false);
+            if(!a.assignedActivity(id)){//se l'attività non è già stata assegnta 
+                System.out.println(a.toString());
+                MaintainerAvailabilityController controller =new MaintainerAvailabilityController(view,newView,a,m);
+                controller.populateView();
+                newView.setVisible(true);
+                view.setVisible(false);
+            }else // se l'attività è già stata assegnata
+               view.displayMessage("This activity has already been assigned to a Maintainer!\n Go back to assign a new activity.");
         }
     }
     
@@ -75,6 +81,11 @@ public class ActivityInfoViewController {
         view.getActivityText().setText( a.getId_Activity()+" - " + a.getFabbrica()+" - "+ a.getArea()+" - "+a.getTipology()+" - "+a.getEstimatedTime()+" min");
         view.getDescriptionArea().setText(a.getDescription());
         view.getNotesArea().setText(a.getWorkspaceNotes());
+        SkillModel skill= new SkillModel();
+        ProcedureModel proc = new ProcedureModel();
+        String procedura=a.findProcedura(a.getId_Activity());
+        List<SkillModel> comp= proc.getProcedureSkill(procedura);//lista di competenze associate alla procedura
+        view.setSkillArea(comp);
         view.getWeekText().setText(String.valueOf(a.getWeekNum()));
         view.getId().setText(String.valueOf(a.getId_Activity()));
     }

@@ -75,15 +75,18 @@ public class MaintainerAvailabilityController {
             String val=(String)view.getTable().getValueAt(r, c);
             System.out.println("valore della cella "+nomeCol+":"+val);
             if(r != -1 && c != -1 && c != 0 && c!= 1){
-                int id = view.getId();
-                MaintenanceActivityModel m = model.viewActivity(id);
-                MaintainerModel sel = (MaintainerModel) modelma.findUsername((String) view.getTable().getValueAt(r, 0));
-                int giorno = c-1;
-                ActivityAssignationView newview = new ActivityAssignationView();
-                newview.setVisible(true);
-                view.setVisible(false);
-                ActivityAssignationController newcontroller = new ActivityAssignationController(newview,view,m,sel,giorno);
-                newcontroller.populateView();
+                if(!model.assignedActivity(model.getId_Activity())){ // se l'attività non è già stata assegnata vado avanti, questo controllo serve quando clicco tasto back dalla schermata successiva dopo aver assegnato attività
+                    int id = view.getId();
+                    MaintenanceActivityModel m = model.viewActivity(id);
+                    MaintainerModel sel = (MaintainerModel) modelma.findUsername((String) view.getTable().getValueAt(r, 0));
+                    int giorno = c-1;
+                    ActivityAssignationView newview = new ActivityAssignationView();
+                    newview.setVisible(true);
+                    view.setVisible(false);
+                    ActivityAssignationController newcontroller = new ActivityAssignationController(newview,view,m,sel,giorno);
+                    newcontroller.populateView();
+                }else 
+                    view.displayErrorMessage("This activity has already been assigned to a Maintainer!\n Go back to assign a new activity.");
             }
         }
 
@@ -131,7 +134,7 @@ public class MaintainerAvailabilityController {
             for(int i=1;i<8;i++){ //sette colonne, una per ogni giorno, devono contenere la percentuale di disponibilità giornaliera
                 fasce=modelma.getDisponibilitaGiorno(username, week, i);
                 int perc=calcoloPercentualeDisponibilita(fasce);
-                row[i+1]=Integer.toString(perc);
+                row[i+1]=Integer.toString(perc)+" %";
             }
             view.getTable().addRow(row);
        }
@@ -165,7 +168,9 @@ public class MaintainerAvailabilityController {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                int st_val = Integer.parseInt(table.getValueAt(row, column).toString());
+                String getVAL=table.getValueAt(row, column).toString();
+                String[] splitString=getVAL.split(" ");
+                int st_val = Integer.parseInt(splitString[0]);
                 if (st_val == 0) {
                     c.setBackground(Color.RED);
                 } else if(st_val>0 && st_val<50) {

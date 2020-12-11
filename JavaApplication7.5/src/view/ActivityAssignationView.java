@@ -25,13 +25,13 @@ public class ActivityAssignationView extends javax.swing.JFrame {
     public ActivityAssignationView() {
         modelTab1.addColumn("Maintainer");
         modelTab1.addColumn("Skills");
-        modelTab1.addColumn("Mon");
-        modelTab1.addColumn("Tue");
-        modelTab1.addColumn("Wed");
-        modelTab1.addColumn("Thu");
-        modelTab1.addColumn("Fri");
-        modelTab1.addColumn("Sat");
-        modelTab1.addColumn("Sun");
+        modelTab1.addColumn("8:00-9:00");
+        modelTab1.addColumn("9:00-10:00");
+        modelTab1.addColumn("10:00-11:00");
+        modelTab1.addColumn("11:00-12:00");
+        modelTab1.addColumn("14:00-15:00");
+        modelTab1.addColumn("15:00-16:00");
+        modelTab1.addColumn("16:00-17:00");
         initComponents();
     }
     
@@ -82,7 +82,9 @@ public class ActivityAssignationView extends javax.swing.JFrame {
         jLabel1.setText("Week :");
 
         dayText.setEditable(false);
+        dayText.setBackground(new java.awt.Color(102, 153, 255));
         dayText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        dayText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         weekText.setEditable(false);
         weekText.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 18)); // NOI18N
@@ -106,6 +108,7 @@ public class ActivityAssignationView extends javax.swing.JFrame {
         jLabel3.setText("Workspace Notes");
 
         jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
@@ -121,14 +124,15 @@ public class ActivityAssignationView extends javax.swing.JFrame {
         percenText.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 18)); // NOI18N
 
         maintainerText.setEditable(false);
+        maintainerText.setBackground(new java.awt.Color(102, 153, 255));
         maintainerText.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 18)); // NOI18N
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton1.setText("SEND");
+        jButton1.setText("Send");
         jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton2.setText("BACK");
+        jButton2.setText("Back");
         jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -339,6 +343,18 @@ public class ActivityAssignationView extends javax.swing.JFrame {
     
     public void setDayText(String day){
         dayText.setText(day);
+    }
+    
+    public String getDay(){
+        return dayText.getText();
+    }
+    
+    public int getNumDay(){
+        return Integer.valueOf(numDayText.getText());
+    }
+    
+    public void setSendEnabled(boolean x){
+        jButton1.setEnabled(x);
     }
     
     public void setNumDayText(int numDay){

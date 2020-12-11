@@ -78,6 +78,11 @@ public class MaintainerModel extends EmployeeModel {
         return dao.getDisponibilitaGiorno(username, week, day);
     }
     
+    public int getNumGiorno(String username,int week, int day){ 
+        MaintainerDAO dao=new MaintainerDAO();
+        return dao.getNumGiorno(username, week, day);
+    }
+    
     public List<MaintainerModel> listMaintainersDisponibili(){
          MaintainerDAO dao=new MaintainerDAO();
          return dao.listMaintainersDisponibili();

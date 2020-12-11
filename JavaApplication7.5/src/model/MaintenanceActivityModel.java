@@ -197,4 +197,13 @@ public class MaintenanceActivityModel {
         return dao.findProcedura(id);
     }
     
+    public boolean assignedActivity(int id){
+        ActivityDao dao = new ActivityDao();
+        return dao.assignedActivity(id);
+    }
+    
+    public boolean assignNewActivity(int id, String username,String data){
+        ActivityDao dao = new ActivityDao();
+        return dao.assignNewActivity(id,username,data);
+    }
 }
