@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class ProcedureModel {
     String nomeProc;
-    int id;
+    String path;
 
-    public ProcedureModel(int id,String nomeProc) {
-        this.id=id;
+    public ProcedureModel(String nomeProc,String path) {
+        this.path=path;
         this.nomeProc = nomeProc;
     }
 
@@ -44,9 +44,9 @@ public class ProcedureModel {
        return dao.removeCompetence(nomeprocedura,id);
     }
     
-    public boolean createProcedure(String nomeprocedura){
+    public boolean createProcedure(String nomeprocedura,String path){
       ProcedureDao dao = new ProcedureDao();
-      return dao.createProcedure(nomeprocedura);  
+      return dao.createProcedure(nomeprocedura,path);  
     }
     
     public boolean deleteProcedure(String nomeprocedura){
@@ -54,13 +54,26 @@ public class ProcedureModel {
       return dao.deleteProcedure(nomeprocedura);    
     }
      
-    public int getId() {
-        return id;
-    }
+
+
 
     public String getNomeProc() {
         return nomeProc;
     }
     
+
+    public String getPath() {
+        return path;
+    }
+
+
+    public String getPath(String name){
+      ProcedureDao dao = new ProcedureDao();
+      return dao.getPath(name);     
+    }
     
+    public boolean proceduraExists(String name){
+       ProcedureDao dao = new ProcedureDao();
+       return dao.proceduraExists(name);
+   }
 }

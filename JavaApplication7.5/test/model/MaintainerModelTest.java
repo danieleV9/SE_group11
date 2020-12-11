@@ -358,10 +358,8 @@ public class MaintainerModelTest {
         System.out.println("removeCompetence");
         String username = "tizio";
         int id = 0;
-        instance.removeCompetence(username, id);
         boolean expResult = false;
-        boolean result = instance.hasCompetences(username, id);
-        assertEquals(expResult, result);
+        assertEquals(expResult,instance.removeCompetence(username, id));
 
     }
 

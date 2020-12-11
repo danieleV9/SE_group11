@@ -38,8 +38,8 @@ public class ProcedureDao {
             rs= st.executeQuery(query);
             while(rs.next()){
             String nomeprocedura = rs.getString("nomeprocedura");
-            int id = rs.getInt("idfile");
-            list.add(new ProcedureModel(id,nomeprocedura));
+            String path = rs.getString("path");
+            list.add(new ProcedureModel(nomeprocedura,path));
             }
        } catch (SQLException ex) {
             System.out.println("errore");
@@ -99,20 +99,26 @@ public class ProcedureDao {
          return list;
     }
      
-    public boolean createProcedure(String nomeprocedura){
-      try{
+    public boolean createProcedure(String nomeprocedura,String path){
+      ProcedureModel m = new ProcedureModel();
+      if(m.proceduraExists(nomeprocedura)){
+          return false;
+      }
+      else {
+         try{
          conn = ConnectionDatabase.getConnection();
-         String query = "insert into procedure_manutenzione(nomeprocedura,nomefile,idfile) values(?,?,?)";
+         String query = "insert into procedure_manutenzione(nomeprocedura,path) values(?,?)";
          pst = conn.prepareStatement(query);
          pst.setString(1,nomeprocedura);
-         pst.setString(2, "");
+         pst.setString(2, path);
          pst.setInt(3, 0);
          pst.executeUpdate();
          return true;
         } catch(SQLException ex){
           System.out.println("Errore nell'aggiunta nuova procedura ! "+ex);
           return false;
-        }
+         } 
+       }
     }
     
     
@@ -130,4 +136,47 @@ public class ProcedureDao {
         return false;
     }  
    }
+    
+        
+    public String getPath(String name){
+        String path = null;
+        try { 
+            conn = ConnectionDatabase.getConnection();
+            String query = "select path from procedure_manutenzione where nomeprocedura=?";
+            pst= conn.prepareStatement(query);
+            pst.setString(1, name);
+            rs= pst.executeQuery();
+            while(rs.next()){
+            path = rs.getString("path");
+            }
+         } catch (SQLException ex) {
+            System.out.println("errore in getPath");
+        } 
+     
+         return path;
+    }
+    
+    
+    public boolean proceduraExists(String name){
+        try {
+            conn = ConnectionDatabase.getConnection();
+            String query = "select count(*) from procedure_manutenzione where nomeprocedura=?";
+            pst = conn.prepareStatement(query);
+            pst.setString(1, name);
+            rs = pst.executeQuery();
+            int risultato = 0;
+            if (rs.next()) {
+                risultato = rs.getInt(1);
+                if (risultato == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+            return false;
+        }
+        return false;
+    }
 }
