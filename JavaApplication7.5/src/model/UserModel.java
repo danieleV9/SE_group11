@@ -36,4 +36,11 @@ public abstract class UserModel {
     }
 
     public abstract UserModel findUser(String username, String password, String role) throws Exception;
+
+    @Override
+    public String toString() {
+        return "UserModel{" + "username=" + username + ", password=" + password + '}';
+    }
+    
+    
 }

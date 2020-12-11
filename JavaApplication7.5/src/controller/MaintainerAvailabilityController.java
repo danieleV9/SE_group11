@@ -18,6 +18,7 @@ import model.MaintainerModel;
 import model.MaintenanceActivityModel;
 import model.ProcedureModel;
 import model.SkillModel;
+import view.ActivityAssignationView;
 import view.ActivityInfoView;
 import view.MaintainerAvailabilityView;
 
@@ -73,6 +74,17 @@ public class MaintainerAvailabilityController {
             String nomeCol=view.getTable().getColumnName(c);
             String val=(String)view.getTable().getValueAt(r, c);
             System.out.println("valore della cella "+nomeCol+":"+val);
+            if(r != -1 && c != -1 && c != 0 && c!= 1){
+                int id = view.getId();
+                MaintenanceActivityModel m = model.viewActivity(id);
+                MaintainerModel sel = (MaintainerModel) modelma.findUsername((String) view.getTable().getValueAt(r, 0));
+                int giorno = c-1;
+                ActivityAssignationView newview = new ActivityAssignationView();
+                newview.setVisible(true);
+                view.setVisible(false);
+                ActivityAssignationController newcontroller = new ActivityAssignationController(newview,view,m,sel,giorno);
+                newcontroller.populateView();
+            }
         }
 
         @Override
