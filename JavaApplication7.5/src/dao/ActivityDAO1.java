@@ -31,7 +31,7 @@ import model.MaintenanceActivityModel;
  *
  * @author HP
  */
-public class ActivityDao {
+public class ActivityDAO1 {
 
     private List<MaintenanceActivityModel> listActivity;
     private Connection conn;
@@ -176,7 +176,7 @@ public class ActivityDao {
         String query = "delete from attivita_manutenzione where idattivita=?";
         try {
             conn = ConnectionDatabase.getConnection();
-            if (this.viewActivity(id) == null) {
+            if (this.viewActivity(id) == null) { 
                 return false;
             }
             pst = conn.prepareStatement(query);
@@ -187,5 +187,52 @@ public class ActivityDao {
             System.out.println("Errore nell'eliminazione");
             return false;
         }
+    }
+    
+    public boolean assignedActivity(int id){
+       String query = "select usernamema from attivita_manutenzione where idattivita=?";
+        try {
+            conn = ConnectionDatabase.getConnection();
+            if (this.viewActivity(id) == null) {
+                return false;
+            }else{
+                pst = conn.prepareStatement(query);
+                pst.setInt(1, id);
+                pst.execute();
+                rs=pst.executeQuery();
+                while(rs.next()){
+                    String username=rs.getString("usernamema");
+                    if(username==null) //attività non assegnata se campo username null
+                        return false;
+                    else if(username.equals(""))
+                        return false;
+                    else return true; //attività assegnata se c'è un username diverso da null
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        } 
+        return false;
+    }
+    
+    public boolean assignNewActivity(int id, String username, String data){
+        String query = "update attivita_manutenzione set usernamema=?,dataattivita=? where idattivita=?";
+        try {
+            conn = ConnectionDatabase.getConnection();
+            if (this.viewActivity(id) == null) {
+                return false;
+            }else{
+                pst = conn.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setString(2,data);
+                pst.setInt(3, id);
+                pst.execute();
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        } 
     }
 }

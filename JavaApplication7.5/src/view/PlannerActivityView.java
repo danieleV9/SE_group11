@@ -5,7 +5,7 @@
  */
 package view;
 import controller.PlannerActivityViewController;
-import dao.ActivityDAO;
+import dao.ActivityDAO1;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
