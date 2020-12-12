@@ -9,6 +9,6 @@ package model;
  *
  * @author lyuba
  */
-class Procedure {
-
+public class Procedure {
+    
 }

@@ -121,7 +121,7 @@ public class MaintainerAvailabilityController {
        int numCompProc= comp.size();
        for(MaintainerModel m:list){
            int countCommon=0; //contatore delle competenze comuni
-           List<SkillModel> skillMa=skill.listSkillsMA(m.getUsername());//lista di comptenze associate al maintainer
+           List<SkillModel> skillMa=skill.listSkillsMA(m.getUsername());//lista di competenze associate al maintainer
            for(SkillModel ski:skillMa){ //conto le competeze in comune per ogni maintainer
                if(comp.contains(ski))
                    countCommon++;

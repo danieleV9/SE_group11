@@ -58,21 +58,21 @@ public class ActivityAssignationController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           int col=view.getSelectedColumn();
+            int col=view.getSelectedColumn();
             int row=view.getSelectedRow();
             if(row!=-1){
                 if(col!=-1 && col!=0 && col!=1){// se sto cliccando su uno slot temporale
-                   String val=(String)view.getTable().getValueAt(row, col);
-                   String username=(String)view.getTable().getValueAt(row, 0);
-                   String day=view.getDay();
-                   int numDay=view.getNumDay();
-                   String data=day+" "+String.valueOf(numDay);
+                    String val=(String)view.getTable().getValueAt(row, col);
+                    String username=(String)view.getTable().getValueAt(row, 0);
+                    String day=view.getDay();
                     System.out.println("valore della cella "+":"+val);
                     String[] splitString=val.split(" ");
                     int st_val = Integer.parseInt(splitString[0]);
                     if (st_val == 0) {
                         view.displayErrorMessage("Maintainer "+username+" is not available in this slot of time, \nchoose another one in which availability is not 0 min!");
                     }else{ //orario va bene quindi posso assegnare l'attività al maintainer 
+                        int numDay=view.getNumDay();
+                        String data=day+" "+String.valueOf(numDay);
                         boolean result=modelact.assignNewActivity(modelact.getId_Activity(), username,data);
                         if (result==true){
                             view.displayErrorMessage("Activity assigned succesfully to the Maintainer "+username+", on "+day+" "+numDay);
@@ -80,7 +80,8 @@ public class ActivityAssignationController {
                         }else 
                             view.displayErrorMessage("Error, cannot assign correctly the activity, try again.\n If the problem persists contact the System Administrator!");
                     }
-                }
+                }else if(col==0 || col==1)
+                    view.displayErrorMessage("Select a temporal slot to assign the activity to the Maintainer!");
             }else // se non ho selzionato nulla
                 view.displayErrorMessage("Select a slot to assign the activity to the Maintainer!"); 
         }
@@ -99,8 +100,7 @@ public class ActivityAssignationController {
             String nomeCol=view.getTable().getColumnName(c);
             String val=(String)view.getTable().getValueAt(r, c);
             System.out.println("valore della cella "+nomeCol+":"+val);
-            String[] splitString=val.split(" ");
-            int st_val = Integer.parseInt(splitString[0]);
+
         }
 
         @Override
@@ -144,8 +144,6 @@ public class ActivityAssignationController {
        view.setDayText(dayString);
        view.setMaintainerText(username);
        String fasce=modelma.getDisponibilitaGiorno(username, week, this.giorno);
-       System.out.println(fasce);
-       scriviFasce(fasce);
        int percent=this.calcoloPercentualeDisponibilita(fasce);
        view.setPercenText(String.valueOf(percent)+"%");
        String procedura=modelact.findProcedura(id); //procedura associata ad attività
@@ -161,13 +159,21 @@ public class ActivityAssignationController {
        row[0]=username; //prima colonna contiene username del maintainer selezionato
        String comuni=countCommon+"/"+numCompProc; //seconda colonna contiene le skill in comune con quelle richieste.
        row[1]=comuni;
-       String [] ore=scriviFasce(fasce);
+       String [] ore=scriviFasce(fasce); // se mi restituisce array vuoto allora nel db non c'è nulla per la settimana cercata e il maintainer selezionato
        int contatore=2;
-       for(String x:ore){ //sette colonne, una per ogni giorno, devono contenere la percentuale di disponibilità giornaliera
-            ora=x;
-            row[contatore]=ora+" min";
-            contatore++;
-        }
+       System.out.println(ore.length);
+       if(ore.length!=0){//se array non è vuoto
+            for(String x:ore){ //sette colonne, una per ogni giorno, devono contenere la percentuale di disponibilità giornaliera
+                 ora=x;
+                 row[contatore]=ora+" min";
+                 contatore++;
+             }
+       }else{
+           for(contatore=2;contatore<9;contatore++){
+               row[contatore]=0+" min";
+           }
+       } 
+           
         view.getTable().addRow(row);
         colourTable();
     }
@@ -262,7 +268,10 @@ public class ActivityAssignationController {
         if(!fasce.equals("")){
             String []disp=fasce.split(" ");
             return disp;
-        }else return null; //array vuoto
+        }else {
+           String []disp={};
+           return disp;
+        } 
     }
     
 }

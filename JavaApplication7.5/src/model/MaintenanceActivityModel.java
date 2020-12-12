@@ -1,5 +1,5 @@
 package model;
-import dao.ActivityDao;
+import dao.ActivityDAO;
 import java.util.List;
 import model.Materiali;
 import model.Procedure;
@@ -157,32 +157,32 @@ public class MaintenanceActivityModel {
     }
 
     public boolean deleteActivity(int id) {
-      ActivityDao dao = new ActivityDao();
+      ActivityDAO dao = new ActivityDAO();
       return dao.deleteActivity(id);
     }
 
     public MaintenanceActivityModel viewActivity(int id) {
-        ActivityDao dao = new ActivityDao();
+        ActivityDAO dao = new ActivityDAO();
         return  dao.viewActivity(id);
     }
 
     public void aggiornaNote(String note, int id) {
-        ActivityDao dao = new ActivityDao();
+        ActivityDAO dao = new ActivityDAO();
         dao.aggiornaNote(note, id);
     }
 
     public List<MaintenanceActivityModel> getAllActivity() {
-      ActivityDao dao = new ActivityDao();
+      ActivityDAO dao = new ActivityDAO();
       return dao.getAllActivity();
     }
     
     public List<MaintenanceActivityModel> getAllActivity(int numWeek) {
-      ActivityDao dao = new ActivityDao();
+      ActivityDAO dao = new ActivityDAO();
       return dao.getAllActivity(numWeek);
     }
 
     public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area) {
-        ActivityDao dao = new ActivityDao();
+        ActivityDAO dao = new ActivityDAO();
         boolean ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
         return ad;
     }
@@ -193,17 +193,17 @@ public class MaintenanceActivityModel {
     }
 
     public String findProcedura(int id){
-        ActivityDao dao = new ActivityDao();
+        ActivityDAO dao = new ActivityDAO();
         return dao.findProcedura(id);
     }
     
     public boolean assignedActivity(int id){
-        ActivityDao dao = new ActivityDao();
+        ActivityDAO dao = new ActivityDAO();
         return dao.assignedActivity(id);
     }
     
     public boolean assignNewActivity(int id, String username,String data){
-        ActivityDao dao = new ActivityDao();
+        ActivityDAO dao = new ActivityDAO();
         return dao.assignNewActivity(id,username,data);
     }
 }
