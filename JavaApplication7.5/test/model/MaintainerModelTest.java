@@ -229,39 +229,44 @@ public class MaintainerModelTest {
     }
 
     @Test
-    public void testAddCompetence() {
+    public void testAddCompetence1() {
         System.out.println("addCompetence");
-        String username = "tizio";
-        int id = 2016;
-        boolean expResult = true;
-        boolean result = instance.addCompetence(username, id);
-        assertEquals(expResult, result);
+        boolean result = instance.addCompetence("main", 23); //aggiungo una competenza che non ha 
+        assertEquals(true, result);
     }
-
+     @Test
+    public void testAddCompetence2() {
+        System.out.println("addCompetence");
+        boolean result = instance.addCompetence("main", 0); //provo ad aggiungere una competenza che  ha già
+        assertEquals(false, result);
+    }
     /**
      * Test of hasCompetences method, of class MaintainerModel.
      */
     @Test
-    public void testHasCompetences() {
-        System.out.println("hasCompetences");
-        String username = "tizio";
-        int id = 2013;
-        boolean expResult = true;
-        boolean result = instance.hasCompetences(username, id);
-        assertEquals(expResult, result);
+    public void testHasCompetenceSI () {
+        System.out.println("hasCompetencesSI");
+        assertEquals(true, instance.hasCompetences("main", 0)); 
+    }
+    
+     @Test
+    public void testHasCompetenceNO () {
+        System.out.println("hasCompetencesNO");
+        assertEquals(false,instance.hasCompetences("main", 9) ); 
     }
 
     /**
      * Test of removeCompetence method, of class MaintainerModel.
      */
     @Test
-    public void testRemoveCompetence() {
-        System.out.println("removeCompetence");
-        String username = "tizio";
-        int id = 0;
-        instance.removeCompetence(username, id);
-        boolean expResult = false;
-        boolean result = instance.hasCompetences(username, id);
-        assertEquals(expResult, result);
+    public void testRemoveCompetence1() {
+        System.out.println("removeCompetence1");
+        assertEquals(true, instance.hasCompetences("main", 0)); //provo a rimuovere una competenza che ha. 
+    }
+    
+    @Test
+    public void testRemoveCompetence2(){
+        System.out.println("removeCompetence2");
+        assertEquals(false, instance.hasCompetences("main",9)); //provo a rimuovere una competenza che non ha.
     }
 }

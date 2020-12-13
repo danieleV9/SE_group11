@@ -210,6 +210,8 @@ public class MaintainerDAO implements EmployeeDAO {
     }
 
     public boolean addCompetence(String username, int id) {
+        MaintainerModel m = new MaintainerModel("","");
+        if(m.hasCompetences(username, id)==false){
         try {
             query = "insert into competenze_ma(usernamema,idcompetenza) values(?,?)";
             pst = con.prepareStatement(query);
@@ -221,10 +223,13 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
-        }
+         }
+        } else return false;
     }
 
     public boolean removeCompetence(String username, int id) {
+        MaintainerModel m = new MaintainerModel("","");
+        if(m.hasCompetences(username, id)){
         try {
             query = "delete from competenze_ma where usernamema=? and idcompetenza=?";
             pst = con.prepareStatement(query);
@@ -237,6 +242,7 @@ public class MaintainerDAO implements EmployeeDAO {
             System.out.println("" + ex);
             return false;
         }
+        } else return false;
     }
 
     public boolean hasCompetences(String username, int id) {
