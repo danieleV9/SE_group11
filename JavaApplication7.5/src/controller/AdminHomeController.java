@@ -22,6 +22,7 @@ import view.UsersListView;
  * @author lyuba
  */
 public class AdminHomeController {
+
     private AdminHomeView view;
     private AdminModel model;
     private final String usernameTravel;
@@ -44,56 +45,61 @@ public class AdminHomeController {
     public String getUsernameTravel() {
         return usernameTravel;
     }
-    
-    
+
     public class UserListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             UsersListView usersview = new UsersListView();
-            UsersListController controllerUsers = new UsersListController(view,usersview,model);
+            UsersListController controllerUsers = new UsersListController(view, usersview, model);
             controllerUsers.populateTables();
             usersview.setVisible(true);
             view.setVisible(false);
         }
     }
-    
+
     public class AccessListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             System.out.println("ciao");
         }
     }
-        
+
     public class MaterialListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
-            
+        public void actionPerformed(ActionEvent e) {
+
         }
     }
-    
+
     public class SitesListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
 
         }
     }
 
     public class ProceduresListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
-          ProcedureView procView = new ProcedureView();
-          ProcedureModel model = new ProcedureModel();
-          ProcedureController pc = new ProcedureController(view,procView,model);
-          procView.setVisible(true);
-          view.setVisible(false);
+        public void actionPerformed(ActionEvent e) {
+            ProcedureView procView = new ProcedureView();
+            ProcedureModel model = new ProcedureModel("","");
+            ProcedureController pc = new ProcedureController(view, procView, model);
+            procView.setVisible(true);
+            view.setVisible(false);
         }
     }
 
     public class CompetencesListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             AdminSkillView skillview = new AdminSkillView();
-            AdminSkillController controllerUsers = new AdminSkillController(view,skillview,model);
+            AdminSkillController controllerUsers = new AdminSkillController(view, skillview, model);
             controllerUsers.populateTables();
             skillview.setVisible(true);
             view.setVisible(false);
@@ -102,24 +108,25 @@ public class AdminHomeController {
     }
 
     public class MaintenanceListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
 
         }
     }
-    
+
     public class LogoutListener implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
-            LoginView login= new LoginView();
-            PlannerModel p= new PlannerModel("","");
-            MaintainerModel m = new MaintainerModel("","");
+        public void actionPerformed(ActionEvent e) {
+            LoginView login = new LoginView();
+            PlannerModel p = new PlannerModel("", "");
+            MaintainerModel m = new MaintainerModel("", "");
             /*quando creiamo la nuova view dobbiamo istanziare anche il relativo controller per mantenere
             il riferimento alla view appena creata*/
-            LoginController controllerLogin = new LoginController(login,model,p,m);
+            LoginController controllerLogin = new LoginController(login, model, p, m);
             view.setVisible(false);
         }
     }
-    
 
 }

@@ -26,13 +26,13 @@ public class LoginController {
     private PlannerModel modelP;
     private MaintainerModel modelM;
 
-    /* public LoginController(LoginView view, AdminModel modelA){
+    public LoginController(LoginView view, AdminModel modelA) {
         this.view = view;
         this.modelA = modelA;
         this.view.addLoginListener(new LoginListener());
         this.view.addCancelListener(new CancelListener());
         view.setVisible(true);
-    }*/
+    }
 
     public LoginController(LoginView view, AdminModel modelA, PlannerModel modelP, MaintainerModel modelM) {
         this.view = view;

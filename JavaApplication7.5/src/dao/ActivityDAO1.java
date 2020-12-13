@@ -11,15 +11,11 @@ package dao;
  */
 import connectionDB.ConnectionDatabase;
 import java.sql.*;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.MaintenanceActivityModel;
 
 /*
@@ -34,17 +30,18 @@ import model.MaintenanceActivityModel;
 public class ActivityDAO1 {
 
     private List<MaintenanceActivityModel> listActivity;
-    private Connection conn;
+    private Connection conn = getConnection();
+    ;
     private Statement st;
     private ResultSet rs;
     private PreparedStatement pst;
+    private String query;
 
     public List<MaintenanceActivityModel> getAllActivity() {
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
-            conn = ConnectionDatabase.getConnection();
             st = conn.createStatement();
-            String query = "select * from attivita_manutenzione order by settimana";
+            query = "select * from attivita_manutenzione order by settimana";
             rs = st.executeQuery(query);
             while (rs.next()) {
                 int id = rs.getInt("idattivita");
@@ -66,8 +63,7 @@ public class ActivityDAO1 {
     public List<MaintenanceActivityModel> getAllActivity(int numWeek) {
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
-            conn = ConnectionDatabase.getConnection();
-            String query = "select * from attivita_manutenzione where settimana=?";
+            query = "select * from attivita_manutenzione where settimana=?";
             pst = conn.prepareStatement(query);
             pst.setInt(1, numWeek);
             rs = pst.executeQuery();
@@ -88,29 +84,28 @@ public class ActivityDAO1 {
         return list;
     }
 
-    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area) {
+    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible) {
         try {
             conn = ConnectionDatabase.getConnection();
             String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
                     + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
-                    + "dataattivita,statoticket) values (?,?,?,0,(NEXTVAL(idattivita)+1),?,?,?,?,?,?,?,?,?)";
+                    + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)+1),?,?,?,?,?,?,?,?,?)";
             pst = conn.prepareStatement(query);
             pst.setInt(1, numberWeek);
             pst.setString(2, workNotes);
             pst.setString(3, type);
-            //pst.setBoolean(4,true);
-            pst.setString(4, factory);
-            pst.setString(5, area);
-            pst.setNull(6, Types.NULL);
-            pst.setString(7, tipology);
-            pst.setNull(8, Types.NULL);
-            pst.setInt(9, time);
-            pst.setString(10, description);
-            pst.setNull(11, Types.NULL);
+            pst.setBoolean(4, interruptible);
+            pst.setString(5, factory);
+            pst.setString(6, area);
+            pst.setNull(7, Types.NULL);
+            pst.setString(8, tipology);
+            pst.setNull(9, Types.NULL);
+            pst.setInt(10, time);
+            pst.setString(11, description);
             pst.setNull(12, Types.NULL);
+            pst.setNull(13, Types.NULL);
 
             pst.executeUpdate();
-
         } catch (SQLException ex) {
             System.out.println("Errore nell'inserimento dell'attività");
             return false;
@@ -119,9 +114,8 @@ public class ActivityDAO1 {
     }
 
     public MaintenanceActivityModel viewActivity(int id) {
-        String query = "select * from attivita_manutenzione where idattivita=?";
+        query = "select * from attivita_manutenzione where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -143,9 +137,8 @@ public class ActivityDAO1 {
     }
 
     public String findProcedura(int id) {
-        String query = "select nomeprocedura from attivita_manutenzione where idattivita=?";
+        query = "select nomeprocedura from attivita_manutenzione where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -160,9 +153,8 @@ public class ActivityDAO1 {
     }
 
     public void aggiornaNote(String note, int id) {
-        String query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
+        query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setString(1, note);
             pst.setInt(2, id);
@@ -173,10 +165,9 @@ public class ActivityDAO1 {
     }
 
     public boolean deleteActivity(int id) {
-        String query = "delete from attivita_manutenzione where idattivita=?";
+        query = "delete from attivita_manutenzione where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
-            if (this.viewActivity(id) == null) { 
+            if (this.viewActivity(id) == null) {
                 return false;
             }
             pst = conn.prepareStatement(query);
@@ -188,44 +179,45 @@ public class ActivityDAO1 {
             return false;
         }
     }
-    
-    public boolean assignedActivity(int id){
-       String query = "select usernamema from attivita_manutenzione where idattivita=?";
+
+    public boolean assignedActivity(int id) {
+        query = "select usernamema from attivita_manutenzione where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
             if (this.viewActivity(id) == null) {
                 return false;
-            }else{
+            } else {
                 pst = conn.prepareStatement(query);
                 pst.setInt(1, id);
                 pst.execute();
-                rs=pst.executeQuery();
-                while(rs.next()){
-                    String username=rs.getString("usernamema");
-                    if(username==null) //attività non assegnata se campo username null
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    String username = rs.getString("usernamema");
+                    if (username == null) //attività non assegnata se campo username null
+                    {
                         return false;
-                    else if(username.equals(""))
+                    } else if (username.equals("")) {
                         return false;
-                    else return true; //attività assegnata se c'è un username diverso da null
+                    } else {
+                        return true; //attività assegnata se c'è un username diverso da null
+                    }
                 }
             }
         } catch (SQLException ex) {
             System.out.println(ex);
             return false;
-        } 
+        }
         return false;
     }
-    
-    public boolean assignNewActivity(int id, String username, String data){
-        String query = "update attivita_manutenzione set usernamema=?,dataattivita=? where idattivita=?";
+
+    public boolean assignNewActivity(int id, String username, String data) {
+        query = "update attivita_manutenzione set usernamema=?,dataattivita=? where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
             if (this.viewActivity(id) == null) {
                 return false;
-            }else{
+            } else {
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
-                pst.setString(2,data);
+                pst.setString(2, data);
                 pst.setInt(3, id);
                 pst.execute();
                 return true;
@@ -233,6 +225,19 @@ public class ActivityDAO1 {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
-        } 
+        }
+    }
+
+    public Connection getConnection() {
+        return conn = ConnectionDatabase.getConnection();
+    }
+
+    public void closeConnection() {
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
     }
 }

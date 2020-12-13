@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author jenni
@@ -22,5 +24,7 @@ public abstract class EmployeeModel extends UserModel {
     public abstract boolean updateUserPassword(String username, String newpass);
 
     public abstract EmployeeModel findUsername(String username);
+
+    public abstract <T extends EmployeeModel> List<T> listUsers();
 
 }

@@ -5,13 +5,14 @@
  */
 package model;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,28 +21,34 @@ import static org.junit.Assert.*;
  * @author HP
  */
 public class ProcedureModelTest {
-    private ProcedureModel instance;
 
-    
+    private ProcedureModel instance;
+    private static Connection connection;
+
     public ProcedureModelTest() {
-     instance = new ProcedureModel("","");
+        instance = new ProcedureModel("", "");
     }
-    
-    @BeforeClass
-    public static void setUpClass() {
-       
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
     @Before
     public void setUp() {
+        instance = new ProcedureModel("", "");
+        connection = instance.getConnection();
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     @After
     public void tearDown() {
+        try {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            instance.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -53,7 +60,7 @@ public class ProcedureModelTest {
         List<ProcedureModel> expResult = null;
         List<ProcedureModel> result = instance.getAllProcedure();
         assertNotEquals(expResult, result);
-       
+
     }
 
     /**
@@ -66,7 +73,7 @@ public class ProcedureModelTest {
         List<SkillModel> expResult = new ArrayList();
         List<SkillModel> result = instance.getProcedureSkill(nomeprocedura);
         assertEquals(expResult, result);
-       
+
     }
 
     /**
@@ -91,7 +98,7 @@ public class ProcedureModelTest {
         int id = 787878;
         boolean result = instance.removeCompetence(nomeprocedura, id);
         assertEquals(true, result);
-       
+
     }
 
     /**
@@ -101,10 +108,10 @@ public class ProcedureModelTest {
     public void testCreateProcedure() {
         System.out.println("createProcedure");
         String nomeprocedura = "proc2"; //è già nel db !!!
-        String path="";
-        boolean result = instance.createProcedure(nomeprocedura,path);
+        String path = "";
+        boolean result = instance.createProcedure(nomeprocedura, path);
         assertEquals(false, result);
-        
+
     }
 
     /**
@@ -116,9 +123,8 @@ public class ProcedureModelTest {
         String nomeprocedura = "ProceduraAZAZAZA";
         boolean result = instance.deleteProcedure(nomeprocedura);
         assertEquals(true, result);
-        
-    }
 
+    }
 
     /**
      * Test of getNomeProc method, of class ProcedureModel.
@@ -130,8 +136,6 @@ public class ProcedureModelTest {
         assertEquals(expResult, instance.getNomeProc());
     }
 
-
-
     /**
      * Test of getPath method, of class ProcedureModel.
      */
@@ -140,10 +144,8 @@ public class ProcedureModelTest {
         System.out.println("getPath");
         String expResult = "";
         assertEquals(expResult, instance.getPath());
-        
+
     }
-
-
 
     /**
      * Test of getPath method, of class ProcedureModel.
@@ -155,7 +157,7 @@ public class ProcedureModelTest {
         String expResult = null;
         String result = instance.getPath(name);
         assertEquals(expResult, result);
-        
+
     }
 
     /**
@@ -168,7 +170,7 @@ public class ProcedureModelTest {
         boolean expResult = false;
         boolean result = instance.proceduraExists(name);
         assertEquals(expResult, result);
-        
+
     }
-    
+
 }

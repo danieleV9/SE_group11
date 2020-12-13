@@ -23,8 +23,6 @@ public class PlannerCreateController {
     private final PlannerModel model;
     private final MaintenanceActivityModel mamodel;
 
-    private enum T {x, y};
-
     public PlannerCreateController(PlannerCreateView view, PlannerModel model) {
         this.view = view;
         this.model = model;
@@ -38,19 +36,17 @@ public class PlannerCreateController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String area = "";
-            T tipologi;
-            tipologi = T.x;
-            String tipology = "";
-            String factory = "";
-            String type = "";
-            String workNotes = "";
+            String area;
+            String tipology;
+            String factory;
+            String type;
+            String workNotes;
             String description;
-            String interruptible = "";
-            String estimatedTime = "";
-            String weekNumber = "";
+            boolean interruptible;
+            String estimatedTime;
+            String weekNumber;
             try {
-                type = view.getTypeActivity();
+                type = view.TypeActivity();
                 tipology = view.getTipology();
                 factory = view.getFactory();
                 area = view.getArea();
@@ -59,13 +55,14 @@ public class PlannerCreateController {
                 estimatedTime = view.getEstimatedTime();
                 weekNumber = view.getWeekNumber();
                 interruptible = view.getInterruptible();
-                if (description.equals("") || factory.equals("") || type.equals("") || weekNumber.equals("") || area.equals("") || tipologi.equals("") || estimatedTime.equals("")) {
+
+                if (weekNumber.equals("Select") || type.equals("Select") || description.equals("") || factory.equals("") || tipology.equals("") || area.equals("") || estimatedTime.equals("")) {
                     view.displayErrorMessage("fill all fields!", "Attention!");
                     System.out.println("query return null");
                 } else {
                     int time = Integer.parseInt(estimatedTime);
                     int numberWeek = Integer.parseInt(weekNumber);
-                    mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area);
+                    mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible);
                     view.displaySuccessfullyMessage("Activity Created Succesfully!");
                 }
             } catch (Exception ex) {

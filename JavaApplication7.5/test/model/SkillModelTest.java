@@ -5,7 +5,11 @@
  */
 package model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -15,76 +19,35 @@ import static org.junit.Assert.*;
  */
 public class SkillModelTest {
 
-    SkillModel instance = null;
-
-    public SkillModelTest() {
-        instance = new SkillModel(0, "");
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    private static SkillModel instance;
+    private static Connection connection;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        instance = new SkillModel(0, "");
+        connection = instance.getConnection();
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @After
-    public void tearDown() throws Exception {
-    }
-
-    /*@BeforeAll //viene eseguito prima dell’esecuzione di ogni test, 
-                 //utile per settare precondizioni comuni a più di un caso di test
-    public static void setUpClass() {
-    }
-    
-    @AfterAll //viene eseguito dopo ogni caso di test, utile per resettare le postcondizioni
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
     public void tearDown() {
-    }*/
-    /**
-     * Test of getIdSkill method, of class SkillModel.
-     */
-    @Test
-    public void testGetIdSkill() {
-        System.out.println("getIdSkill");
-        instance = new SkillModel(12, "");
-        int expResult = 12;
-        int result = instance.getIdSkill();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getDescription method, of class SkillModel.
-     */
-    @Test
-    public void testGetDescription() {
-        System.out.println("getDescription");
-        instance = new SkillModel(0, "come stai?");
-        String expResult = "come stai?";
-        String result = instance.getDescription();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        try {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            instance.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
      * Test of listSkills method, of class SkillModel.
      */
-   /* @Test
+    /*@Test
     public void testListSkills() {
         System.out.println("listSkills");
         SkillModel instance = null;
@@ -94,7 +57,6 @@ public class SkillModelTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }*/
-
     /**
      * Test of deleteSkill method, of class SkillModel.
      */
@@ -130,7 +92,7 @@ public class SkillModelTest {
         String description = "Conoscenza del robot Xy-z";
         boolean expResult = true;
         boolean result = instance.insertSkill(description);
-        assertEquals(expResult,result);
+        assertEquals(expResult, result);
     }
 
 }

@@ -21,25 +21,22 @@ import model.SkillModel;
  */
 public class SkillDAO {
 
-    Connection con;
-    ResultSet rs;
-    Statement st;
-    PreparedStatement pst;
+    private static Connection con = ConnectionDatabase.getConnection();
+    private static ResultSet rs;
+    private static Statement st;
+    private static PreparedStatement pst;
+    private static SkillModel skill;
 
-    //prepareStatement quando l'utente deve inserire qualcosa
-    //Statement non posso mettere i punti interrogativi
-    //createStatement
-    public List<SkillModel> listSkills() {
+    public static List<SkillModel> listSkills() {
         List<SkillModel> list = new ArrayList<>();
         try {
-            con = ConnectionDatabase.getConnection();
             String query = "select * from competenze";
             st = con.createStatement();
             rs = st.executeQuery(query);
             while (rs.next()) {
                 int idSkill = rs.getInt(1);
                 String description = rs.getString("descrizione");
-                SkillModel skill = new SkillModel(idSkill, description);
+                skill = new SkillModel(idSkill, description);
                 list.add(skill);
             }
         } catch (SQLException ex) {
@@ -48,12 +45,11 @@ public class SkillDAO {
         return list;
     }
 
-    public boolean deleteSkill(int idSkill) {
+    public static boolean deleteSkill(int idSkill) {
         if (idSkill == 0) {
             return false;
         }
         try {
-            con = ConnectionDatabase.getConnection();
             String query = "delete from competenze where idcompetenza=?";
             pst = con.prepareStatement(query);
             pst.setInt(1, idSkill);
@@ -64,10 +60,9 @@ public class SkillDAO {
             return false;
         }
     }
-    
-    public boolean modifySkill(int idSkill, String description) {
+
+    public static boolean modifySkill(int idSkill, String description) {
         try {
-            con = ConnectionDatabase.getConnection();
             String query = "update competenze set descrizione=? where idcompetenza=?";
             pst = con.prepareStatement(query);
             pst.setInt(2, idSkill);
@@ -80,9 +75,8 @@ public class SkillDAO {
         }
     }
 
-    public boolean insertSkill(String description) {
+    public static boolean insertSkill(String description) {
         try {
-            con = ConnectionDatabase.getConnection();
             String query = "INSERT INTO COMPETENZE (idcompetenza,descrizione) values ((NEXTVAL(idcompetenza)+1),?)";
             pst = con.prepareStatement(query);
             pst.setString(1, description);
@@ -93,67 +87,76 @@ public class SkillDAO {
         }
         return true;
     }
-       //RESTITUISCE LA LISTA DI SKILL DI UN DETERMINATO MAINTAINER
-     public List<SkillModel> listSkillsMA(String username) {
+    //RESTITUISCE LA LISTA DI SKILL DI UN DETERMINATO MAINTAINER
+
+    public static List<SkillModel> listSkillsMA(String username) {
         List<SkillModel> list = new ArrayList<>();
-        SkillModel skill= new SkillModel();
         try {
-            con = ConnectionDatabase.getConnection();
             String query = "select * from competenze_ma where usernamema=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
             rs = pst.executeQuery();
             while (rs.next()) {
                 int idComp = rs.getInt("idcompetenza");
-                String description= skill.findSkill(idComp).getDescription();
-                list.add(new SkillModel(idComp,description));
+                String description = skill.findSkill(idComp).getDescription();
+                list.add(new SkillModel(idComp, description));
             }
         } catch (SQLException ex) {
             System.out.println("" + ex);
         }
         return list;
     }
-    
-     public SkillModel findSkill(int id){ //
-        SkillModel skill= new SkillModel();
-        if(id!=0){
-            try{
-                con = ConnectionDatabase.getConnection();
+
+    public static SkillModel findSkill(int id) {
+        if (id != 0) {
+            try {
                 String query = "select * from competenze where idcompetenza=?";
                 pst = con.prepareStatement(query);
                 pst.setInt(1, id);
                 rs = pst.executeQuery();
                 while (rs.next()) {
                     String description = rs.getString("descrizione");
-                    skill= new SkillModel(id,description);
+                    skill = new SkillModel(id, description);
                 }
                 return skill;
-            }catch(SQLException ex){ 
-               return skill;
+            } catch (SQLException ex) {
+                return skill;
             }
-        }else 
+        } else {
             return skill;
+        }
     }
-     
-     public SkillModel findSkill(String description){ 
-        SkillModel skill= new SkillModel();
-        if(description!=null){
-            try{
-                con = ConnectionDatabase.getConnection();
+
+    public static SkillModel findSkill(String description) {
+        if (description != null) {
+            try {
                 String query = "select * from competenze where descrizione=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, description);
                 rs = pst.executeQuery();
                 while (rs.next()) {
                     int id = rs.getInt("idcompetenza");
-                    skill= new SkillModel(id,description);
+                    skill = new SkillModel(id, description);
                 }
                 return skill;
-            }catch(SQLException ex){ 
-               return skill;
+            } catch (SQLException ex) {
+                return skill;
             }
-        } else 
+        } else {
             return skill;
+        }
     }
-     
+
+    public static Connection getConnection() {
+        return con = ConnectionDatabase.getConnection();
+    }
+
+    public static void closeConnection() {
+        try {
+            con.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
+    }
 }

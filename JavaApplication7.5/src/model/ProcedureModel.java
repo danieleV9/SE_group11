@@ -6,6 +6,7 @@
 package model;
 
 import dao.ProcedureDao;
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -13,67 +14,64 @@ import java.util.List;
  * @author HP
  */
 public class ProcedureModel {
-    String nomeProc;
-    String path;
 
-    public ProcedureModel(String nomeProc,String path) {
-        this.path=path;
+    private String nomeProc;
+    private String path;
+    private ProcedureDao dao;
+
+    public ProcedureModel(String nomeProc, String path) {
+        this.path = path;
         this.nomeProc = nomeProc;
+        dao = new ProcedureDao();
     }
 
-    public ProcedureModel() {
-    }
-    
-    
-    public List<ProcedureModel> getAllProcedure(){
-        ProcedureDao dao = new ProcedureDao();
+    public List<ProcedureModel> getAllProcedure() {
+        //ProcedureDao dao = new ProcedureDao();
         return dao.getAllProcedures();
     }
-    public List<SkillModel> getProcedureSkill(String nomeprocedura) {     
-        ProcedureDao dao = new ProcedureDao();
+
+    public List<SkillModel> getProcedureSkill(String nomeprocedura) {
+        //ProcedureDao dao = new ProcedureDao();
         return dao.getProcedureSkill(nomeprocedura);
     }
-     public boolean addCompetence(String nomeprocedura, int id){
-        ProcedureDao dao = new ProcedureDao();
-        return dao.addCompetence(nomeprocedura,id);
-    }
-     
-     
-    public boolean removeCompetence(String nomeprocedura, int id){
-       ProcedureDao dao = new ProcedureDao();
-       return dao.removeCompetence(nomeprocedura,id);
-    }
-    
-    public boolean createProcedure(String nomeprocedura,String path){
-      ProcedureDao dao = new ProcedureDao();
-      return dao.createProcedure(nomeprocedura,path);  
-    }
-    
-    public boolean deleteProcedure(String nomeprocedura){
-      ProcedureDao dao = new ProcedureDao();
-      return dao.deleteProcedure(nomeprocedura);    
-    }
-     
 
+    public boolean addCompetence(String nomeprocedura, int id) {
+        return dao.addCompetence(nomeprocedura, id);
+    }
 
+    public boolean removeCompetence(String nomeprocedura, int id) {
+        return dao.removeCompetence(nomeprocedura, id);
+    }
+
+    public boolean createProcedure(String nomeprocedura, String path) {
+        return dao.createProcedure(nomeprocedura, path);
+    }
+
+    public boolean deleteProcedure(String nomeprocedura) {
+        return dao.deleteProcedure(nomeprocedura);
+    }
 
     public String getNomeProc() {
         return nomeProc;
     }
-    
 
     public String getPath() {
         return path;
     }
 
-
-    public String getPath(String name){
-      ProcedureDao dao = new ProcedureDao();
-      return dao.getPath(name);     
+    public String getPath(String name) {
+        return dao.getPath(name);
     }
-    
-    public boolean proceduraExists(String name){
-       ProcedureDao dao = new ProcedureDao();
-       return dao.proceduraExists(name);
-   }
+
+    public boolean proceduraExists(String name) {
+        return dao.proceduraExists(name);
+    }
+
+    public Connection getConnection() {
+        return dao.getConnection();
+    }
+
+    public void closeConnection() {
+        dao.closeConnection();
+    }
 }

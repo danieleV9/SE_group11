@@ -3,6 +3,7 @@ package view;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -44,7 +45,6 @@ public class PlannerCreateView extends javax.swing.JDialog {
         jLabel12 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        weekField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descriptionField = new javax.swing.JTextArea();
@@ -52,7 +52,6 @@ public class PlannerCreateView extends javax.swing.JDialog {
         timeField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        typeField = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jCheckBox = new javax.swing.JCheckBox();
         jLabel7 = new javax.swing.JLabel();
@@ -66,6 +65,8 @@ public class PlannerCreateView extends javax.swing.JDialog {
         areaField = new javax.swing.JTextField();
         insertMaterial = new javax.swing.JButton();
         create = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -86,17 +87,16 @@ public class PlannerCreateView extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Week Number");
 
-        weekField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                weekFieldMouseClicked(evt);
-            }
-        });
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Description");
 
         descriptionField.setColumns(20);
         descriptionField.setRows(5);
+        descriptionField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                descriptionFieldMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(descriptionField);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -117,12 +117,6 @@ public class PlannerCreateView extends javax.swing.JDialog {
         jLabel5.setText("Type");
 
         jLabel2.setText("(Planned, EWO..)");
-
-        typeField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                typeFieldMouseClicked(evt);
-            }
-        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Interruptible");
@@ -155,6 +149,12 @@ public class PlannerCreateView extends javax.swing.JDialog {
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Area");
 
+        areaField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                areaFieldMouseClicked(evt);
+            }
+        });
+
         insertMaterial.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         insertMaterial.setText("Click to add matierials");
         insertMaterial.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -163,22 +163,17 @@ public class PlannerCreateView extends javax.swing.JDialog {
         create.setText("Create activity");
         create.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Planned", "Extra", "EWO" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(timeField))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,8 +187,8 @@ public class PlannerCreateView extends javax.swing.JDialog {
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(weekField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(20, 20, 20)
+                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel8)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -221,7 +216,21 @@ public class PlannerCreateView extends javax.swing.JDialog {
                         .addGap(28, 28, 28)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                        .addComponent(areaField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(areaField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabel5)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(timeField)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(87, 87, 87)
@@ -236,8 +245,8 @@ public class PlannerCreateView extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(weekField, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
+                            .addComponent(jLabel8)
+                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jCheckBox)
@@ -252,7 +261,7 @@ public class PlannerCreateView extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(15, 15, 15)
@@ -300,13 +309,9 @@ public class PlannerCreateView extends javax.swing.JDialog {
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(54, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(backHome, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backHome, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -326,10 +331,6 @@ public class PlannerCreateView extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void weekFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weekFieldMouseClicked
-        weekField.setText("");
-    }//GEN-LAST:event_weekFieldMouseClicked
-
     private void timeFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timeFieldMouseClicked
         timeField.setText("");
     }//GEN-LAST:event_timeFieldMouseClicked
@@ -343,12 +344,16 @@ public class PlannerCreateView extends javax.swing.JDialog {
     }//GEN-LAST:event_factoryFieldMouseClicked
 
     private void timeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeFieldActionPerformed
-        // TODO add your handling code here:
+        timeField.setText("");
     }//GEN-LAST:event_timeFieldActionPerformed
 
-    private void typeFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_typeFieldMouseClicked
-        typeField.setText("");
-    }//GEN-LAST:event_typeFieldMouseClicked
+    private void descriptionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_descriptionFieldMouseClicked
+        descriptionField.setText("");
+    }//GEN-LAST:event_descriptionFieldMouseClicked
+
+    private void areaFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_areaFieldMouseClicked
+        areaField.setText("");
+    }//GEN-LAST:event_areaFieldMouseClicked
 
     /**
      * @param args the command line arguments
@@ -410,6 +415,8 @@ public class PlannerCreateView extends javax.swing.JDialog {
     private javax.swing.JTextField factoryField;
     private javax.swing.JButton insertMaterial;
     private javax.swing.JCheckBox jCheckBox;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -429,8 +436,6 @@ public class PlannerCreateView extends javax.swing.JDialog {
     private javax.swing.JTextArea notesField;
     private javax.swing.JTextField timeField;
     private javax.swing.JTextField tipologyField;
-    private javax.swing.JTextField typeField;
-    private javax.swing.JTextField weekField;
     // End of variables declaration//GEN-END:variables
 public void CreateListener(ActionListener listener) {
         create.addActionListener(listener);
@@ -456,10 +461,6 @@ public void CreateListener(ActionListener listener) {
         return factoryField.getText();
     }
 
-    public String getTypeActivity() {
-        return typeField.getText();
-    }
-
     public String getWorkNotes() {
         return notesField.getText();
     }
@@ -468,8 +469,8 @@ public void CreateListener(ActionListener listener) {
         return descriptionField.getText();
     }
 
-    public String getInterruptible() {
-        return jCheckBox.getActionCommand();
+    public boolean getInterruptible() {
+        return jCheckBox.isSelected();
     }
 
     public String getEstimatedTime() {
@@ -477,7 +478,7 @@ public void CreateListener(ActionListener listener) {
     }
 
     public String getWeekNumber() {
-        return weekField.getText();
+        return jComboBox3.getSelectedItem().toString();
     }
 
     public void displayErrorMessage(String errorMessage, String alert) {
@@ -491,5 +492,9 @@ public void CreateListener(ActionListener listener) {
     public void displaySuccessfullyMessage(String succesfullyMessage) {
         JOptionPane.showMessageDialog(this, succesfullyMessage);
 
+    }
+
+    public String TypeActivity() {
+        return jComboBox1.getSelectedItem().toString();
     }
 }

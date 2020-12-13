@@ -6,6 +6,7 @@
 package model;
 
 import dao.SkillDAO;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,12 +24,9 @@ public class SkillModel {
         this.idSkill = idSkill;
         this.description = description;
     }
-        
-    public SkillModel() {
-    }
 
     public SkillModel(String description) {
-        this.description=description;
+        this.description = description;
     }
 
     public int getIdSkill() {
@@ -40,44 +38,36 @@ public class SkillModel {
     }
 
     public List<SkillModel> listSkills() {
-        SkillDAO dao = new SkillDAO();
         List<SkillModel> list = new ArrayList<>();
-        list = dao.listSkills();
+        list = SkillDAO.listSkills();
         return list;
     }
-    
+
     public List<SkillModel> listSkillsMA(String username) {
-        SkillDAO dao = new SkillDAO();
         List<SkillModel> list = new ArrayList<>();
-        return dao.listSkillsMA(username); 
+        return SkillDAO.listSkillsMA(username);
     }
 
     public boolean deleteSkill(int idSkill) {
-        SkillDAO dao = new SkillDAO();
-        return dao.deleteSkill(idSkill);
+        return SkillDAO.deleteSkill(idSkill);
     }
-    
 
     public boolean modifySkill(int idSkill, String descrizione) {
-        SkillDAO dao = new SkillDAO();
-        return dao.modifySkill(idSkill, descrizione);
+        return SkillDAO.modifySkill(idSkill, descrizione);
     }
 
     public boolean insertSkill(String description) {
-        SkillDAO dao = new SkillDAO();
-        boolean ad = dao.insertSkill(description);
-        return ad;
+        return SkillDAO.insertSkill(description);
     }
-    
-    public SkillModel findSkill(int id){ 
-         SkillDAO dao = new SkillDAO();
-         return dao.findSkill(id);
+
+    public SkillModel findSkill(int id) {
+        return SkillDAO.findSkill(id);
     }
-    public SkillModel findSkill(String description){ 
-        SkillDAO dao = new SkillDAO();
-        return dao.findSkill(description);
+
+    public SkillModel findSkill(String description) {
+        return SkillDAO.findSkill(description);
     }
-    
+
     @Override
     public String toString() {
         return description;
@@ -103,7 +93,13 @@ public class SkillModel {
         }
         return true;
     }
-    
-    
+
+    public Connection getConnection() {
+        return SkillDAO.getConnection();
+    }
+
+    public void closeConnection() {
+        SkillDAO.closeConnection();
+    }
 
 }

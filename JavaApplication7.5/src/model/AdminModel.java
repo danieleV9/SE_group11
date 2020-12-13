@@ -6,6 +6,7 @@
 package model;
 
 import dao.AdminDAO;
+import java.sql.Connection;
 
 /**
  *
@@ -13,15 +14,26 @@ import dao.AdminDAO;
  */
 public class AdminModel extends UserModel {
 
+    private AdminDAO dao;
+
     public AdminModel(String username, String password) {
         super(username, password);
+        dao = new AdminDAO();
     }
 
     @Override
     public UserModel findUser(String username, String password, String role) throws Exception {
-        AdminDAO dao = new AdminDAO();
         AdminModel ad = dao.findUser(username, password, role);
         return ad;
     }
 
+    @Override
+    public Connection getConnection() {
+        return dao.getConnection();
+    }
+
+    @Override
+    public void closeConnection() {
+        dao.closeConnection();
+    }
 }

@@ -26,8 +26,13 @@ public class ConnectionDatabase {
         }
         return con;
     }
-    
-    public static void closeConnection() throws SQLException{
-        con.close();
+
+    public static void closeConnection() {
+        try {
+            con.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
     }
 }

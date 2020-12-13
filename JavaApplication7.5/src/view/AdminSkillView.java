@@ -191,6 +191,11 @@ public class AdminSkillView extends javax.swing.JFrame {
 
         descriptionField.setColumns(20);
         descriptionField.setRows(5);
+        descriptionField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                descriptionFieldMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(descriptionField);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -249,6 +254,10 @@ public class AdminSkillView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void descriptionFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_descriptionFieldMouseClicked
+        descriptionField.setText("");
+    }//GEN-LAST:event_descriptionFieldMouseClicked
 
     /**
      * @param args the command line arguments

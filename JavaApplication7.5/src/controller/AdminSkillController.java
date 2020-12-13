@@ -45,11 +45,11 @@ public class AdminSkillController {
         public void mouseReleased(MouseEvent e) {
             System.out.println("Ho cliccato sulla tabella competenze");
             int r = view.getSelectedRow();
-            System.out.println("indice"+r);
+            System.out.println("indice" + r);
             int i = Integer.parseInt(view.getIdSelected(r));
-            System.out.println("id"+i);
-            String descrizione1= view.getDescriptionSelected(r);
-             System.out.println("descrizione"+descrizione1);
+            System.out.println("id" + i);
+            String descrizione1 = view.getDescriptionSelected(r);
+            System.out.println("descrizione" + descrizione1);
 
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
@@ -91,17 +91,25 @@ public class AdminSkillController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            List<SkillModel> listsk = skmodel.listSkills();
+            System.out.println(listsk);
             String description = "";
             try {
                 description = view.getDescription();
                 if (description.equals("")) {
                     view.displayErrorMessage("Insert a description!", "Attention");
                     System.out.println("query return null");
+                } else if (listsk.contains(skmodel.findSkill(description))) {
+                    view.displayErrorMessage("The description is already present!", "Attention");
+                    System.out.println("query return null!");
                 } else {
-                    AdminSkillController controllerUsers = new AdminSkillController(prev,view,model);
-                   // if(description.controllerUsers.populateTables();
                     skmodel.insertSkill(description);
                     view.displaySuccessfullyMessage("Skill Created Succesfully!");
+                    System.out.println("query return succesfully");
+                    int idSkill = skmodel.getIdSkill();
+                    String id = Integer.toString(idSkill);
+                    String array[] = {id, description};
+                    view.getTableModel().addRow(array);
                 }
             } catch (Exception ex) {
                 System.out.println("" + ex);
@@ -134,12 +142,12 @@ public class AdminSkillController {
         @Override
         public void actionPerformed(ActionEvent e) {
             int idSkill = 0;
-            boolean x= false;
-            String vecchio="";
+            boolean x = false;
+            String vecchio = "";
             int selezionato = view.getSelectedRow();//riga selezionata della tabella competenza
             if (selezionato != -1) {
                 int i = Integer.parseInt(view.getIdSelected(selezionato));
-                vecchio=view.getDescriptionSelected(selezionato);
+                vecchio = view.getDescriptionSelected(selezionato);
                 //System.out.println("id che voglio modificare:"+i);
                 idSkill = i;
                 String descrizione = view.getDescription1();
@@ -148,20 +156,20 @@ public class AdminSkillController {
                     view.displayErrorMessage("The description can not be empty!");
                 } else if (descrizione.equals(vecchio)) {
                     view.displayErrorMessage("New competence must be different from the previous");
-                }
-                else {
-                    x=skmodel.modifySkill(idSkill, descrizione);
-                    
+                } else {
+                    x = skmodel.modifySkill(idSkill, descrizione);
+
                     if (x) {
-                    //view.showAddComp(true);
-                    view.displayErrorMessage("Updated succesfully");
-                    view.setDescriptionSelected(selezionato,1, descrizione); //visualizza modificaaaaa!!!
-                    view.setDescription1("");
-                    }else 
-                    view.displayErrorMessage("Can not update!");
+                        //view.showAddComp(true);
+                        view.displayErrorMessage("Updated succesfully");
+                        view.setDescriptionSelected(selezionato, 1, descrizione); //visualizza modificaaaaa!!!
+                        view.setDescription1("");
+                    } else {
+                        view.displayErrorMessage("Can not update!");
+                    }
                 }
-                
-            } else{ //se non ho selezionato un id competenza
+
+            } else { //se non ho selezionato un id competenza
                 view.displayErrorMessage("Select a competence to modify!");
             }
         }
@@ -188,8 +196,9 @@ public class AdminSkillController {
             }
         }
     }
-    
-    public class Back1Listener implements ActionListener{
+
+    public class Back1Listener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             AdminHomeView ad2 = new AdminHomeView();

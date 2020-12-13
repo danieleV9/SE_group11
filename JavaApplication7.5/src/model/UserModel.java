@@ -5,6 +5,9 @@
  */
 package model;
 
+import dao.UserDAO;
+import java.sql.Connection;
+
 /**
  *
  * @author jenni
@@ -13,6 +16,7 @@ public abstract class UserModel {
 
     private String username;
     private String password;
+    UserDAO dao;
 
     public UserModel(String username, String password) {
         this.username = username;
@@ -41,6 +45,9 @@ public abstract class UserModel {
     public String toString() {
         return "UserModel{" + "username=" + username + ", password=" + password + '}';
     }
-    
-    
+
+    public abstract Connection getConnection();
+
+    public abstract void closeConnection();
+
 }

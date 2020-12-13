@@ -5,7 +5,10 @@
  */
 package model;
 
-
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -14,80 +17,33 @@ import static org.junit.Assert.*;
  * @author lyuba
  */
 public class AdminModelTest {
-    
+
+    private static AdminModel instance;
+    private static Connection connection;
+
     public AdminModelTest() {
     }
-    /*
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
+
+    @Before
     public void setUp() {
+        instance = new AdminModel("", "");
+        connection = instance.getConnection();
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    @AfterEach
+
+    @After
     public void tearDown() {
-    }*/
-
-    /**
-     * Test of getUsername method, of class AdminModel.
-     */
-    @Test
-    public void testGetUsername() {
-        System.out.println("getUsername");
-        AdminModel instance = null;
-        instance = new AdminModel("admin1","");
-        String expResult = "admin1";
-        String result = instance.getUsername();
-        assertEquals(expResult, result);
-        
-    }
-
-    /**
-     * Test of setUsername method, of class AdminModel.
-     */
-    @Test
-    public void testSetUsername() {
-        System.out.println("setUsername");
-        String username = "admin1";
-        AdminModel instance = null;
-        instance= new AdminModel("","");
-        String expResult="admin1";
-        instance.setUsername(username);
-        assertEquals(expResult,instance.getUsername());
-    }
-
-    /**
-     * Test of getPassword method, of class AdminModel.
-     */
-    @Test
-    public void testGetPassword() {
-        System.out.println("getPassword");
-        AdminModel instance = null;
-        instance= new AdminModel("","antonio123");
-        String expResult = "antonio123";
-        String result = instance.getPassword();
-        assertEquals(expResult, result);
-       
-    }
-
-    /**
-     * Test of setPassword method, of class AdminModel.
-     */
-    @Test
-    public void testSetPassword() {
-        System.out.println("setPassword");
-        String password = "pass1";
-        AdminModel instance = null;
-        instance = new AdminModel("","");
-        instance.setPassword(password);
-        String expResult="pass1";
-        assertEquals(expResult,instance.getPassword());
+        try {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            instance.closeConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -99,61 +55,53 @@ public class AdminModelTest {
         String username = "";
         String password = "";
         String role = "Maintainer";
-        AdminModel instance = null;
-        instance= new AdminModel("","");
         AdminModel expResult = null;
         AdminModel result = (AdminModel) instance.findUser(username, password, role);
         assertEquals(expResult, result);
-        
+
     }
+
     /**
      * Test of findAdmin method, of class AdminModel.
      */
-       @Test
+    @Test
     public void testFindAdmin1() throws Exception {
         System.out.println("findAdmin1");
         String username = "";
         String password = "";
         String role = "Planner";
-        AdminModel instance = null;
-        instance= new AdminModel("","");
-        instance= new AdminModel("","");
         AdminModel expResult = null;
         AdminModel result = (AdminModel) instance.findUser(username, password, role);
         assertEquals(expResult, result);
-        
+
     }
+
     /**
      * Test of findAdmin method, of class AdminModel.
      */
-       @Test
+    @Test
     public void testFindAdmin2() throws Exception {
         System.out.println("findAdmin2");
         String username = "";
         String password = "carlox";
         String role = "System Administrator";
-        AdminModel instance = null;
-        instance= new AdminModel("","");
         AdminModel expResult = null;
         AdminModel result = (AdminModel) instance.findUser(username, password, role);
         assertEquals(expResult, result);
-        
+
     }
-    
-   /**
+
+    /**
      * Test of findAdmin method, of class AdminModel.
      */
-     @Test
+    @Test
     public void testFindAdmin3() throws Exception {
         System.out.println("findAdmin3");
         String username = "";
         String password = "carlox";
         String role = "System Administrator";
-        AdminModel instance = null;
-        instance= new AdminModel("","");
         AdminModel expResult = null;
         AdminModel result = (AdminModel) instance.findUser(username, password, role);
-        assertEquals(expResult, result);   
+        assertEquals(expResult, result);
     }
-
 }
