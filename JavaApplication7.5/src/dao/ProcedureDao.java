@@ -77,7 +77,6 @@ public class ProcedureDao {
 
     public List<SkillModel> getProcedureSkill(String nomeprocedura) {
         List<SkillModel> list = new ArrayList<>();
-        //SkillModel skill = new SkillModel();
         try {
             query = "select * from competenze_proc where nomeprocedura=?";
             pst = con.prepareStatement(query);
@@ -97,6 +96,7 @@ public class ProcedureDao {
     public boolean createProcedure(String nomeprocedura, String path) {
         ProcedureModel m = new ProcedureModel("","");
         if (m.proceduraExists(nomeprocedura)) {
+            System.out.println("procedura già esistente");
             return false;
         } else {
             try {
@@ -104,8 +104,8 @@ public class ProcedureDao {
                 pst = con.prepareStatement(query);
                 pst.setString(1, nomeprocedura);
                 pst.setString(2, path);
-                pst.setInt(3, 0);
                 pst.executeUpdate();
+                System.out.println("procedura creata con successo");
                 return true;
             } catch (SQLException ex) {
                 System.out.println("Errore nell'aggiunta nuova procedura ! " + ex);
@@ -115,7 +115,12 @@ public class ProcedureDao {
     }
 
     public boolean deleteProcedure(String name) {
-        query = "delete from procedure_manutenzione where nomeprocedura=?";
+       ProcedureModel m = new ProcedureModel("","");
+       query = "delete from procedure_manutenzione where nomeprocedura=?";
+       if (m.proceduraExists(name)==false) {
+            System.out.println("procedura non esistente");
+            return false;
+        } else {
         try {
             pst = con.prepareStatement(query);
             pst.setString(1, name);
@@ -125,6 +130,7 @@ public class ProcedureDao {
             System.out.println("Errore nell'eliminazione");
             return false;
         }
+      }
     }
 
     public String getPath(String name) {
@@ -154,8 +160,10 @@ public class ProcedureDao {
             if (rs.next()) {
                 risultato = rs.getInt(1);
                 if (risultato == 0) {
-                    return false;
+                    System.out.println("procedura non trovata");
+                    return false;   
                 } else {
+                    System.out.println("procedura trovata");
                     return true;
                 }
             }

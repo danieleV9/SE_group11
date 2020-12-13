@@ -102,10 +102,7 @@ public class MaintenanceActivityModelTest {
     public void testAggiornaNote1() {
         System.out.println("aggiornaNote");
         String note = "Queste sono note lavoro";
-        int id = 0;
-        //MaintenanceActivityModel instance = new MaintenanceActivityModel(1, false, id, "", "", "", 1, note, null, null, "", "");
-        instance.aggiornaNote(note, id);
-        assertEquals(note, instance.getWorkspaceNotes());
+        /* da rivedere !! */
     }
 
     /**
