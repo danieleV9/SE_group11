@@ -67,11 +67,5 @@ public class ProcedureModel {
         return dao.proceduraExists(name);
     }
 
-    public Connection getConnection() {
-        return dao.getConnection();
-    }
 
-    public void closeConnection() {
-        dao.closeConnection();
-    }
 }

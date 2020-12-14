@@ -6,7 +6,6 @@
 package model;
 
 import dao.PlannerDAO;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +23,8 @@ public class PlannerModel extends EmployeeModel {
     }
 
     @Override
-    public UserModel findUser(String username, String password, String role) throws Exception {
-        PlannerModel ad = (PlannerModel) dao.findUser(username, password, role);
+    public UserModel findUser(String username, String password) throws Exception {
+        PlannerModel ad = (PlannerModel) dao.findUser(username, password);
         return ad;
     }
 
@@ -59,12 +58,7 @@ public class PlannerModel extends EmployeeModel {
     }
 
     @Override
-    public Connection getConnection() {
-        return dao.getConnection();
-    }
-
-    @Override
-    public void closeConnection() {
-        dao.closeConnection();
+    public String toString() {
+        return "PlannerModel{" + super.toString() + '}';
     }
 }

@@ -13,7 +13,6 @@ import javax.swing.table.DefaultTableModel;
 import model.MaintainerModel;
 import model.PlannerModel;
 import model.SkillModel;
-import view.AdminHomeView;
 import view.ModifyUserView;
 import view.UsersListView;
 
@@ -35,8 +34,17 @@ public class UserModifyController {
         this.prev = prev;
         this.username = username;
         this.role = role;
-        this.modelpl = new PlannerModel("", "");
-        this.modelma = new MaintainerModel("", "");
+        this.modelpl =new PlannerModel("","");
+        this.modelma= new MaintainerModel("","");
+        if(getSelRole().equals("Planner")){
+            
+            modelpl=(PlannerModel) modelpl.findUsername(username);
+            System.out.println(modelpl.toString());
+        }else if(getSelRole().equals("Maintainer")){
+            
+            modelma = (MaintainerModel) modelma.findUsername(username);
+            System.out.println(modelma.toString());
+        }
         this.view.addModifyPassListener(new ModifyPassListener());//voglio modificare la pass
         this.view.addConfirmModListener(new ConfirmModListener()); //conferma modifica password
         this.view.addBackListener(new BackListener());//tasto indietro
@@ -45,21 +53,18 @@ public class UserModifyController {
         this.view.addConfirmCompListener(new ConfirmCompListener()); //conferma aggiunta competenze selezionate
 
     }
-
-    public String getSelUsername() {
-        return username;
-    }
-
+    
     public String getSelRole() {
-        return role;
+        //System.out.println(this.role);
+        return this.role;
     }
 
     public void fillTextField() {
-        view.setUsername(getSelUsername());
+        view.setUsername(this.username);
         if (getSelRole().equals("Planner")) {
-            view.setPassword(modelpl.findUsername(getSelUsername()).getPassword());
-        } else { //se sei maintainer
-            view.setPassword(modelma.findUsername(getSelUsername()).getPassword());
+            view.setPassword(this.modelpl.getPassword());
+        } else if (getSelRole().equals("Maintainer")){ //se sei maintainer
+            view.setPassword(this.modelma.getPassword());
             view.showMaintainerStuff(true);
         }
     }
@@ -104,11 +109,6 @@ public class UserModifyController {
         @Override
         public void actionPerformed(ActionEvent e) {
             view.setVisible(false);
-            prev = new UsersListView();
-            AdminHomeView viewhome = new AdminHomeView();
-            AdminHomeController viewcontroller = new AdminHomeController(viewhome, null, "admin");
-            UsersListController prevController = new UsersListController(viewhome, prev, null);
-            prevController.populateTables();
             prev.setVisible(true);
         }
     }
@@ -125,7 +125,7 @@ public class UserModifyController {
             if (selezionato != -1) {
                 String descrizione = table.getValueAt(selezionato, 0).toString();
                 int id = skill.findSkill(descrizione).getIdSkill();
-                if (m.removeCompetence(username, id)) {
+                if (m.removeCompetence(modelma.getUsername(), id)) {
                     model.removeRow(selezionato);
                 }
             } else {
@@ -139,6 +139,7 @@ public class UserModifyController {
         @Override
         public void actionPerformed(ActionEvent e) {
             view.showAddComp(true);
+            populateCompetences();
         }
     }
 
@@ -151,9 +152,9 @@ public class UserModifyController {
             int id = skill.findSkill(description).getIdSkill();
             if (description == "Select a skill") {
                 view.displayErrorMessage("Select a skill!");
-            } else if (modelma.hasCompetences(username, id)) {
+            } else if (modelma.hasCompetences(modelma.getUsername(), id)) {
                 view.displayErrorMessage("The Maintainer has already this skill!");
-            } else if (modelma.addCompetence(username, id)) {
+            } else if (modelma.addCompetence(modelma.getUsername(), id)) {
                 String[] newrow = {description};
                 view.getModeltab().addRow(newrow);
                 view.displayErrorMessage("Skill has been inserted succesfully!");
@@ -167,18 +168,26 @@ public class UserModifyController {
         for (int i = 0; i < list.size(); i++) {
             String competenza = list.get(i).toString();
             view.getjComboBox1().addItem(competenza);
-            System.out.println(competenza);
+            //System.out.println(competenza);
         }
     }
 
     public void populateCompetences(String username) {
         SkillModel skill = new SkillModel(0, "");
         List<SkillModel> list = skill.listSkillsMA(username);
-        for (int i = 0; i < list.size(); i++) {
+        /*for (int i = 0; i < list.size(); i++) {
             String descrizioneCompetenza = list.get(i).getDescription();
+            System.out.println(descrizioneCompetenza);
             String idcompetenza = String.valueOf(list.get(i).getIdSkill());
             String[] row = {descrizioneCompetenza};
             view.getModeltab().addRow(row);
+            
+        }*/
+        for(SkillModel sk: list){
+            String descr=sk.getDescription();
+            String[] row = {descr};
+            view.getModeltab().addRow(row);
+            System.out.println(descr);
         }
     }
 }

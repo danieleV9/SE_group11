@@ -8,8 +8,6 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import model.AdminModel;
-import model.MaintainerModel;
-import model.PlannerModel;
 import model.ProcedureModel;
 import view.AdminHomeView;
 import view.AdminSkillView;
@@ -23,14 +21,14 @@ import view.UsersListView;
  */
 public class AdminHomeController {
 
-    private AdminHomeView view;
-    private AdminModel model;
-    private final String usernameTravel;
+    private final AdminHomeView view;
+    private final AdminModel model;
 
-    public AdminHomeController(AdminHomeView view, AdminModel model, String usernameTravel) {
+
+    public AdminHomeController(AdminHomeView view, AdminModel model) {
         this.view = view;
         this.model = model;
-        this.usernameTravel = usernameTravel;
+        this.view.setLabel1(model.getUsername());
         this.view.addUserListener(new UserListener());
         this.view.addAccessListener(new AccessListener());
         this.view.addMaterialListener(new MaterialListener());
@@ -39,11 +37,6 @@ public class AdminHomeController {
         this.view.addCompetencesListener(new CompetencesListener());
         this.view.addMaintenanceListener(new MaintenanceListener());
         this.view.addLogoutListener(new LogoutListener());
-        this.view.setLabel1(usernameTravel);
-    }
-
-    public String getUsernameTravel() {
-        return usernameTravel;
     }
 
     public class UserListener implements ActionListener {
@@ -119,12 +112,10 @@ public class AdminHomeController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            LoginView login = new LoginView();
-            PlannerModel p = new PlannerModel("", "");
-            MaintainerModel m = new MaintainerModel("", "");
+            LoginView login= new LoginView();
+            LoginController loginController= new LoginController(login);
             /*quando creiamo la nuova view dobbiamo istanziare anche il relativo controller per mantenere
             il riferimento alla view appena creata*/
-            LoginController controllerLogin = new LoginController(login, model, p, m);
             view.setVisible(false);
         }
     }

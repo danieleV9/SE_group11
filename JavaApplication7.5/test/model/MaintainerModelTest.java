@@ -5,6 +5,7 @@
  */
 package model;
 
+import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,13 +24,27 @@ public class MaintainerModelTest {
     private static MaintainerModel instance;
     private static Connection connection;
 
+    
+    public Connection getConnection() {
+        return connection = ConnectionDatabase.getConnection();
+    }
+    
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
+    }
+    
     public MaintainerModelTest() {
     }
 
     @Before
     public void setUp() {
         instance = new MaintainerModel("", "");
-        connection = instance.getConnection();
+        connection = this.getConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -42,7 +57,7 @@ public class MaintainerModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            instance.closeConnection();
+            this.closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -52,16 +67,15 @@ public class MaintainerModelTest {
      * Test of findMaintainer method, of class MaintainerModel.
      */
     @Test
-    public void testFindMaintainer_3args() { //supponendo che esista
-        System.out.println("findMaintainer_3args");
+    public void testFindMaintainer_2args() { //so che non esiste questo utente
+        System.out.println("findMaintainer_2args");
         String username = "jennifer";
-        String password = "cutolo";
-        String role = "Maintainer";
-        MaintainerModel expResult = new MaintainerModel(username, password);
-        MaintainerModel result = null;
+        String password = "cutolooo"; 
+        MaintainerModel expResult = null;
+        MaintainerModel result = null; //questo utente non esiste per cui mi aspetto null
         try {
-            result = (MaintainerModel) instance.findUser(username, password, role);
-            assertEquals("Maintainer non trovato", expResult.toString(), result.toString()); //deve stampare messaggio se test fallisce
+            result = (MaintainerModel) instance.findUser(username, password);
+            assertEquals(expResult, result); 
         } catch (Exception ex) {
         }
     }
@@ -70,20 +84,36 @@ public class MaintainerModelTest {
      * Test of findMaintainer method, of class MaintainerModel.
      */
     @Test(expected = AssertionError.class)
-    public void testFindMaintainer_3args1() {
-        System.out.println("findMaintainer_3args1");
+    public void testFindMaintainer_2args1() {
+        System.out.println("findMaintainer_2args1");
         String username = "";
         String password = "maintainer6";
-        String role = "Maintainer";
         MaintainerModel expResult = new MaintainerModel(username, password);
-        System.out.println(expResult.toString());
         MaintainerModel result = null;
         try {
-            result = (MaintainerModel) instance.findUser(username, password, role);
+            result = (MaintainerModel) instance.findUser(username, password);
         } catch (Exception ex) {
             Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         assertEquals(expResult.toString(), result);
+    }
+    
+    /**
+     * Test of findMaintainer method, of class MaintainerModel.
+     */
+    @Test
+    public void testFindMaintainer_2args2() {
+        System.out.println("findMaintainer_2args2");
+        String username = "maintainer6";
+        String password = "maintainer6";
+        MaintainerModel expResult = new MaintainerModel(username, password);
+        MaintainerModel result = null;
+        try {
+            result = (MaintainerModel) instance.findUser(username, password);
+        } catch (Exception ex) {
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertEquals(expResult.toString(), result.toString());
     }
 
     /**
@@ -185,10 +215,10 @@ public class MaintainerModelTest {
     @Test
     public void testCreateMaintainer3() {
         System.out.println("createMaintainer3");
-        String username = "tizio";
-        String password = "rizio";
+        String username = "maintainer6";
+        String password = "maintainer6";
         boolean result = instance.createUser(username, password);
-        assertFalse(result);
+        assertFalse(result); //sarà false perchè maintainer6 esiste già
     }
 
     /**
@@ -200,7 +230,7 @@ public class MaintainerModelTest {
         String username = "io";
         String password = "no";
         boolean result = instance.createUser(username, password);
-        assertTrue(result);
+        assertTrue(result); //sarà true perchè non siste già un  maintainer con questo username
     }
 
     /**
@@ -211,7 +241,7 @@ public class MaintainerModelTest {
         System.out.println("updateMainatainerPassword");
         String username = "";
         String newpass = "cfgvhjnk";
-        boolean expResult = false;
+        boolean expResult = false; //perchè non posso modificare un utente con username vuoto
         boolean result = instance.updateUserPassword(username, newpass);
         assertEquals(expResult, result);
     }
@@ -222,22 +252,22 @@ public class MaintainerModelTest {
     @Test
     public void testUpdateMainatainerPassword1() {
         System.out.println("updateMainatainerPassword1");
-        String username = "tizio";
-        String newpass = "cfgvhjnk";
+        String username = "Maintainer1";
+        String newpass = "ciao!";
         boolean result = instance.updateUserPassword(username, newpass);
-        assertTrue(result);
+        assertTrue(result); //perchè questo Maintainer esiste e la modifica andrà a buon fine, la nuova pass è anche diversa dalla precedente
     }
 
     @Test
     public void testAddCompetence1() {
         System.out.println("addCompetence");
-        boolean result = instance.addCompetence("main", 23); //aggiungo una competenza che non ha 
+        boolean result = instance.addCompetence("main", 2); //aggiungo una competenza che non ha 
         assertEquals(true, result);
     }
      @Test
     public void testAddCompetence2() {
         System.out.println("addCompetence");
-        boolean result = instance.addCompetence("main", 0); //provo ad aggiungere una competenza che  ha già
+        boolean result = instance.addCompetence("main", 1); //provo ad aggiungere una competenza che  ha già
         assertEquals(false, result);
     }
     /**
@@ -246,13 +276,13 @@ public class MaintainerModelTest {
     @Test
     public void testHasCompetenceSI () {
         System.out.println("hasCompetencesSI");
-        assertEquals(true, instance.hasCompetences("main", 0)); 
+        assertEquals(true, instance.hasCompetences("main", 1)); 
     }
     
      @Test
     public void testHasCompetenceNO () {
         System.out.println("hasCompetencesNO");
-        assertEquals(false,instance.hasCompetences("main", 9) ); 
+        assertEquals(false,instance.hasCompetences("main", 6) ); 
     }
 
     /**
@@ -261,12 +291,12 @@ public class MaintainerModelTest {
     @Test
     public void testRemoveCompetence1() {
         System.out.println("removeCompetence1");
-        assertEquals(true, instance.hasCompetences("main", 0)); //provo a rimuovere una competenza che ha. 
+        assertEquals(true, instance.hasCompetences("main", 1)); //provo a rimuovere una competenza che ha. 
     }
     
     @Test
     public void testRemoveCompetence2(){
         System.out.println("removeCompetence2");
-        assertEquals(false, instance.hasCompetences("main",9)); //provo a rimuovere una competenza che non ha.
+        assertEquals(false, instance.hasCompetences("main",6)); //provo a rimuovere una competenza che non ha.
     }
 }

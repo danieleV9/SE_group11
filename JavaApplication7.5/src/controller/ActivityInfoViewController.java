@@ -24,10 +24,12 @@ public class ActivityInfoViewController {
 
     private MaintenanceActivityModel ma;
     private ActivityInfoView view;
+    PlannerActivityView prev;
 
-    public ActivityInfoViewController(MaintenanceActivityModel ma, ActivityInfoView view) {
+    public ActivityInfoViewController(PlannerActivityView prev,MaintenanceActivityModel ma, ActivityInfoView view) {
         this.ma = ma;
         this.view = view;
+        this.prev=prev;
         this.view.addBackListener(new BackListener());//tasto indietro
         this.view.addUpdateListener(new UpdateListener()); //tasto per aggiornare note
         this.view.addForwardListener(new ForwardListener()); //tasto per validare attività e andare avanti
@@ -59,10 +61,7 @@ public class ActivityInfoViewController {
     public class BackListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
-            view.setVisible(false);
-            PlannerActivityView listView = new PlannerActivityView();
-            PlannerActivityViewController controller1 = new PlannerActivityViewController(ma, listView);
-            listView.setVisible(true);
+            prev.setVisible(true);
             view.setVisible(false);
         }
     }

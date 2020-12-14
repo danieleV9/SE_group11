@@ -130,9 +130,7 @@ public class AdminSkillController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            AdminHomeView ad2 = new AdminHomeView();
-            AdminHomeController contr = new AdminHomeController(ad2, model, "admin");
-            ad2.setVisible(true);
+            prev.setVisible(true);
             view.setVisible(false);
         }
     }
@@ -201,9 +199,7 @@ public class AdminSkillController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            AdminHomeView ad2 = new AdminHomeView();
-            AdminHomeController contr = new AdminHomeController(ad2, model, "admin");
-            ad2.setVisible(true);
+            prev.setVisible(true);
             view.setVisible(false);
         }
     }

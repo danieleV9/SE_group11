@@ -5,6 +5,7 @@
  */
 package model;
 
+import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,6 +22,19 @@ public class PlannerModelTest {
 
     private static PlannerModel instance;
     private static Connection connection;
+    
+    public Connection getConnection() {
+        return connection = ConnectionDatabase.getConnection();
+    }
+    
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
+    }
 
     public PlannerModelTest() {
     }
@@ -28,7 +42,7 @@ public class PlannerModelTest {
     @Before
     public void setUp() {
         instance = new PlannerModel("", "");
-        connection = instance.getConnection();
+        connection = this.getConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -41,7 +55,7 @@ public class PlannerModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            instance.closeConnection();
+            this.closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -51,13 +65,12 @@ public class PlannerModelTest {
      * Test of findPlanner method, of class PlannerModel.
      */
     @Test
-    public void testFindPlanner_3args() throws Exception {
+    public void testFindPlanner_2args() throws Exception {
         System.out.println("findPlanner");
         String username = "";
         String password = "";
-        String role = "";
         PlannerModel expResult = null;
-        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password);
         assertNull(result);
     }
 
@@ -65,41 +78,12 @@ public class PlannerModelTest {
      * Test of findPlanner method, of class PlannerModel.
      */
     @Test
-    public void testFindPlanner_3args1() throws Exception {
-        System.out.println("findPlanner1");
-        String username = "";
-        String password = "";
-        String role = "System Administrator";
-        PlannerModel expResult = null;
-        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
-        assertNull(result);
-    }
-
-    /**
-     * Test of findPlanner method, of class PlannerModel.
-     */
-    @Test
-    public void testFindPlanner_3args2() throws Exception {
-        System.out.println("findPlanner2");
-        String username = "";
-        String password = "";
-        String role = "Maintainer";
-        PlannerModel expResult = null;
-        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
-        assertNull(result);
-    }
-
-    /**
-     * Test of findPlanner method, of class PlannerModel.
-     */
-    @Test
-    public void testFindPlanner_3args3() throws Exception {
+    public void testFindPlanner_2args3() throws Exception {
         System.out.println("findPlanner3");
         String username = "Gabriella";
         String password = "";
-        String role = "Planner";
         PlannerModel expResult = null;
-        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password);
         assertNull(result);
     }
 
@@ -107,13 +91,12 @@ public class PlannerModelTest {
      * Test of findPlanner method, of class PlannerModel.
      */
     @Test(expected = AssertionError.class)
-    public void testFindPlanner_3args4() throws Exception {
+    public void testFindPlanner_2args4() throws Exception {
         System.out.println("findPlanner4");
         String username = "";
         String password = "stabile95";
-        String role = "Planner";
         PlannerModel expResult = null;
-        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password);
         assertNotNull(result);
     }
 
@@ -121,15 +104,13 @@ public class PlannerModelTest {
      * Test of findPlanner method, of class PlannerModel.
      */
     @Test(expected = AssertionError.class)
-    public void testFindPlanner_3args5() throws Exception {
+    public void testFindPlanner_2args5() throws Exception {
         System.out.println("findPlanner5");
-        //addPM();
         String username = "Benedetta";
         String password = "Russo98";
-        String role = "Planner";
         PlannerModel expResult = new PlannerModel("Benedetta", "Russo98");
-        PlannerModel result = (PlannerModel) instance.findUser(username, password, role);
-        assertEquals(expResult, result);
+        PlannerModel result = (PlannerModel) instance.findUser(username, password);
+        assertEquals(expResult.toString(), result.toString());
     }
 
     /**

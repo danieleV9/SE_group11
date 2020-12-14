@@ -7,8 +7,6 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import model.AdminModel;
-import model.MaintainerModel;
 import model.MaintenanceActivityModel;
 import model.PlannerModel;
 import view.LoginView;
@@ -28,6 +26,7 @@ public class PlannerHomeController {
     public PlannerHomeController(PlannerHomeView view, PlannerModel model) {
         this.view = view;
         this.model = model;
+        this.view.setLabel1(model.getUsername());
         this.view.CreateActivityListener(new CreateActivityListener());
         this.view.ExitListener(new ExitListener());
         this.view.ViewListener(new ViewListener());
@@ -49,11 +48,9 @@ public class PlannerHomeController {
         @Override
         public void actionPerformed(ActionEvent e) {
             LoginView login = new LoginView();
-            AdminModel a = new AdminModel("", "");
-            MaintainerModel m = new MaintainerModel("", "");
             /*quando creiamo la nuova view dobbiamo istanziare anche il relativo controller per mantenere
             il riferimento alla view appena creata*/
-            LoginController controllerLogin = new LoginController(login, a, model, m);
+            LoginController controllerLogin = new LoginController(login);
             view.setVisible(false);
 
         }
@@ -65,7 +62,7 @@ public class PlannerHomeController {
         public void actionPerformed(ActionEvent e) {
             PlannerActivityView ad1 = new PlannerActivityView();
             MaintenanceActivityModel ma = new MaintenanceActivityModel();
-            PlannerActivityViewController pv = new PlannerActivityViewController(ma, ad1);
+            PlannerActivityViewController pv = new PlannerActivityViewController(view,ma, ad1);
             ad1.setVisible(true);
             view.setVisible(false);
         }

@@ -5,8 +5,7 @@
  */
 package dao;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+
 import model.UserModel;
 
 /**
@@ -15,9 +14,6 @@ import model.UserModel;
  */
 public interface UserDAO {
 
-    public abstract UserModel findUser(String username, String password, String role) throws Exception;
+    public abstract UserModel findUser(String username, String password) throws Exception;
 
-    public abstract Connection getConnection();
-
-    public abstract void closeConnection() throws SQLException;
 }

@@ -38,34 +38,42 @@ public class SkillModel {
     }
 
     public List<SkillModel> listSkills() {
+        SkillDAO dao= new SkillDAO();
         List<SkillModel> list = new ArrayList<>();
-        list = SkillDAO.listSkills();
+        list = dao.listSkills();
         return list;
     }
 
     public List<SkillModel> listSkillsMA(String username) {
+        SkillDAO dao= new SkillDAO();
         List<SkillModel> list = new ArrayList<>();
-        return SkillDAO.listSkillsMA(username);
+        list=dao.listSkillsMA(username);
+        return list;
     }
 
     public boolean deleteSkill(int idSkill) {
-        return SkillDAO.deleteSkill(idSkill);
+        SkillDAO dao= new SkillDAO();
+        return dao.deleteSkill(idSkill);
     }
 
     public boolean modifySkill(int idSkill, String descrizione) {
-        return SkillDAO.modifySkill(idSkill, descrizione);
+        SkillDAO dao= new SkillDAO();
+        return dao.modifySkill(idSkill, descrizione);
     }
 
     public boolean insertSkill(String description) {
-        return SkillDAO.insertSkill(description);
+        SkillDAO dao= new SkillDAO();
+        return dao.insertSkill(description);
     }
 
     public SkillModel findSkill(int id) {
-        return SkillDAO.findSkill(id);
+        SkillDAO dao= new SkillDAO();
+        return dao.findSkill(id);
     }
 
     public SkillModel findSkill(String description) {
-        return SkillDAO.findSkill(description);
+        SkillDAO dao= new SkillDAO();
+        return dao.findSkill(description);
     }
 
     @Override
@@ -94,12 +102,5 @@ public class SkillModel {
         return true;
     }
 
-    public Connection getConnection() {
-        return SkillDAO.getConnection();
-    }
-
-    public void closeConnection() {
-        SkillDAO.closeConnection();
-    }
 
 }

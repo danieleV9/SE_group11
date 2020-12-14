@@ -156,7 +156,7 @@ public class UsersListController {
                 viewmod.setVisible(true);
                 controllermod.fillTextField();
                 controllermod.populateCompetences(username);
-                controllermod.populateCompetences();
+                //controllermod.populateCompetences();
             } else if (selezionatopl != -1) {
                 selezionatoma = -1;
                 role = "Planner";

@@ -24,12 +24,14 @@ import view.PlannerHomeView;
  */
 public class PlannerActivityViewController {
 
-    private MaintenanceActivityModel ma;
-    private PlannerActivityView view;
+    private final MaintenanceActivityModel ma;
+    private final PlannerActivityView view;
+    private final PlannerHomeView prev;
 
-    public PlannerActivityViewController(MaintenanceActivityModel ma, PlannerActivityView view) {
+    public PlannerActivityViewController(PlannerHomeView prev,MaintenanceActivityModel ma, PlannerActivityView view) {
         this.ma = ma;
         this.view = view;
+        this.prev=prev;
         this.view.addBackListener(new BackListener()); //tasto indietro
         this.view.addDeleteListener(new DeleteListener()); //tasto delete
         this.view.addInfoListener(new InfoListener()); //tasto visualizzainfo
@@ -65,7 +67,7 @@ public class PlannerActivityViewController {
                 int id = Integer.valueOf(table.getValueAt(selezionato, 1).toString());//id dell'attività da visualizzare
                 MaintenanceActivityModel mo = ma.viewActivity(id);
                 ActivityInfoView vi = new ActivityInfoView(); //passa a nuova interfaccia
-                ActivityInfoViewController controller2 = new ActivityInfoViewController(mo, vi);
+                ActivityInfoViewController controller2 = new ActivityInfoViewController(view,mo, vi);
                 vi.setVisible(true);
                 view.setVisible(false);
             }
@@ -77,10 +79,7 @@ public class PlannerActivityViewController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            PlannerHomeView pv = new PlannerHomeView();
-            PlannerModel pm = new PlannerModel("", "");
-            PlannerHomeController phc = new PlannerHomeController(pv, pm);
-            pv.setVisible(true);
+            prev.setVisible(true);
             view.setVisible(false);
         }
     }

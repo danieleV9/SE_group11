@@ -5,6 +5,7 @@
  */
 package model;
 
+import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -20,6 +21,19 @@ public class AdminModelTest {
 
     private static AdminModel instance;
     private static Connection connection;
+    
+    public Connection getConnection() {
+        return connection = ConnectionDatabase.getConnection();
+    }
+    
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
+    }
 
     public AdminModelTest() {
     }
@@ -27,7 +41,7 @@ public class AdminModelTest {
     @Before
     public void setUp() {
         instance = new AdminModel("", "");
-        connection = instance.getConnection();
+        connection =this.getConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -40,11 +54,12 @@ public class AdminModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            instance.closeConnection();
+            this.closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 
     /**
      * Test of findAdmin method, of class AdminModel.
@@ -54,9 +69,8 @@ public class AdminModelTest {
         System.out.println("findAdmin");
         String username = "";
         String password = "";
-        String role = "Maintainer";
         AdminModel expResult = null;
-        AdminModel result = (AdminModel) instance.findUser(username, password, role);
+        AdminModel result = (AdminModel) instance.findUser(username, password);
         assertEquals(expResult, result);
 
     }
@@ -68,40 +82,23 @@ public class AdminModelTest {
     public void testFindAdmin1() throws Exception {
         System.out.println("findAdmin1");
         String username = "";
-        String password = "";
-        String role = "Planner";
+        String password = "carlox";
         AdminModel expResult = null;
-        AdminModel result = (AdminModel) instance.findUser(username, password, role);
+        AdminModel result = (AdminModel) instance.findUser(username, password);
         assertEquals(expResult, result);
-
     }
-
+    
     /**
      * Test of findAdmin method, of class AdminModel.
      */
     @Test
     public void testFindAdmin2() throws Exception {
         System.out.println("findAdmin2");
-        String username = "";
-        String password = "carlox";
-        String role = "System Administrator";
-        AdminModel expResult = null;
-        AdminModel result = (AdminModel) instance.findUser(username, password, role);
-        assertEquals(expResult, result);
-
+        String username = "admin1";
+        String password = "admin1";
+        AdminModel expResult = new AdminModel("admin1","admin1");
+        AdminModel result = (AdminModel) instance.findUser(username, password);
+        assertEquals(expResult.toString(), result.toString());
     }
 
-    /**
-     * Test of findAdmin method, of class AdminModel.
-     */
-    @Test
-    public void testFindAdmin3() throws Exception {
-        System.out.println("findAdmin3");
-        String username = "";
-        String password = "carlox";
-        String role = "System Administrator";
-        AdminModel expResult = null;
-        AdminModel result = (AdminModel) instance.findUser(username, password, role);
-        assertEquals(expResult, result);
-    }
 }

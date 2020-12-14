@@ -20,10 +20,6 @@ public class PlannerHomeView extends javax.swing.JFrame {
         initComponents();
     }
 
-    public PlannerHomeView(String username) {
-        initComponents();
-        jLabel1.setText("Welcome to your area " + username);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -187,5 +183,9 @@ public class PlannerHomeView extends javax.swing.JFrame {
 
     public void ViewListener(ActionListener listener) {
         view.addActionListener(listener);
+    }
+    
+    public void setLabel1(String s) {
+        jLabel1.setText("Welcome to your area, " + s);
     }
 }

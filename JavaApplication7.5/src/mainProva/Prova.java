@@ -25,10 +25,7 @@ public class Prova {
         // TODO code application logic here
         LoginView login = new LoginView();
         UsersListView users = new UsersListView();
-        AdminModel admin = new AdminModel("", "");
-        MaintainerModel maintainer = new MaintainerModel("", "");
-        PlannerModel planner = new PlannerModel("", "");
-        LoginController contr = new LoginController(login, admin, planner, maintainer);
+        LoginController contr = new LoginController(login);
 
     }
 

@@ -5,6 +5,7 @@
  */
 package model;
 
+import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,11 +22,24 @@ public class SkillModelTest {
 
     private static SkillModel instance;
     private static Connection connection;
+    
+    public Connection getConnection() {
+        return connection = ConnectionDatabase.getConnection();
+    }
+    
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
+    }
 
     @Before
     public void setUp() {
         instance = new SkillModel(0, "");
-        connection = instance.getConnection();
+        connection = this.getConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -38,7 +52,7 @@ public class SkillModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            instance.closeConnection();
+            this.closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }

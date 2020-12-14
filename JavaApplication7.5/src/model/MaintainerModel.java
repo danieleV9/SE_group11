@@ -6,7 +6,6 @@
 package model;
 
 import dao.MaintainerDAO;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +23,8 @@ public class MaintainerModel extends EmployeeModel {
     }
 
     @Override
-    public UserModel findUser(String username, String password, String role) throws Exception {
-        MaintainerModel ad = (MaintainerModel) dao.findUser(username, password, role);
+    public UserModel findUser(String username, String password) throws Exception {
+        MaintainerModel ad = (MaintainerModel) dao.findUser(username, password);
         return ad;
     }
 
@@ -81,14 +80,10 @@ public class MaintainerModel extends EmployeeModel {
         list = (List<MaintainerModel>) dao.listMaintainers();
         return list;
     }
-
+    
     @Override
-    public Connection getConnection() {
-        return dao.getConnection();
+    public String toString() {
+        return "MaintainerModel{" + super.toString()+'}';
     }
 
-    @Override
-    public void closeConnection() {
-        dao.closeConnection();
-    }
 }

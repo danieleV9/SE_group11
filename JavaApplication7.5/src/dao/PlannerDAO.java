@@ -22,19 +22,20 @@ import model.UserModel;
  */
 public class PlannerDAO implements EmployeeDAO {
 
-    private Connection con = getConnection();
+    private Connection con;
     private static PreparedStatement pst;
     private static ResultSet rs;
     private static Statement st;
     private String query;
 
     @Override
-    public UserModel findUser(String username, String password, String role) {
+    public UserModel findUser(String username, String password) {
         if (!usernameExists(username)) {
             return null; //se l'username non esiste
         }
-        if (role.equalsIgnoreCase("Planner") && !username.equals("") && !password.equals("")) {
+        if (!username.equals("") && !password.equals("")) {
             try {
+                con = ConnectionDatabase.getConnection();
                 query = "select * from pianificatore where usernamepl=? and passwordpl=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
@@ -44,9 +45,10 @@ public class PlannerDAO implements EmployeeDAO {
                     String user = rs.getString("usernamepl");
                     String pass = rs.getString("passwordpl");
                     PlannerModel pl = new PlannerModel(user, pass);
-                    //con.close();
+                   // con.close();
                     return pl;
                 } else {
+                   // con.close();
                     return null;
                 }
             } catch (SQLException ex) {
@@ -68,6 +70,7 @@ public class PlannerDAO implements EmployeeDAO {
         }
         if (!username.equals("")) {
             try {
+                con = ConnectionDatabase.getConnection();
                 query = "select * from pianificatore where usernamepl=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
@@ -75,12 +78,11 @@ public class PlannerDAO implements EmployeeDAO {
                 if (rs.next()) {
                     String user = rs.getString("usernamepl");
                     String pass = rs.getString("passwordpl");
-                    PlannerModel pl = new PlannerModel(user, pass);
+                    PlannerModel ma = new PlannerModel(user, pass);
                     //con.close();
-                    return pl;
+                    return ma;
                 }
                 //con.close();
-
             } catch (SQLException ex) {
                 System.out.println("" + ex);
                 return null;
@@ -97,6 +99,7 @@ public class PlannerDAO implements EmployeeDAO {
         }
         try {
             if (!usernameExists(username)) { //se username non è già utilizzato
+                con = ConnectionDatabase.getConnection();
                 query = "insert into pianificatore(usernamepl, passwordpl) values (?,?)";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
@@ -107,6 +110,7 @@ public class PlannerDAO implements EmployeeDAO {
                 //con.close();
                 return true;// "Planner creato con successo";
             } else {
+                //con.close();
                 return false; //"Username già utilizzato";
             }
         } catch (SQLException ex) {
@@ -124,6 +128,7 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            con = ConnectionDatabase.getConnection();
             query = "update pianificatore set passwordpl=? where usernamepl=?";
             pst = con.prepareStatement(query);
             pst.setString(2, username);
@@ -140,6 +145,7 @@ public class PlannerDAO implements EmployeeDAO {
     @Override
     public boolean usernameExists(String username) {// in usernames ci sono tutti gli username utilizzati
         try {
+            con = ConnectionDatabase.getConnection();
             query = "select count(*) from usernames where username=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
@@ -169,6 +175,7 @@ public class PlannerDAO implements EmployeeDAO {
     public List<PlannerModel> listPlanners() {
         List<PlannerModel> list = new ArrayList<>();
         try {
+            con = ConnectionDatabase.getConnection();
             query = "select * from pianificatore";
             st = con.createStatement();
             rs = st.executeQuery(query);
@@ -179,7 +186,7 @@ public class PlannerDAO implements EmployeeDAO {
                 list.add(planner);
             }
             //con.close();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("" + ex);
         }
         return list;
@@ -194,6 +201,7 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            con = ConnectionDatabase.getConnection();
             query = "delete from pianificatore where usernamepl=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
@@ -206,18 +214,5 @@ public class PlannerDAO implements EmployeeDAO {
         }
     }
 
-    @Override
-    public Connection getConnection() {
-        return con = ConnectionDatabase.getConnection();
-    }
 
-    @Override
-    public void closeConnection() {
-        try {
-            con.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
 }

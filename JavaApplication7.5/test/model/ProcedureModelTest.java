@@ -5,6 +5,7 @@
  */
 package model;
 
+import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,19 @@ public class ProcedureModelTest {
 
     private ProcedureModel instance;
     private static Connection connection;
+    
+    public Connection getConnection() {
+        return connection = ConnectionDatabase.getConnection();
+    }
+    
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
+            System.err.println(e.getMessage());
+        }
+    }
 
     public ProcedureModelTest() {
         instance = new ProcedureModel("", "");
@@ -32,7 +46,7 @@ public class ProcedureModelTest {
     @Before
     public void setUp() {
         instance = new ProcedureModel("", "");
-        connection = instance.getConnection();
+        connection = this.getConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -45,7 +59,7 @@ public class ProcedureModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            instance.closeConnection();
+            this.closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }

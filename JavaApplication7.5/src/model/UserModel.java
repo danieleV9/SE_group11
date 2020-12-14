@@ -6,7 +6,7 @@
 package model;
 
 import dao.UserDAO;
-import java.sql.Connection;
+
 
 /**
  *
@@ -39,15 +39,11 @@ public abstract class UserModel {
         this.password = password;
     }
 
-    public abstract UserModel findUser(String username, String password, String role) throws Exception;
+    public abstract UserModel findUser(String username, String password) throws Exception;
 
     @Override
     public String toString() {
-        return "UserModel{" + "username=" + username + ", password=" + password + '}';
+        return "username=" + username + ", password=" + password ;
     }
-
-    public abstract Connection getConnection();
-
-    public abstract void closeConnection();
 
 }

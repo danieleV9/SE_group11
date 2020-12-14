@@ -6,7 +6,6 @@
 package model;
 
 import dao.AdminDAO;
-import java.sql.Connection;
 
 /**
  *
@@ -22,18 +21,10 @@ public class AdminModel extends UserModel {
     }
 
     @Override
-    public UserModel findUser(String username, String password, String role) throws Exception {
-        AdminModel ad = dao.findUser(username, password, role);
+    public UserModel findUser(String username, String password) throws Exception {
+        AdminModel ad = dao.findUser(username, password);
         return ad;
     }
 
-    @Override
-    public Connection getConnection() {
-        return dao.getConnection();
-    }
 
-    @Override
-    public void closeConnection() {
-        dao.closeConnection();
-    }
 }

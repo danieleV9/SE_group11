@@ -18,15 +18,16 @@ import connectionDB.ConnectionDatabase;
  */
 public class AdminDAO implements UserDAO {
 
-    private Connection con = getConnection();
+    private Connection con;
     private static PreparedStatement pst;
     private static ResultSet rs;
     private String query;
 
     @Override
-    public AdminModel findUser(String username, String password, String role) {
-        if (role.equalsIgnoreCase("System Administrator") && !username.equals("") && !password.equals("")) {
+    public AdminModel findUser(String username, String password) {
+        if (!username.equals("") && !password.equals("")) {
             try {
+                con = ConnectionDatabase.getConnection();
                 query = "select * from amministratore where usernamesa=? and passwordsa=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
@@ -48,18 +49,4 @@ public class AdminDAO implements UserDAO {
         return null;
     }
 
-    @Override
-    public Connection getConnection() {
-        return con = ConnectionDatabase.getConnection();
-    }
-
-    @Override
-    public void closeConnection() {
-        try {
-            con.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
 }
