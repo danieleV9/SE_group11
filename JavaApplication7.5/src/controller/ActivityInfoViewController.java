@@ -32,6 +32,7 @@ public class ActivityInfoViewController {
         this.view.addBackListener(new BackListener());//tasto indietro
         this.view.addUpdateListener(new UpdateListener()); //tasto per aggiornare note
         this.view.addForwardListener(new ForwardListener()); //tasto per validare attività e andare avanti
+        this.view.addOpenListener(new OpenListener());
         popolaInfo(ma);
     }
 
@@ -74,10 +75,26 @@ public class ActivityInfoViewController {
 
         }
     }
+    public class OpenListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ProcedureModel m = new ProcedureModel("","");
+            String nomeproc = view.getjTextField1().getText();
+            String path= m.getPath(nomeproc);
+                try {
+                    Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + path);
+                } catch (Exception ex) {
+                    System.out.println("errore nell'apertura file");
+                }
+            } 
+        }
+    
 
     void popolaInfo(MaintenanceActivityModel a) {
         view.getActivityText().setText(a.getId_Activity() + " - " + a.getFabbrica() + " - " + a.getArea() + " - " + a.getTipology() + " - " + a.getEstimatedTime() + " min");
         view.getDescriptionArea().setText(a.getDescription());
+        view.getjTextField1().setText(a.getProcedura().getNomeProc());
         view.getNotesArea().setText(a.getWorkspaceNotes());
         SkillModel skill = new SkillModel(0, "");
         ProcedureModel proc = new ProcedureModel("","");

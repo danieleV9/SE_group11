@@ -45,7 +45,7 @@ public class MaintenanceActivityModel {
         this.Fabbrica = fabbrica;
     }
 
-    public MaintenanceActivityModel(int WeekNum, int id_Activity, String tipology, String description, String workspaceNotes, String area, int estimatedTime, String fabbrica) {
+    public MaintenanceActivityModel(int WeekNum, int id_Activity, String tipology, String description, String workspaceNotes, String area, int estimatedTime, String fabbrica,ProcedureModel proc) {
         this.WeekNum = WeekNum;
         this.id_Activity = id_Activity;
         this.description = description;
@@ -54,6 +54,7 @@ public class MaintenanceActivityModel {
         this.area = area;
         this.EstimatedTime = estimatedTime;
         this.Fabbrica = fabbrica;
+        this.procedura=proc;
     }
 
     public MaintenanceActivityModel() {
@@ -180,9 +181,9 @@ public class MaintenanceActivityModel {
         return dao.getAllActivity(numWeek);
     }
 
-    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible) {
+    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible,ProcedureModel proc) {
         ActivityDAO1 dao = new ActivityDAO1();
-        boolean ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible);
+        boolean ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible,proc);
         return ad;
     }
 

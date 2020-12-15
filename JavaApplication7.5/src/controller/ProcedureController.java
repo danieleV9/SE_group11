@@ -203,7 +203,7 @@ public class ProcedureController {
 
                 if (proc.deleteProcedure(procedura)) {
                     view.getModelTab().removeRow(selezionato);
-                }
+                } else view.displayErrorMessage("This procedure is assigned to an activity. Impossible delete");
             } else view.displayErrorMessage("Select a Procedure!");
         }
     }

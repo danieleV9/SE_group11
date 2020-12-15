@@ -1,9 +1,6 @@
 package mainProva;
 
 import controller.LoginController;
-import model.AdminModel;
-import model.MaintainerModel;
-import model.PlannerModel;
 import view.LoginView;
 import view.UsersListView;
 

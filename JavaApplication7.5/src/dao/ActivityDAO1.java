@@ -17,6 +17,7 @@ import java.util.List;
 import java.sql.Connection;
 import java.sql.SQLException;
 import model.MaintenanceActivityModel;
+import model.ProcedureModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -51,7 +52,10 @@ public class ActivityDAO1 {
                 String area = rs.getString("area");
                 String fabbrica = rs.getString("fabbrica");
                 int tempostimato = rs.getInt("tempostimato");
-                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica));
+                String nomeproc = rs.getString("nomeprocedura");
+                ProcedureModel proc = new ProcedureModel("","");
+                String path =proc.getPath(nomeproc);
+                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica,new ProcedureModel(nomeproc,path)));
             }
         } catch (SQLException ex) {
             System.out.println("errore");
@@ -81,7 +85,10 @@ public class ActivityDAO1 {
                 String area = rs.getString("area");
                 String fabbrica = rs.getString("fabbrica");
                 int tempostimato = rs.getInt("tempostimato");
-                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica));
+                String nomeproc = rs.getString("nomeprocedura");
+                ProcedureModel proc = new ProcedureModel("","");
+                String path =proc.getPath(nomeproc);
+                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica, new ProcedureModel(nomeproc,path)));
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -93,7 +100,7 @@ public class ActivityDAO1 {
         return list;
     }
 
-    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible) {
+    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible,ProcedureModel proc) {
         try {
             conn = ConnectionDatabase.getConnection();
             String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
@@ -108,12 +115,11 @@ public class ActivityDAO1 {
             pst.setString(6, area);
             pst.setNull(7, Types.NULL);
             pst.setString(8, tipology);
-            pst.setNull(9, Types.NULL);
+            pst.setString(9,proc.getNomeProc() );
             pst.setInt(10, time);
             pst.setString(11, description);
             pst.setNull(12, Types.NULL);
             pst.setNull(13, Types.NULL);
-
             pst.executeUpdate();
         } catch (SQLException ex) {
             //System.out.println("Errore nell'inserimento dell'attività");
@@ -141,8 +147,10 @@ public class ActivityDAO1 {
                 String area = rs.getString("area");
                 String fabbrica = rs.getString("fabbrica");
                 int tempostimato = rs.getInt("tempostimato");
-                //String procedura = rs.getString("nomeprocedura");
-                return new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica);
+                String nomeproc = rs.getString("nomeprocedura");
+                ProcedureModel proc = new ProcedureModel("","");
+                String path =proc.getPath(nomeproc);
+                return new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica,new ProcedureModel(nomeproc,path));
             }
         } catch (SQLException ex) {
             System.out.println("Errore");
