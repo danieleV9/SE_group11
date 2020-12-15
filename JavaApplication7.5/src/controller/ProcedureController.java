@@ -77,7 +77,7 @@ public class ProcedureController {
         public void actionPerformed(ActionEvent e) {
             JTable table = view.getjTable1();
             int selezionato = table.getSelectedRow();
-            if (selezionato != -1) {
+            if (selezionato != -1) {          
                 aggiornaLista(selezionato, table);
             } else {
                 view.displayErrorMessage("Select a procedure!");
@@ -100,37 +100,49 @@ public class ProcedureController {
         }
     }
 
+    //permette di aggiornare la tabella dopo l'aggiunta di una competenza ad una procedura
     public void aggiornaLista(int selezionato, JTable table) {
-
         SkillModel skill = new SkillModel(0, "");
         String description = view.getjComboBox1().getSelectedItem().toString();
         System.out.println(description);
         if ("Select".equals(description)) {
             view.displayErrorMessage("Select a skill !");
-        } else {
+        } 
+        else {
             int id = skill.findSkill(description).getIdSkill();
             String nomeprocedura = table.getValueAt(selezionato, 0).toString();
-            if (proc.addCompetence(nomeprocedura, id)) {
-                for (int i = view.getModelTab().getRowCount(); i > 0; i--) {
-                    view.getModelTab().removeRow(0);
-                }
-                populateTable();
+            if(proc.hasCompetence(nomeprocedura, id)==true){
+                view.displayErrorMessage("SKILL ALREADY ASSIGNED !");
                 view.getjComboBox1().setSelectedIndex(0);
             }
+            else{ System.out.println("skill non ancora assegnata");
+               if (proc.addCompetence(nomeprocedura, id)) {
+                    for (int i = view.getModelTab().getRowCount(); i > 0; i--) {
+                    view.getModelTab().removeRow(0);
+                    }
+                populateTable();
+                view.getjComboBox1().setSelectedIndex(0);
+                }
+            } 
         }
     }
-
+ 
+    //permette di aggiornare la tabella dopo l'eliminazione di una competenza ad una procedura
     public void aggiornaLista2(int selezionato, JTable table) {
 
         SkillModel skill = new SkillModel(0, "");
         String description = view.getjComboBox2().getSelectedItem().toString();
-        System.out.println(description);
+        //System.out.println(description);
         if ("Select".equals(description)) {
             view.displayErrorMessage("Select a skill !");
         } else {
             int id = skill.findSkill(description).getIdSkill();
             String nomeprocedura = table.getValueAt(selezionato, 0).toString();
-            if (proc.removeCompetence(nomeprocedura, id)) {
+            if(proc.hasCompetence(nomeprocedura, id)==false){
+                view.displayErrorMessage("The selected procedure doesn't have this skill");
+                view.getjComboBox2().setSelectedIndex(0);
+            }
+            else if (proc.removeCompetence(nomeprocedura, id)) {
                 for (int i = view.getModelTab().getRowCount(); i > 0; i--) {
                     view.getModelTab().removeRow(0);
                 }
@@ -192,7 +204,7 @@ public class ProcedureController {
                 if (proc.deleteProcedure(procedura)) {
                     view.getModelTab().removeRow(selezionato);
                 }
-            }
+            } else view.displayErrorMessage("Select a Procedure!");
         }
     }
 

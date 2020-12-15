@@ -28,6 +28,7 @@ public class ProcedureDao {
     private ResultSet rs;
     private PreparedStatement pst;
     private static SkillModel skill;
+   
 
     public List<ProcedureModel> getAllProcedures() {
         List<ProcedureModel> list = new ArrayList<>();
@@ -52,7 +53,12 @@ public class ProcedureDao {
     }
 
     public boolean addCompetence(String nomeprocedura, int id) {
-        try {
+      ProcedureModel proc = new ProcedureModel("","");
+      if(proc.hasCompetence(nomeprocedura, id)){
+          return false;
+      }
+      else {
+            try {
             con=ConnectionDatabase.getConnection();
             String query = "insert into competenze_proc(idcompetenza,nomeprocedura) values(?,?)";
             pst = con.prepareStatement(query);
@@ -67,6 +73,8 @@ public class ProcedureDao {
                 try { pst.close(); } catch (SQLException e) { }
                 try { con.close(); } catch (SQLException e) { }
             }
+      }      
+            
     }
 
     public boolean removeCompetence(String nomeprocedura, int id) {
@@ -210,5 +218,31 @@ public class ProcedureDao {
         return false;
     }
 
+    public boolean hasCompetence(String nomeprocedura, int idcompetenza){
+        String query="select count(*) from competenze_proc where nomeprocedura=? and idcompetenza=?";
+        
+        try{
+            con=ConnectionDatabase.getConnection();
+            pst = con.prepareStatement(query);
+            pst.setString(1,nomeprocedura);
+            pst.setInt(2,idcompetenza);
+            rs=pst.executeQuery();
+            if(rs.next()){
+               if(rs.getInt(1)==0){
+                   System.out.println("corrispondenza non trovata. risultato=0");
+                   return false;
+               }
+               else return true;
+            }
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+            return false;
+        }finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
+        return false;
+    } 
 
 }

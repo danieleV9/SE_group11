@@ -66,6 +66,10 @@ public class ProcedureModel {
     public boolean proceduraExists(String name) {
         return dao.proceduraExists(name);
     }
+    
+    public boolean hasCompetence(String nomeprocedura, int idcompetenza){
+        return dao.hasCompetence(nomeprocedura, idcompetenza);
+    }
 
 
 }

@@ -13,9 +13,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -41,6 +43,14 @@ public class ProcedureModelTest {
 
     public ProcedureModelTest() {
         instance = new ProcedureModel("", "");
+    }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
     }
 
     @Before
@@ -96,7 +106,7 @@ public class ProcedureModelTest {
     @Test
     public void testAddCompetence1() {
         System.out.println("AddCompetence1");
-        assertEquals(true, instance.addCompetence("proc2", 23)); //proc2 non ha già la competenza con id 23
+        assertEquals(true, instance.addCompetence("proc2", 29)); //proc2 non ha già la competenza con id 23
     }
     
    
@@ -208,6 +218,22 @@ public class ProcedureModelTest {
         String name = "proc2";
         assertEquals(true, instance.proceduraExists(name));
         
+    }
+
+    /**
+     * Test of hasCompetence method, of class ProcedureModel.
+     */
+    @Test
+    public void testHasCompetenceYES() {
+        System.out.println("hasCompetenceYES");
+        assertEquals(true, instance.hasCompetence("proc2", 1));
+       
+    }
+    @Test
+    public void testHasCompetenceNO() {
+        System.out.println("hasCompetenceNO");
+        assertEquals(false, instance.hasCompetence("proc2",22));
+       
     }
 
 }
