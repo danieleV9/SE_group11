@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.MaintenanceActivityModel;
-import model.PlannerModel;
 import view.ActivityInfoView;
 import view.PlannerActivityView;
 import view.PlannerHomeView;
@@ -52,6 +51,12 @@ public class PlannerActivityViewController {
                     DefaultTableModel model = view.getModelTab();
                     model.removeRow(selezionato);
                 }
+                else{
+                    view.displayErrorMessage("Cannot delete selected activity");
+                }
+            }
+            else{
+                view.displayErrorMessage("Select an activity");
             }
         }
     }
@@ -70,6 +75,9 @@ public class PlannerActivityViewController {
                 ActivityInfoViewController controller2 = new ActivityInfoViewController(view,mo, vi);
                 vi.setVisible(true);
                 view.setVisible(false);
+            }
+            else{
+                view.displayErrorMessage("Select an activity");
             }
         }
     }

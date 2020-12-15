@@ -7,7 +7,6 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import model.MaintainerModel;
 import model.MaintenanceActivityModel;
 import view.ActivityInfoView;
 import view.MaintainerAvailabilityView;
@@ -22,9 +21,9 @@ import model.SkillModel;
  */
 public class ActivityInfoViewController {
 
-    private MaintenanceActivityModel ma;
-    private ActivityInfoView view;
-    PlannerActivityView prev;
+    private final MaintenanceActivityModel ma;
+    private final ActivityInfoView view;
+    private final PlannerActivityView prev;
 
     public ActivityInfoViewController(PlannerActivityView prev,MaintenanceActivityModel ma, ActivityInfoView view) {
         this.ma = ma;
@@ -41,13 +40,12 @@ public class ActivityInfoViewController {
         @Override
         public void actionPerformed(ActionEvent e) {
             MaintainerAvailabilityView newView = new MaintainerAvailabilityView();
-            MaintainerModel m = new MaintainerModel("", "");
             MaintenanceActivityModel a = new MaintenanceActivityModel();
             int id = Integer.valueOf(view.getId().getText());
             a = a.viewActivity(id); //passo al controller l'attività con quell'id
             if (!a.assignedActivity(id)) {//se l'attività non è già stata assegnta 
                 System.out.println(a.toString());
-                MaintainerAvailabilityController controller = new MaintainerAvailabilityController(view, newView, a, m);
+                MaintainerAvailabilityController controller = new MaintainerAvailabilityController(view, newView, a);
                 controller.populateView();
                 newView.setVisible(true);
                 view.setVisible(false);

@@ -8,6 +8,9 @@ package view;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,11 +23,13 @@ public class UsersListView extends javax.swing.JFrame {
      * Creates new form UsersListView
      */
     private DefaultTableModel modeltab = new DefaultTableModel() {
+        @Override
         public boolean isCellEditable(int row, int column) {
             return false;//This causes all cells to be not editable
         }
     };
     private DefaultTableModel modeltab1 = new DefaultTableModel() {
+        @Override
         public boolean isCellEditable(int row, int column) {
             return false;//This causes all cells to be not editable
         }
@@ -418,25 +423,15 @@ public class UsersListView extends javax.swing.JFrame {
     public DefaultTableModel getTable1() {
         return this.modeltab1;
     }
-
-    public void addSelectedRowListener(MouseListener listener) { //planners
-        jTable1.addMouseListener(listener);
+    
+    public JTable getTablePlanner(){
+        return jTable1;
+    }
+    
+    public JTable getTableMaintainer(){
+        return jTable3;
     }
 
-    public void addSelectedRowListener1(MouseListener listener) { //maintainers
-        jTable3.addMouseListener(listener);
-    }
-
-    /*private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {​​​​​​​                                     
-     JTable source = (JTable)evt.getSource();
-            int row = source.rowAtPoint( evt.getPoint() );
-            int column = source.columnAtPoint( evt.getPoint() );
-            String s=source.getModel().getValueAt(row, column)+"";
-
-            JOptionPane.showMessageDialog(null, s);
-
-
-}​​​​​​​ */
     public void displayErrorMessage(String errorMessage) {
         JOptionPane.showMessageDialog(this, errorMessage);
     }
@@ -482,4 +477,10 @@ public class UsersListView extends javax.swing.JFrame {
         jButton1.addActionListener(listener);
     }
 
+    public JTabbedPane getTabbed(){
+        return jTabbedPane1;
+    }
+    public void addChangedListener(ChangeListener listener){
+        jTabbedPane1.addChangeListener(listener);
+    }
 }

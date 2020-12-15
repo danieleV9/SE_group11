@@ -30,18 +30,17 @@ import model.MaintenanceActivityModel;
 public class ActivityDAO1 {
 
     private List<MaintenanceActivityModel> listActivity;
-    private Connection conn = getConnection();
-    ;
+    private Connection conn;
     private Statement st;
     private ResultSet rs;
     private PreparedStatement pst;
-    private String query;
 
     public List<MaintenanceActivityModel> getAllActivity() {
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
+            conn = ConnectionDatabase.getConnection();
             st = conn.createStatement();
-            query = "select * from attivita_manutenzione order by settimana";
+            String query = "select * from attivita_manutenzione order by settimana";
             rs = st.executeQuery(query);
             while (rs.next()) {
                 int id = rs.getInt("idattivita");
@@ -56,14 +55,20 @@ public class ActivityDAO1 {
             }
         } catch (SQLException ex) {
             System.out.println("errore");
-        }
+            System.out.println(ex.getMessage());
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { st.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
         return list;
     }
 
     public List<MaintenanceActivityModel> getAllActivity(int numWeek) {
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
-            query = "select * from attivita_manutenzione where settimana=?";
+            conn = ConnectionDatabase.getConnection();
+            String query = "select * from attivita_manutenzione where settimana=?";
             pst = conn.prepareStatement(query);
             pst.setInt(1, numWeek);
             rs = pst.executeQuery();
@@ -79,8 +84,12 @@ public class ActivityDAO1 {
                 list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica));
             }
         } catch (SQLException ex) {
-            System.out.println("errore");
-        }
+            System.out.println(ex.getMessage());
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
         return list;
     }
 
@@ -89,7 +98,7 @@ public class ActivityDAO1 {
             conn = ConnectionDatabase.getConnection();
             String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
                     + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
-                    + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)+1),?,?,?,?,?,?,?,?,?)";
+                    + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)),?,?,?,?,?,?,?,?,?)";
             pst = conn.prepareStatement(query);
             pst.setInt(1, numberWeek);
             pst.setString(2, workNotes);
@@ -107,15 +116,20 @@ public class ActivityDAO1 {
 
             pst.executeUpdate();
         } catch (SQLException ex) {
-            System.out.println("Errore nell'inserimento dell'attività");
+            //System.out.println("Errore nell'inserimento dell'attività");
+            System.out.println(ex.getMessage());
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
         return true;
     }
 
     public MaintenanceActivityModel viewActivity(int id) {
-        query = "select * from attivita_manutenzione where idattivita=?";
+        String query = "select * from attivita_manutenzione where idattivita=?";
         try {
+            conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -132,13 +146,19 @@ public class ActivityDAO1 {
             }
         } catch (SQLException ex) {
             System.out.println("Errore");
-        }
+            System.out.println(ex.getMessage());
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
         return null;
     }
 
     public String findProcedura(int id) {
-        query = "select nomeprocedura from attivita_manutenzione where idattivita=?";
+        String query = "select nomeprocedura from attivita_manutenzione where idattivita=?";
         try {
+            conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -148,44 +168,60 @@ public class ActivityDAO1 {
             }
         } catch (SQLException ex) {
             System.out.println("Errore");
-        }
+            System.out.println(ex.getMessage());
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
         return null;
     }
 
     public void aggiornaNote(String note, int id) {
-        query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
+        String query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
         try {
+            conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setString(1, note);
             pst.setInt(2, id);
             pst.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("Errore nell'aggiornamento delle note");
-        }
+            System.out.println(ex.getMessage());
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
     }
 
     public boolean deleteActivity(int id) {
-        query = "delete from attivita_manutenzione where idattivita=?";
+        String query = "delete from attivita_manutenzione where idattivita=?";
         try {
             if (this.viewActivity(id) == null) {
                 return false;
             }
+            conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             pst.execute();
             return true;
         } catch (SQLException ex) {
             System.out.println("Errore nell'eliminazione");
+            System.out.println(ex.getMessage());
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
     }
 
     public boolean assignedActivity(int id) {
-        query = "select usernamema from attivita_manutenzione where idattivita=?";
+        String query = "select usernamema from attivita_manutenzione where idattivita=?";
         try {
             if (this.viewActivity(id) == null) {
                 return false;
             } else {
+                conn = ConnectionDatabase.getConnection();
                 pst = conn.prepareStatement(query);
                 pst.setInt(1, id);
                 pst.execute();
@@ -205,16 +241,21 @@ public class ActivityDAO1 {
         } catch (SQLException ex) {
             System.out.println(ex);
             return false;
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
         return false;
     }
 
     public boolean assignNewActivity(int id, String username, String data) {
-        query = "update attivita_manutenzione set usernamema=?,dataattivita=? where idattivita=?";
+        String query = "update attivita_manutenzione set usernamema=?,dataattivita=? where idattivita=?";
         try {
             if (this.viewActivity(id) == null) {
                 return false;
             } else {
+                conn = ConnectionDatabase.getConnection();
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, data);
@@ -225,19 +266,10 @@ public class ActivityDAO1 {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { conn.close(); } catch (SQLException e) { }
+            }
     }
 
-    public Connection getConnection() {
-        return conn = ConnectionDatabase.getConnection();
-    }
-
-    public void closeConnection() {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
 }

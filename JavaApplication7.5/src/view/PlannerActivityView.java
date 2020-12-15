@@ -13,6 +13,7 @@ import model.MaintenanceActivityModel;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,8 +22,13 @@ import javax.swing.table.DefaultTableModel;
  * @author HP
  */
 public class PlannerActivityView extends javax.swing.JFrame {
-DefaultTableModel modelTab = new DefaultTableModel();
 
+    private DefaultTableModel modelTab = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;//This causes all cells to be not editable
+        }
+    };
 
     /** Creates new form ActivityListView */
     public PlannerActivityView() { 
@@ -34,7 +40,7 @@ DefaultTableModel modelTab = new DefaultTableModel();
         initComponents();
        
     }
-
+    
     public JButton getDeleteButton() {
         return deleteButton;
     }
@@ -270,4 +276,7 @@ DefaultTableModel modelTab = new DefaultTableModel();
        jComboBox1.addItemListener(listener);
     }
 
+    public void displayErrorMessage(String errorMessage) {
+        JOptionPane.showMessageDialog(this, errorMessage);
+    }
 }

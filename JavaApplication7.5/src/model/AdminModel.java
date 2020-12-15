@@ -11,7 +11,7 @@ import dao.AdminDAO;
  *
  * @author dava9
  */
-public class AdminModel extends UserModel {
+public class AdminModel extends ManagerModel {
 
     private AdminDAO dao;
 
@@ -26,5 +26,9 @@ public class AdminModel extends UserModel {
         return ad;
     }
 
+    @Override
+    public String toString() {
+        return "AdminModel{" + super.toString() + '}';
+    }
 
 }

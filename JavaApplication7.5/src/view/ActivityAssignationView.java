@@ -6,7 +6,6 @@
 package view;
 
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -36,6 +35,7 @@ public class ActivityAssignationView extends javax.swing.JFrame {
     }
     
     private DefaultTableModel modelTab1 = new DefaultTableModel() {
+        @Override
         public boolean isCellEditable(int row, int column) {
             return false;//This causes all cells to be not editable
         }
@@ -310,10 +310,6 @@ public class ActivityAssignationView extends javax.swing.JFrame {
     
     public int getSelectedColumn(){ //colonna selezionata dalla tabella dei maintainer
         return jTable2.getSelectedColumn();
-    }
-    
-    public void addSelectedCellListener(MouseListener listener) { //reazione alla cella selezionata
-        jTable2.addMouseListener(listener);
     }
     
     public void addBackListener(ActionListener listener) {

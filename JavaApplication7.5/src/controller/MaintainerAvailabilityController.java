@@ -18,6 +18,8 @@ import model.MaintainerModel;
 import model.MaintenanceActivityModel;
 import model.ProcedureModel;
 import model.SkillModel;
+import model.factory.EmployeeFactory;
+import model.factory.UserFactory;
 import view.ActivityAssignationView;
 import view.ActivityInfoView;
 import view.MaintainerAvailabilityView;
@@ -28,16 +30,17 @@ import view.MaintainerAvailabilityView;
  */
 public class MaintainerAvailabilityController {
 
-    private MaintainerAvailabilityView view;
-    private MaintenanceActivityModel model; //la prendo dalla pagina precedente
-    private MaintainerModel modelma;
-    private ActivityInfoView prev;
+    private final MaintainerAvailabilityView view;
+    private final MaintenanceActivityModel model; //la prendo dalla pagina precedente
+    private final MaintainerModel modelma;
+    private final ActivityInfoView prev;
 
-    public MaintainerAvailabilityController(ActivityInfoView prev, MaintainerAvailabilityView view, MaintenanceActivityModel model, MaintainerModel modelma) {
+    public MaintainerAvailabilityController(ActivityInfoView prev, MaintainerAvailabilityView view, MaintenanceActivityModel model) {
         this.prev = prev;
         this.view = view;
         this.model = model;
-        this.modelma = modelma;
+        UserFactory employeeFactory = new EmployeeFactory();
+        this.modelma = (MaintainerModel) employeeFactory.build(UserFactory.Role.MAINTAINER,"","");
         this.view.addBackListener(new BackListener());
         this.view.addSelectedCellListener(new SelectedCellListener());
         this.view.getjTable().setDefaultRenderer(Object.class, new MyTableCellRenderer());

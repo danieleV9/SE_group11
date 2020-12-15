@@ -21,14 +21,13 @@ public class AdminDAO implements UserDAO {
     private Connection con;
     private static PreparedStatement pst;
     private static ResultSet rs;
-    private String query;
 
     @Override
     public AdminModel findUser(String username, String password) {
         if (!username.equals("") && !password.equals("")) {
             try {
                 con = ConnectionDatabase.getConnection();
-                query = "select * from amministratore where usernamesa=? and passwordsa=?";
+                String query = "select * from amministratore where usernamesa=? and passwordsa=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
@@ -44,6 +43,10 @@ public class AdminDAO implements UserDAO {
             } catch (SQLException ex) {
                 System.out.println("" + ex);
                 return null;
+            } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
             }
         }
         return null;

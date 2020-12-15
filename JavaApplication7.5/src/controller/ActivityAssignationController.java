@@ -9,8 +9,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -41,7 +39,6 @@ public class ActivityAssignationController {
         this.giorno = giorno;
         this.view.addBackListener(new BackListener());
         this.view.addSendListener(new SendListener());
-        this.view.addSelectedCellListener(new SelectedCellListener());
 
     }
 
@@ -93,42 +90,6 @@ public class ActivityAssignationController {
 
     }
 
-    public class SelectedCellListener implements MouseListener {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            System.out.println("Ho cliccato sulla tabella delle disponibilità");
-            int r = view.getSelectedRow();
-            System.out.println("riga" + r);
-            int c = view.getSelectedColumn();
-            System.out.println("colonna" + c);
-            String nomeCol = view.getTable().getColumnName(c);
-            String val = (String) view.getTable().getValueAt(r, c);
-            System.out.println("valore della cella " + nomeCol + ":" + val);
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-
-    }
 
     public void populateView() {
         String ora = "";

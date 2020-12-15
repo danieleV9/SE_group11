@@ -42,7 +42,11 @@ public class SkillDAO {
             }
         } catch (SQLException ex) {
             System.out.println("" + ex);
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { st.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
         return list;
     }
 
@@ -60,7 +64,10 @@ public class SkillDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     public boolean modifySkill(int idSkill, String description) {
@@ -75,12 +82,15 @@ public class SkillDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     public boolean insertSkill(String description) {
         try {
-            String query = "INSERT INTO COMPETENZE (idcompetenza,descrizione) values ((NEXTVAL(idcompetenza)+1),?)";
+            String query = "INSERT INTO COMPETENZE (idcompetenza,descrizione) values ((NEXTVAL(idcompetenza)),?)";
             con = ConnectionDatabase.getConnection();
             pst = con.prepareStatement(query);
             pst.setString(1, description);
@@ -88,7 +98,10 @@ public class SkillDAO {
         } catch (SQLException ex) {
             System.out.println("Errore nell'inserimento della competenza");
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
         return true;
     }
     //RESTITUISCE LA LISTA DI SKILL DI UN DETERMINATO MAINTAINER
@@ -108,7 +121,11 @@ public class SkillDAO {
             }
         } catch (SQLException ex) {
             System.out.println("" + ex);
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
         return list;
     }
 
@@ -127,6 +144,10 @@ public class SkillDAO {
                 return skill;
             } catch (SQLException ex) {
                 return skill;
+            } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
             }
         } else {
             return skill;
@@ -148,6 +169,10 @@ public class SkillDAO {
                 return skill;
             } catch (SQLException ex) {
                 return skill;
+            } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
             }
         } else {
             return skill;

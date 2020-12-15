@@ -26,7 +26,6 @@ public class MaintainerDAO implements EmployeeDAO {
     private static PreparedStatement pst;
     private static ResultSet rs;
     private static Statement st;
-    private String query;
 
     @Override
     public UserModel findUser(String username, String password) {
@@ -36,7 +35,7 @@ public class MaintainerDAO implements EmployeeDAO {
         try {
             if (!username.equals("") && !password.equals("")) {
                 con = ConnectionDatabase.getConnection();
-                query = "select * from manutentore where usernamema=? and passwordma=?";
+                String query = "select * from manutentore where usernamema=? and passwordma=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
@@ -56,7 +55,11 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return null;
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     @Override
@@ -67,7 +70,7 @@ public class MaintainerDAO implements EmployeeDAO {
         if (!username.equals("")) {
             try {
                 con = ConnectionDatabase.getConnection();
-                query = "select * from manutentore where usernamema=?";
+                String query = "select * from manutentore where usernamema=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
                 rs = pst.executeQuery();
@@ -82,6 +85,10 @@ public class MaintainerDAO implements EmployeeDAO {
             } catch (SQLException ex) {
                 System.out.println("" + ex);
                 return null;
+            } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
             }
         }
         return null;
@@ -95,7 +102,7 @@ public class MaintainerDAO implements EmployeeDAO {
         try {
             if (!usernameExists(username)) { //se username non è già utilizzato
                 con = ConnectionDatabase.getConnection();
-                query = "insert into manutentore(usernamema, passwordma) values (?,?)";
+                String query = "insert into manutentore(usernamema, passwordma) values (?,?)";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
@@ -108,7 +115,10 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     @Override
@@ -125,7 +135,7 @@ public class MaintainerDAO implements EmployeeDAO {
                 return false;
             } else {
                 con = ConnectionDatabase.getConnection();
-                query = "update manutentore set passwordma=? where usernamema=?";
+                String query = "update manutentore set passwordma=? where usernamema=?";
                 pst = con.prepareStatement(query);
                 pst.setString(2, username);
                 pst.setString(1, password);
@@ -136,7 +146,10 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     @Override
@@ -147,7 +160,7 @@ public class MaintainerDAO implements EmployeeDAO {
         }
         try {
             con = ConnectionDatabase.getConnection();
-            query = "select count(*) from usernames where username=?";
+            String query = "select count(*) from usernames where username=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
             rs = pst.executeQuery();
@@ -157,10 +170,10 @@ public class MaintainerDAO implements EmployeeDAO {
                // con.close();
 
                 if (risultato == 0) {//query va a buon fine ma non trova niente =>username non è utilizzato.
-                    System.out.println("Username non c'è");
+                    //System.out.println("Username non c'è");
                     return false;
                 } else { //risultato!=0
-                    System.out.println("risultato trovato:" + rs.getInt(1) + "corrispondenza");
+                    //System.out.println("risultato trovato:" + rs.getInt(1) + "corrispondenza");
                     return true;
                 } //query va a buon fine e trova username
             } else {
@@ -170,14 +183,18 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (SQLException ex) {
             System.out.println(ex);
             return true;
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     public List<MaintainerModel> listMaintainers() {
         List<MaintainerModel> list = new ArrayList<>();
         try {
             con = ConnectionDatabase.getConnection();
-            query = "select * from manutentore";
+            String query = "select * from manutentore";
             st = con.createStatement();
             rs = st.executeQuery(query);
             while (rs.next()) {
@@ -190,7 +207,11 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (Exception ex) {
             System.out.println("" + ex);
             return list;
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { st.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
         return list;
     }
 
@@ -204,7 +225,7 @@ public class MaintainerDAO implements EmployeeDAO {
         }
         try {
             con = ConnectionDatabase.getConnection();
-            query = "delete from manutentore where usernamema=?";
+            String query = "delete from manutentore where usernamema=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
             pst.executeUpdate();
@@ -213,51 +234,60 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
-        }
+        } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     public boolean addCompetence(String username, int id) {
         MaintainerModel m = new MaintainerModel("","");
         if(m.hasCompetences(username, id)==false){
-        try {
-            con = ConnectionDatabase.getConnection();
-            query = "insert into competenze_ma(usernamema,idcompetenza) values(?,?)";
-            pst = con.prepareStatement(query);
-            pst.setString(1, username);
-            pst.setInt(2, id);
-            pst.executeUpdate();
-            //con.close();
-            return true;
-        } catch (SQLException ex) {
-            System.out.println("" + ex);
-            return false;
-         }
+            try {
+                con = ConnectionDatabase.getConnection();
+                String query = "insert into competenze_ma(usernamema,idcompetenza) values(?,?)";
+                pst = con.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setInt(2, id);
+                pst.executeUpdate();
+                //con.close();
+                return true;
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+                return false;
+             } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
         } else return false;
     }
 
     public boolean removeCompetence(String username, int id) {
         MaintainerModel m = new MaintainerModel("","");
         if(m.hasCompetences(username, id)){
-        try {
-            con = ConnectionDatabase.getConnection();
-            query = "delete from competenze_ma where usernamema=? and idcompetenza=?";
-            pst = con.prepareStatement(query);
-            pst.setString(1, username);
-            pst.setInt(2, id);
-            pst.executeUpdate();
-            //con.close();
-            return true;
-        } catch (SQLException ex) {
-            System.out.println("" + ex);
-            return false;
-        }
+            try {
+                con = ConnectionDatabase.getConnection();
+                String query = "delete from competenze_ma where usernamema=? and idcompetenza=?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setInt(2, id);
+                pst.executeUpdate();
+                //con.close();
+                return true;
+            } catch (SQLException ex) {
+                System.out.println("" + ex);
+                return false;
+            } finally {
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
         } else return false;
     }
 
     public boolean hasCompetences(String username, int id) {
         try {
             con = ConnectionDatabase.getConnection();
-            query = "select count(*) from competenze_ma where usernamema=? and idcompetenza=?";
+            String query = "select count(*) from competenze_ma where usernamema=? and idcompetenza=?";
             pst = con.prepareStatement(query);
             pst.setString(1, username);
             pst.setInt(2, id);
@@ -279,14 +309,18 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
     }
 
     public List<MaintainerModel> listMaintainersDisponibili() {
         List<MaintainerModel> list = new ArrayList<>();
         try {
             con = ConnectionDatabase.getConnection();
-            query = "select distinct manutentore from disponibilita_giorno";
+            String query = "select distinct manutentore from disponibilita_giorno";
             st = con.createStatement();
             rs = st.executeQuery(query);
             while (rs.next()) {
@@ -298,7 +332,11 @@ public class MaintainerDAO implements EmployeeDAO {
         } catch (Exception ex) {
             System.out.println("" + ex);
             return list;
-        }
+        } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { st.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
+            }
         return list;
     }
 
@@ -307,7 +345,7 @@ public class MaintainerDAO implements EmployeeDAO {
         if (usernameExists(username) && week > 0 && week < 53 && day > 0 && day < 8) { //se username valido e giorno valido e settimana valida
             try {
                 con = ConnectionDatabase.getConnection();
-                query = "select fasce_orarie from disponibilita_giorno where manutentore=? and week=? and day=?";
+                String query = "select fasce_orarie from disponibilita_giorno where manutentore=? and week=? and day=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setInt(2, week);
@@ -323,6 +361,10 @@ public class MaintainerDAO implements EmployeeDAO {
             } catch (SQLException ex) {
                 System.out.println(ex);
                 return fasce;
+            } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
             }
         } else {
             return fasce;
@@ -334,7 +376,7 @@ public class MaintainerDAO implements EmployeeDAO {
         if (usernameExists(username) && week > 0 && week < 53 && day > 0 && day < 8) { //se username valido e giorno valido e settimana valida
             try {
                 con = ConnectionDatabase.getConnection();
-                query = "select numgiorno from disponibilita_giorno where manutentore=? and week=? and day=?";
+                String query = "select numgiorno from disponibilita_giorno where manutentore=? and week=? and day=?";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setInt(2, week);
@@ -351,6 +393,10 @@ public class MaintainerDAO implements EmployeeDAO {
             } catch (SQLException ex) {
                 System.out.println(ex);
                 return numGiorno;
+            } finally {
+                try { rs.close(); } catch (SQLException e) { }
+                try { pst.close(); } catch (SQLException e) { }
+                try { con.close(); } catch (SQLException e) { }
             }
         } else {
             return numGiorno;

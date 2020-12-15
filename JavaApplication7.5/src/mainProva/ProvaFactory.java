@@ -5,9 +5,12 @@
  */
 package mainProva;
 
-import model.EmployeeFactory;
+import model.factory.EmployeeFactory;
 import model.EmployeeModel;
-import model.UserFactory;
+import model.factory.ManagerFactory;
+import model.ManagerModel;
+import model.UserModel;
+import model.factory.UserFactory;
 
 /**
  *
@@ -23,17 +26,19 @@ public class ProvaFactory {
         
         
         UserFactory employeeFactory = new EmployeeFactory();
-        EmployeeModel employeePL = employeeFactory.build
-                (EmployeeFactory.Role.PLANNER,
-                 "ciao ","kuywhi");
+        
+        UserModel employeePL = employeeFactory.build(UserFactory.Role.PLANNER,"ciao ","kuywhi");
         System.out.println(employeePL.toString());
         
-        EmployeeModel employeeMA = employeeFactory.build
-                (EmployeeFactory.Role.MAINTAINER,
-                 "tdryfgujkh","iuhqsjp");
+        UserModel employeeMA = employeeFactory.build(UserFactory.Role.MAINTAINER,"tdryfgujkh","iuhqsjp");
         System.out.println(employeeMA.toString());
-        employeeMA.createUser(employeeMA.getUsername(), employeeMA.getPassword());
         
+        //employeeMA.createUser(employeeMA.getUsername(), employeeMA.getPassword());
+        
+        UserFactory managerFactory = new ManagerFactory();
+        
+        UserModel managerAD = managerFactory.build(UserFactory.Role.ADMINISTRATOR, "aaa", "aaaaa");
+        System.out.println(managerAD.toString());
         
     }
     

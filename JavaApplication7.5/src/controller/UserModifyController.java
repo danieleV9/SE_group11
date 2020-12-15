@@ -13,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import model.MaintainerModel;
 import model.PlannerModel;
 import model.SkillModel;
+import model.factory.EmployeeFactory;
+import model.factory.UserFactory;
 import view.ModifyUserView;
 import view.UsersListView;
 
@@ -26,7 +28,7 @@ public class UserModifyController {
     UsersListView prev;
     PlannerModel modelpl;
     MaintainerModel modelma;
-    private String username;
+    private String username = "";
     private String role;
 
     public UserModifyController(ModifyUserView view, UsersListView prev, String username, String role) {
@@ -34,14 +36,13 @@ public class UserModifyController {
         this.prev = prev;
         this.username = username;
         this.role = role;
-        this.modelpl =new PlannerModel("","");
-        this.modelma= new MaintainerModel("","");
+        UserFactory employeeFactory = new EmployeeFactory();
+        this.modelpl =  (PlannerModel) employeeFactory.build(UserFactory.Role.PLANNER,"","");
+        this.modelma = (MaintainerModel) employeeFactory.build(UserFactory.Role.MAINTAINER,"","");
         if(getSelRole().equals("Planner")){
-            
             modelpl=(PlannerModel) modelpl.findUsername(username);
             System.out.println(modelpl.toString());
         }else if(getSelRole().equals("Maintainer")){
-            
             modelma = (MaintainerModel) modelma.findUsername(username);
             System.out.println(modelma.toString());
         }
@@ -60,10 +61,14 @@ public class UserModifyController {
     }
 
     public void fillTextField() {
-        view.setUsername(this.username);
+        view.setUsername("");
+        view.setPassword("");
         if (getSelRole().equals("Planner")) {
+            view.showMaintainerStuff(false);
+            view.setUsername(this.username);
             view.setPassword(this.modelpl.getPassword());
-        } else if (getSelRole().equals("Maintainer")){ //se sei maintainer
+        } else if (getSelRole().equals("Maintainer")){
+            view.setUsername(this.username); //se sei maintainer
             view.setPassword(this.modelma.getPassword());
             view.showMaintainerStuff(true);
         }
@@ -150,7 +155,7 @@ public class UserModifyController {
             SkillModel skill = new SkillModel(0, "");
             String description = view.getjComboBox1().getSelectedItem().toString();
             int id = skill.findSkill(description).getIdSkill();
-            if (description == "Select a skill") {
+            if (description.equals("Select a skill")) {
                 view.displayErrorMessage("Select a skill!");
             } else if (modelma.hasCompetences(modelma.getUsername(), id)) {
                 view.displayErrorMessage("The Maintainer has already this skill!");

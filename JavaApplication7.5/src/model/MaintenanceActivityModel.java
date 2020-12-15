@@ -206,13 +206,5 @@ public class MaintenanceActivityModel {
         return dao.assignNewActivity(id, username, data);
     }
 
-    public Connection getConnection() {
-        ActivityDAO1 dao = new ActivityDAO1();
-        return dao.getConnection();
-    }
-
-    public void closeConnection() {
-        ActivityDAO1 dao = new ActivityDAO1();
-        dao.closeConnection();
-    }
+    
 }
