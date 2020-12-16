@@ -63,7 +63,6 @@ public class PlannerCreateController {
 
                 if (weekNumber.equals("Select") || type.equals("Select") || procedure.equals("")||description.equals("") || factory.equals("") || tipology.equals("") || area.equals("") || estimatedTime.equals("")) {
                     view.displayErrorMessage("fill all fields!", "Attention!");
-                    System.out.println("query return null");
                 } else {
                     int time = Integer.parseInt(estimatedTime);
                     int numberWeek = Integer.parseInt(weekNumber);
@@ -73,7 +72,7 @@ public class PlannerCreateController {
                     view.displaySuccessfullyMessage("Activity Created Succesfully!");
                 }
             } catch (Exception ex) {
-                System.out.println("" + ex);
+                System.out.println(ex.getMessage());
                 view.displayErrorMessage(ex.getMessage());
             }
         }

@@ -6,6 +6,7 @@
 package model;
 
 import dao.MaintainerDAO;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  *
  * @author lyuba
  */
-public class MaintainerModel extends EmployeeModel {
+public class MaintainerModel extends EmployeeModel implements Serializable {
 
     private MaintainerDAO dao;
 
@@ -48,6 +49,12 @@ public class MaintainerModel extends EmployeeModel {
 
     @Override
     public boolean updateUserPassword(String username, String newpass) {
+        if (!this.getPassword().equals(newpass) ) {
+            String previousPassword = this.getPassword();
+            this.setPassword(newpass);
+            super.getChangeSupport().firePropertyChange(PASSWORD_CHANGE,previousPassword,this.getPassword()); //questa è la nuova password
+        }
+        
         return dao.updateUserPassword(username, newpass);
     }
 
@@ -90,4 +97,6 @@ public class MaintainerModel extends EmployeeModel {
     public Connection getDaoConnection() {
         return dao.getConn();
     }
+    
+    
 }

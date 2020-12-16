@@ -27,11 +27,6 @@ public class SkillModel {
         dao = new SkillDAO();
     }
 
-    /*public SkillModel(String description) {
-        this.description = description;
-        dao = new SkillDAO();
-    }*/
-
     public int getIdSkill() {
         return idSkill;
     }

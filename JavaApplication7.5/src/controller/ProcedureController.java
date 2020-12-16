@@ -104,7 +104,6 @@ public class ProcedureController {
     public void aggiornaLista(int selezionato, JTable table) {
         SkillModel skill = new SkillModel(0, "");
         String description = view.getjComboBox1().getSelectedItem().toString();
-        System.out.println(description);
         if ("Select".equals(description)) {
             view.displayErrorMessage("Select a skill !");
         } 
@@ -115,8 +114,8 @@ public class ProcedureController {
                 view.displayErrorMessage("SKILL ALREADY ASSIGNED !");
                 view.getjComboBox1().setSelectedIndex(0);
             }
-            else{ System.out.println("skill non ancora assegnata");
-               if (proc.addCompetence(nomeprocedura, id)) {
+            else{ 
+                if (proc.addCompetence(nomeprocedura, id)) {
                     for (int i = view.getModelTab().getRowCount(); i > 0; i--) {
                     view.getModelTab().removeRow(0);
                     }
@@ -132,7 +131,6 @@ public class ProcedureController {
 
         SkillModel skill = new SkillModel(0, "");
         String description = view.getjComboBox2().getSelectedItem().toString();
-        //System.out.println(description);
         if ("Select".equals(description)) {
             view.displayErrorMessage("Select a skill !");
         } else {
@@ -165,10 +163,12 @@ public class ProcedureController {
             } else if ("".equals(path) || "No file choosen".equals(path)) {
                 view.displayErrorMessage("Upload a file! ");
             } else {
-                proc.createProcedure(name, path);
-                String[] row = {name};
-                view.getModelTab().addRow(row);
-                view.displayErrorMessage("Procedure created succesfully!");
+                if(proc.createProcedure(name, path)){
+                    String[] row = {name};
+                    view.getModelTab().addRow(row);
+                    view.displayErrorMessage("Procedure created succesfully!");
+                }
+                else view.displayErrorMessage("Error: Cannot add new procedure, try again");
             }
         }
     }
@@ -216,13 +216,11 @@ public class ProcedureController {
             int row = view.getjTable1().getSelectedRow();
             if (row != -1) {
                 String proc = (view.getjTable1().getModel().getValueAt(row, 0)).toString();
-                System.out.println(proc);
                 String path = m.getPath(proc);
-                System.out.println(path);
                 try {
                     Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + path);
                 } catch (Exception ex) {
-                    System.out.println("errore nell'apertura file");
+                    System.out.println("errore nell'apertura file, "+ex.getMessage());
                 }
             } else {
                 view.displayErrorMessage("Select a procedure!");

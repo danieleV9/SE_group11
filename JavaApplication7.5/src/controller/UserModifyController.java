@@ -40,11 +40,11 @@ public class UserModifyController {
         if(getSelRole().equals("Planner")){
             this.model =  (PlannerModel) employeeFactory.build(UserFactory.Role.PLANNER,"","");
             model =(PlannerModel) model.findUsername(username);
-            System.out.println(model.toString());
+            //System.out.println(model.toString());
         }else if(getSelRole().equals("Maintainer")){
             this.model = (MaintainerModel) employeeFactory.build(UserFactory.Role.MAINTAINER,"","");
             model = (MaintainerModel) model.findUsername(username);
-            System.out.println(model.toString());
+            //System.out.println(model.toString());
         }
         this.view.addModifyPassListener(new ModifyPassListener());//voglio modificare la pass
         this.view.addConfirmModListener(new ConfirmModListener()); //conferma modifica password
@@ -56,7 +56,6 @@ public class UserModifyController {
     }
     
     public String getSelRole() {
-        //System.out.println(this.role);
         return this.role;
     }
 
@@ -83,14 +82,13 @@ public class UserModifyController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String newpass = view.getNewPassword();
-            prev.setModel((PlannerModel)model);
+            prev.setModel(model);
             if (newpass.equals("")) {
                 view.displayErrorMessage("Password can not be empty");
             } else if (newpass.equals(view.getPassword())) {
                 view.displayErrorMessage("The new password must be different from the previous!");
             } else {
                 if (model.updateUserPassword(username, newpass)) {
-                        System.out.println(model.getUsername()+model.getPassword());
                         view.showNewPassword(false);
                         view.displayErrorMessage("Password updated succesfully!");
                         view.setPassword(newpass);
@@ -168,7 +166,6 @@ public class UserModifyController {
             for (int i = 0; i < list.size(); i++) {
                 String competenza = list.get(i).toString();
                 view.getjComboBox1().addItem(competenza);
-                //System.out.println(competenza);
             }
         }
     }
@@ -181,7 +178,6 @@ public class UserModifyController {
                 String descr=sk.getDescription();
                 String[] row = {descr};
                 view.getModeltab().addRow(row);
-                //System.out.println(descr);
             }
         }
     }

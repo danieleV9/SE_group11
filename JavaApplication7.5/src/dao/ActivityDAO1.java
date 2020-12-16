@@ -129,7 +129,11 @@ public class ActivityDAO1 {
             pst.setString(11, description);
             pst.setNull(12, Types.NULL);
             pst.setNull(13, Types.NULL);
-            pst.executeUpdate();
+            int res = pst.executeUpdate();
+            if(res == 1)
+                return true;
+            else
+                return false;
         } catch (SQLException ex) {
             //System.out.println("Errore nell'inserimento dell'attività");
             System.out.println(ex.getMessage());
@@ -138,7 +142,6 @@ public class ActivityDAO1 {
                 try { pst.close(); } catch (SQLException e) { }
                 //try { conn.close(); } catch (SQLException e) { }
             }
-        return true;
     }
 
     public MaintenanceActivityModel viewActivity(int id) {
@@ -202,12 +205,14 @@ public class ActivityDAO1 {
             }
         String query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
         try {
-            //conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setString(1, note);
             pst.setInt(2, id);
-            pst.executeUpdate();
-            return true;
+            int res = pst.executeUpdate();
+            if(res == 1)
+                return true;
+            else
+                return false;
         } catch (SQLException ex) {
             System.out.println("Errore nell'aggiornamento delle note");
             System.out.println(ex.getMessage());
@@ -227,8 +232,11 @@ public class ActivityDAO1 {
             //conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
-            pst.execute();
-            return true;
+            int res = pst.executeUpdate();
+            if(res == 1)
+                return true;
+            else
+                return false;
         } catch (SQLException ex) {
             System.out.println("Errore nell'eliminazione");
             System.out.println(ex.getMessage());
@@ -263,7 +271,7 @@ public class ActivityDAO1 {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
             return false;
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -286,8 +294,11 @@ public class ActivityDAO1 {
                 pst.setString(1, username);
                 pst.setString(2, data);
                 pst.setInt(3, id);
-                pst.execute();
-                return true;
+                int res = pst.executeUpdate();
+                if(res == 1)
+                    return true;
+                else
+                    return false;
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

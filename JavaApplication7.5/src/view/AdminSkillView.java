@@ -417,18 +417,14 @@ public void InsertListener(ActionListener listener) {
   
 
     public String getIdSelected(int index) {
-        //System.out.println(jTable1.getValueAt(index, 0).toString());
         return jTable1.getValueAt(index, 0).toString();
     }
 
     public String getDescriptionSelected(int index) {
-        //System.out.println(jTable1.getValueAt(index, 1).toString());
         return jTable1.getValueAt(index, 1).toString();
     }
     
     public void setDescriptionSelected(int index,int col,String stringa) {
-        //System.out.println(jTable1.getValueAt(index, 1).toString());
-
         jTable1.setValueAt(stringa,index, col);
     }
 

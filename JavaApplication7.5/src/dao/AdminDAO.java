@@ -26,7 +26,6 @@ public class AdminDAO implements UserDAO {
         conn = ConnectionDatabase.getConnection();
     }
     
-    
 
     @Override
     public AdminModel findUser(String username, String password) {
@@ -42,7 +41,6 @@ public class AdminDAO implements UserDAO {
                     String user = rs.getString("usernamesa");
                     String pass = rs.getString("passwordsa");
                     AdminModel a = new AdminModel(user, pass);
-                    //con.close();
                     return a;
                 }
 

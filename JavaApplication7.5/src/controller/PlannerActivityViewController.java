@@ -99,9 +99,7 @@ public class PlannerActivityViewController {
             if (event.getStateChange() == ItemEvent.SELECTED) {
                 Object item = event.getItem();
                 int rows = view.getjTable1().getRowCount();
-                System.out.println("rows" + rows);
                 int rows1 = view.getModelTab().getRowCount();
-                System.out.println("rows1" + rows1);
                 for (int i = 0; i < rows1; i++) {
                     view.getModelTab().removeRow(0);
                 }

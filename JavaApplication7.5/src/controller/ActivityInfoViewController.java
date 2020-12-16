@@ -45,7 +45,7 @@ public class ActivityInfoViewController {
             int id = Integer.valueOf(view.getId().getText());
             a = a.viewActivity(id); //passo al controller l'attività con quell'id
             if (!a.assignedActivity(id)) {//se l'attività non è già stata assegnta 
-                System.out.println(a.toString());
+                
                 MaintainerAvailabilityController controller = new MaintainerAvailabilityController(view, newView, a);
                 controller.populateView();
                 newView.setVisible(true);
@@ -86,7 +86,7 @@ public class ActivityInfoViewController {
                 try {
                     Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + path);
                 } catch (Exception ex) {
-                    System.out.println("errore nell'apertura file");
+                    System.out.println("errore nell'apertura file "+ex.getMessage());
                 }
             } 
         }

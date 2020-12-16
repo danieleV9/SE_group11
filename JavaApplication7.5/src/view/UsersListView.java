@@ -15,6 +15,8 @@ import javax.swing.JTable;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import model.EmployeeModel;
+import model.MaintainerModel;
 import model.PlannerModel;
 
 /**
@@ -24,7 +26,7 @@ import model.PlannerModel;
 public class UsersListView extends javax.swing.JFrame implements PropertyChangeListener{
 
     // The view needs a reference to the model
-    private static PlannerModel model;
+    private static EmployeeModel model;
     /**
      * Creates new form UsersListView
      */
@@ -41,7 +43,7 @@ public class UsersListView extends javax.swing.JFrame implements PropertyChangeL
         }
     };
     
-    public UsersListView(PlannerModel model) {
+    public UsersListView(EmployeeModel model) {
         UsersListView.model = model;
         
         // The view listens for changes to the model
@@ -507,7 +509,7 @@ public class UsersListView extends javax.swing.JFrame implements PropertyChangeL
         jTabbedPane1.addChangeListener(listener);
     }
     
-    public void setModel(PlannerModel model){
+    public void setModel(EmployeeModel model){
         UsersListView.model = model;
         // The view listens for changes to the model
         UsersListView.model.addPropertyChangeListener(this);
@@ -516,8 +518,20 @@ public class UsersListView extends javax.swing.JFrame implements PropertyChangeL
     // Called by the model when its state changes
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
-        System.out.println("Sto cambiando");
-        
+        DefaultTableModel changeTabella = null;
+        int i = 0,y = 0;
+        if(UsersListView.model instanceof PlannerModel){
+            changeTabella = this.getTable();
+        }
+        else if(UsersListView.model instanceof MaintainerModel){
+            changeTabella = this.getTable1();
+        }
+        for(i=0,y=0; i<changeTabella.getRowCount();i++){
+            String cell = (String) changeTabella.getValueAt(i, y);
+            if(cell.equals(UsersListView.model.getUsername())){
+                changeTabella.setValueAt(pce.getNewValue(), i, y+1);
+            }
+        }
     }
 }
 

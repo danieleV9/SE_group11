@@ -56,7 +56,7 @@ public class AdminHomeController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("ciao");
+            
         }
     }
 

@@ -38,7 +38,6 @@ public class MaintainerDAO implements EmployeeDAO {
         }
         try {
             if (!username.equals("") && !password.equals("")) {
-                
                 String query = "select * from manutentore where usernamema=? and passwordma=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -57,7 +56,7 @@ public class MaintainerDAO implements EmployeeDAO {
                 return null;
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex);
+            System.out.println(ex.getMessage());
             return null;
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -73,7 +72,6 @@ public class MaintainerDAO implements EmployeeDAO {
         }
         if (!username.equals("")) {
             try {
-                
                 String query = "select * from manutentore where usernamema=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -87,7 +85,7 @@ public class MaintainerDAO implements EmployeeDAO {
                 }
                // conn.close();
             } catch (SQLException ex) {
-                System.out.println("" + ex);
+                System.out.println(ex.getMessage());
                 return null;
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -105,19 +103,20 @@ public class MaintainerDAO implements EmployeeDAO {
         }
         try {
             if (!usernameExists(username)) { //se username non è già utilizzato
-                
                 String query = "insert into manutentore(usernamema, passwordma) values (?,?)";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
-                pst.execute();
-                //con.close();
-                return true; // "Maintainer creato conn successo";
+                int res = pst.executeUpdate();
+                if(res == 1)
+                    return true;
+                else
+                    return false;
             } else {
                 return false;//"Username già utilizzato";
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex);
+            System.out.println(ex.getMessage());
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
@@ -138,17 +137,18 @@ public class MaintainerDAO implements EmployeeDAO {
             if (!usernameExists(username)) {
                 return false;
             } else {
-                //conn = ConnectionDatabase.getConnection();
                 String query = "update manutentore set passwordma=? where usernamema=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(2, username);
                 pst.setString(1, password);
-                pst.execute();
-                //con.close();
-                return true;
+                int res = pst.executeUpdate();
+                if(res == 1)
+                    return true;
+                else
+                    return false;
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex);
+            System.out.println(ex.getMessage());
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
@@ -163,7 +163,6 @@ public class MaintainerDAO implements EmployeeDAO {
             return false;
         }
         try {
-            //conn = ConnectionDatabase.getConnection();
             String query = "select count(*) from usernames where username=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
@@ -171,8 +170,6 @@ public class MaintainerDAO implements EmployeeDAO {
             int risultato = 0;
             if (rs.next()) {
                 risultato = rs.getInt(1);
-               // conn.close();
-
                 if (risultato == 0) {//query va a buon fine ma non trova niente =>username non è utilizzato.
                     //System.out.println("Username non c'è");
                     return false;
@@ -185,7 +182,7 @@ public class MaintainerDAO implements EmployeeDAO {
                 return true;
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
             return true;
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -209,7 +206,7 @@ public class MaintainerDAO implements EmployeeDAO {
             }
             //con.close();
         } catch (Exception ex) {
-            System.out.println("" + ex);
+            System.out.println(ex.getMessage());
             return list;
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -232,11 +229,13 @@ public class MaintainerDAO implements EmployeeDAO {
             String query = "delete from manutentore where usernamema=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
-            pst.executeUpdate();
-            //con.close();
-            return true;
+            int res = pst.executeUpdate();
+            if(res == 1)
+                return true;
+            else
+                return false;
         } catch (SQLException ex) {
-            System.out.println("" + ex);
+            System.out.println(ex.getMessage());
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
@@ -253,11 +252,13 @@ public class MaintainerDAO implements EmployeeDAO {
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setInt(2, id);
-                pst.executeUpdate();
-                //con.close();
-                return true;
+                int res = pst.executeUpdate();
+                if(res == 1)
+                    return true;
+                else
+                    return false;
             } catch (SQLException ex) {
-                System.out.println("" + ex);
+                System.out.println(ex.getMessage());
                 return false;
              } finally {
                 try { pst.close(); } catch (SQLException e) { }
@@ -275,11 +276,13 @@ public class MaintainerDAO implements EmployeeDAO {
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setInt(2, id);
-                pst.executeUpdate();
-                //con.close();
-                return true;
+                int res = pst.executeUpdate();
+                if(res == 1)
+                    return true;
+                else
+                    return false;
             } catch (SQLException ex) {
-                System.out.println("" + ex);
+                System.out.println(ex.getMessage());
                 return false;
             } finally {
                 try { pst.close(); } catch (SQLException e) { }
@@ -299,8 +302,6 @@ public class MaintainerDAO implements EmployeeDAO {
             int risultato = 0;
             if (rs.next()) {
                 risultato = rs.getInt(1);
-                //con.close();
-
                 if (risultato == 0) {
                     return false;
                 } else {
@@ -311,7 +312,7 @@ public class MaintainerDAO implements EmployeeDAO {
                 return true;
             }
         } catch (SQLException ex) {
-            System.out.println("" + ex);
+            System.out.println(ex.getMessage());
             return false;
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -334,7 +335,7 @@ public class MaintainerDAO implements EmployeeDAO {
             }
            // conn.close();
         } catch (Exception ex) {
-            System.out.println("" + ex);
+            System.out.println(ex.getMessage());
             return list;
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -363,7 +364,7 @@ public class MaintainerDAO implements EmployeeDAO {
                 //con.close();
                 return fasce;
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println(ex.getMessage());
                 return fasce;
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
@@ -395,7 +396,7 @@ public class MaintainerDAO implements EmployeeDAO {
                 }
                 return numGiorno;
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println(ex.getMessage());
                 return numGiorno;
             } finally {
                 try { rs.close(); } catch (SQLException e) { }

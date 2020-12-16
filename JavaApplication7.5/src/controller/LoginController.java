@@ -50,21 +50,19 @@ public class LoginController {
             String role = "";
             try {
                 username = view.getUsername();
-                System.out.println(username);
+                
                 password = view.getPassowrd();
-                System.out.println(password);
+                
                 role = view.getRole();
-                System.out.println(role);
+                
                 switch (role) {
                     case "System Administrator": {
-                        /*AdminModel ad= new AdminModel("","");
-                        ad = (AdminModel) ad.findUser(username, password);*/
                         UserFactory managerFactory = new ManagerFactory();
                         UserModel managerAD = managerFactory.build(UserFactory.Role.ADMINISTRATOR, username, password);
                         managerAD =  managerAD.findUser(managerAD.getUsername(),managerAD.getPassword());
                         if (managerAD == null) {
                             view.displayErrorMessage("Username or password not matched");
-                            System.out.println("query return null");
+                            
                         } else {
                             AdminHomeView adHome = new AdminHomeView();
                             /*quando creiamo la nuova view dobbiamo istanziare anche il relativo controller per mantenere
@@ -76,15 +74,12 @@ public class LoginController {
                         break;
                     }
                     case "Planner": {
-                        /*PlannerModel ad =new PlannerModel("","");
-                        ad= (PlannerModel) ad.findUser(username, password);*/
                         UserFactory employeeFactory = new EmployeeFactory();
                         UserModel employeePL = employeeFactory.build(UserFactory.Role.PLANNER,username,password);
                         employeePL = employeePL.findUser(employeePL.getUsername(), employeePL.getPassword());
                         if (employeePL== null) {
                             view.displayErrorMessage("Username or password not matched");
-                            System.out.println("query return null");
-                        } else {
+                        }else {
                             PlannerHomeView plHome = new PlannerHomeView();
                             PlannerHomeController phc = new PlannerHomeController(plHome, (PlannerModel) employeePL);
                             plHome.setVisible(true);
@@ -93,14 +88,12 @@ public class LoginController {
                         break;
                     }
                     case "Maintainer": {
-                        /*MaintainerModel ad= new MaintainerModel("","");
-                        ad= (MaintainerModel) ad.findUser(username, password);*/
                         UserFactory employeeFactory = new EmployeeFactory();
                         UserModel employeeMA = employeeFactory.build(UserFactory.Role.MAINTAINER,username,password);
                         employeeMA =employeeMA.findUser(employeeMA.getUsername(), employeeMA.getPassword());
                         if (employeeMA == null) {
                             view.displayErrorMessage("Username or password not matched");
-                            System.out.println("query return null");
+                            
                         } else {
                             MaintainerHomeView maHome = new MaintainerHomeView(username);
                             maHome.setVisible(true);
@@ -113,7 +106,7 @@ public class LoginController {
                         break;
                 }
             } catch (Exception ex) {
-                System.out.println("" + ex);
+                System.out.println(ex.getMessage());
                 view.displayErrorMessage(ex.getMessage());
             }
         }

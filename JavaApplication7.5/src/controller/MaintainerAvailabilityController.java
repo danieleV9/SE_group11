@@ -69,14 +69,10 @@ public class MaintainerAvailabilityController {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            System.out.println("Ho cliccato sulla tabella delle disponibilità");
             int r = view.getSelectedRow();
-            System.out.println("riga" + r);
             int c = view.getSelectedColumn();
-            System.out.println("colonna" + c);
             String nomeCol = view.getTable().getColumnName(c);
             String val = (String) view.getTable().getValueAt(r, c);
-            System.out.println("valore della cella " + nomeCol + ":" + val);
             if (r != -1 && c != -1 && c != 0 && c != 1) {
                 if (!model.assignedActivity(model.getId_Activity())) { // se l'attività non è già stata assegnata vado avanti, questo controllo serve quando clicco tasto back dalla schermata successiva dopo aver assegnato attività
                     int id = view.getId();

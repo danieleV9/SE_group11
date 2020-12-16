@@ -51,12 +51,10 @@ public class UsersListController {
             if(view.getTabbed().getSelectedIndex() == 0){
                 view.getTableMaintainer().setEnabled(false);
                 view.getTablePlanner().setEnabled(true);
-                System.out.println("ho selezionato nel tabbed la tab planners");
             }
             else if(view.getTabbed().getSelectedIndex() == 1){
                 view.getTableMaintainer().setEnabled(true);
                 view.getTablePlanner().setEnabled(false);
-                System.out.println("ho selezionato nel tabbed la tab maintainers");
             }
         }
         
@@ -96,7 +94,6 @@ public class UsersListController {
             String role = "";
             String username = "";
             int selezionatopl = view.getSelectedRow();//riga selezionata della tabella planner
-            //System.out.println(selezionato);
             int selezionatoma = view.getSelectedRow1();//riga selezionata della tabella maintainer
             if(view.getTabbed().getSelectedIndex()==1){
                 if (selezionatoma != -1) {
@@ -146,23 +143,18 @@ public class UsersListController {
         @Override
         public void actionPerformed(ActionEvent e) {
             int selezionatopl = view.getSelectedRow();//riga selezionata della tabella planner
-            //System.out.println(selezionato);
             int selezionatoma = view.getSelectedRow1();//riga selezionata della tabella maintainer
 
             if (selezionatoma != -1) {
                 selezionatopl = -1;
-                // ActivityDao dao= new ActivityDao();
                 String username = view.getUsernameSelected1(selezionatoma); //username maintainer selezionato
-                //System.out.println(username);
                 // remove selected row from the model
                 if (mamodel.deleteUser(username)) {
                     view.removeRow1(selezionatoma);
                 }
             } else if (selezionatopl != -1) {
                 selezionatoma = -1;
-                // ActivityDao dao= new ActivityDao();
                 String username = view.getUsernameSelected(selezionatopl); //username planner selezionato
-                //System.out.println(username);
                 // remove selected row from the model
                 if (plmodel.deleteUser(username)) {
                     view.removeRow(selezionatopl);

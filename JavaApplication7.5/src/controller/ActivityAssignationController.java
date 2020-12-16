@@ -63,7 +63,7 @@ public class ActivityAssignationController {
                     String val = (String) view.getTable().getValueAt(row, col);
                     String username = (String) view.getTable().getValueAt(row, 0);
                     String day = view.getDay();
-                    System.out.println("valore della cella " + ":" + val);
+                    
                     String[] splitString = val.split(" ");
                     int st_val = Integer.parseInt(splitString[0]);
                     if (st_val == 0) {
@@ -103,7 +103,7 @@ public class ActivityAssignationController {
         view.setWeek(week);
         view.setActivityInfo(id + " - " + modelact.getFabbrica() + " - " + modelact.getArea() + " - " + modelact.getTipology() + " - " + String.valueOf(modelact.getEstimatedTime()) + " min");
         int numDay = modelma.getNumGiorno(username, week, this.giorno);
-        System.out.println(numDay);
+        
         if (numDay != 0) {
             view.setNumDayText(numDay);
         }
@@ -129,7 +129,7 @@ public class ActivityAssignationController {
         row[1] = comuni;
         String[] ore = scriviFasce(fasce); // se mi restituisce array vuoto allora nel db non c'è nulla per la settimana cercata e il maintainer selezionato
         int contatore = 2;
-        System.out.println(ore.length);
+        
         if (ore.length != 0) {//se array non è vuoto
             for (String x : ore) { //sette colonne, una per ogni giorno, devono contenere la percentuale di disponibilità giornaliera
                 ora = x;
