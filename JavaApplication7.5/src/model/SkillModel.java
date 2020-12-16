@@ -19,15 +19,18 @@ public class SkillModel {
 
     private int idSkill;
     private String description;
+    private SkillDAO dao;
 
     public SkillModel(int idSkill, String description) {
         this.idSkill = idSkill;
         this.description = description;
+        dao = new SkillDAO();
     }
 
-    public SkillModel(String description) {
+    /*public SkillModel(String description) {
         this.description = description;
-    }
+        dao = new SkillDAO();
+    }*/
 
     public int getIdSkill() {
         return idSkill;
@@ -38,41 +41,40 @@ public class SkillModel {
     }
 
     public List<SkillModel> listSkills() {
-        SkillDAO dao= new SkillDAO();
         List<SkillModel> list = new ArrayList<>();
         list = dao.listSkills();
         return list;
     }
 
     public List<SkillModel> listSkillsMA(String username) {
-        SkillDAO dao= new SkillDAO();
+        
         List<SkillModel> list = new ArrayList<>();
         list=dao.listSkillsMA(username);
         return list;
     }
 
     public boolean deleteSkill(int idSkill) {
-        SkillDAO dao= new SkillDAO();
+        
         return dao.deleteSkill(idSkill);
     }
 
     public boolean modifySkill(int idSkill, String descrizione) {
-        SkillDAO dao= new SkillDAO();
+        
         return dao.modifySkill(idSkill, descrizione);
     }
 
     public boolean insertSkill(String description) {
-        SkillDAO dao= new SkillDAO();
+        
         return dao.insertSkill(description);
     }
 
     public SkillModel findSkill(int id) {
-        SkillDAO dao= new SkillDAO();
+        
         return dao.findSkill(id);
     }
 
     public SkillModel findSkill(String description) {
-        SkillDAO dao= new SkillDAO();
+        
         return dao.findSkill(description);
     }
 
@@ -102,5 +104,8 @@ public class SkillModel {
         return true;
     }
 
+    public Connection getDaoConnection() {
+        return dao.getConn();
+    }
 
 }

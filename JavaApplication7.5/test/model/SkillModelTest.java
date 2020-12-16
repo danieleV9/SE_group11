@@ -5,7 +5,6 @@
  */
 package model;
 
-import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,28 +21,15 @@ public class SkillModelTest {
 
     private static SkillModel instance;
     private static Connection connection;
-    
-    public Connection getConnection() {
-        return connection = ConnectionDatabase.getConnection();
-    }
-    
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
 
     @Before
     public void setUp() {
         instance = new SkillModel(0, "");
-        connection = this.getConnection();
+        connection = instance.getDaoConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -52,25 +38,12 @@ public class SkillModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            this.closeConnection();
+            connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Test of listSkills method, of class SkillModel.
-     */
-    /*@Test
-    public void testListSkills() {
-        System.out.println("listSkills");
-        SkillModel instance = null;
-        List<SkillModel> expResult = null;
-        List<SkillModel> result = instance.listSkills();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
-    }*/
     /**
      * Test of deleteSkill method, of class SkillModel.
      */
@@ -107,6 +80,92 @@ public class SkillModelTest {
         boolean expResult = true;
         boolean result = instance.insertSkill(description);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of listSkills method, of class SkillModel.
+     */
+    @Test(expected=AssertionError.class)
+    public void testListSkills() {
+        System.out.println("listSkills");
+        List<SkillModel> expResult = null;
+        List<SkillModel> result = instance.listSkills();
+        assertEquals(expResult, result);
+    }
+    
+    
+    @Test
+    public void testListSkills1() {
+        System.out.println("listSkills1");
+        List<SkillModel> first = instance.listSkills();
+        int firstSize = first.size();
+        int id = 7019;
+        instance.deleteSkill(id);
+        List<SkillModel> second = instance.listSkills();
+        int secondSize = second.size();
+        int expResult = firstSize - 1;
+        assertEquals(expResult, secondSize);
+    }
+
+    /**
+     * Test of listSkillsMA method, of class SkillModel.
+     */
+    @Test
+    public void testListSkillsMA() {
+        System.out.println("listSkillsMA");
+        String username = "";
+        List<SkillModel> expResult = null;
+        List<SkillModel> result = instance.listSkillsMA(username);
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of findSkill method, of class SkillModel.
+     */
+    @Test
+    public void testFindSkill_int() {
+        int id=0;
+        SkillModel expResult = null;
+        SkillModel result = instance.findSkill(id);
+        assertNull(result);
+    }
+    
+    /**
+    * Test of findSkill method, of class SkillModel.
+    */
+    @Test
+    public void testFindSkill_int1(){
+        System.out.println("findSkill1");
+        int id = 1;
+        SkillModel expResult = new SkillModel(1,"competenza1");
+        SkillModel result = instance.findSkill(id);
+        assertEquals(expResult.toString(), result.toString());
+    }
+    
+    /**
+    * Test of findSkill method, of class SkillModel.
+    */
+    @Test
+    public void testFindSkill_String1 () {
+    System.out.println("findSkill1");
+    String description = "competenza1";
+    SkillModel expResult = new SkillModel(1,"competenza1");
+    SkillModel result = instance.findSkill(description);
+    assertEquals(expResult.toString(), result.toString());
+}
+
+    /**
+     * Test of findSkill method, of class SkillModel.
+     */
+    @Test
+    public void testFindSkill_String() {
+        System.out.println("findSkill");
+        String description = "";
+        SkillModel expResult = null;
+        SkillModel result = instance.findSkill(description);
+        assertNull(result);
+        
     }
 
 }

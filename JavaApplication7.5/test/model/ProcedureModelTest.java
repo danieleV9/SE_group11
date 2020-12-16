@@ -5,7 +5,6 @@
  */
 package model;
 
-import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,11 +12,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
+
 
 /**
  *
@@ -28,39 +26,21 @@ public class ProcedureModelTest {
     private ProcedureModel instance;
     private static Connection connection;
     
-    public Connection getConnection() {
-        return connection = ConnectionDatabase.getConnection();
-    }
-    
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
+   
 
     public ProcedureModelTest() {
-        instance = new ProcedureModel("", "");
+        
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
 
     @Before
     public void setUp() {
         instance = new ProcedureModel("", "");
-        connection = this.getConnection();
+        connection = instance.getDaoConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -69,9 +49,9 @@ public class ProcedureModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            this.closeConnection();
+            connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -99,6 +79,20 @@ public class ProcedureModelTest {
         assertEquals(expResult, result);
 
     }
+    
+    /**
+     * Test of getProcedureSkill method, of class ProcedureModel.
+     */
+    @Test
+    public void testGetProcedureSkill1() {
+        System.out.println("getProcedureSkill1");
+        String nomeprocedura = "proc2";
+        List<SkillModel> expResult = new ArrayList();
+        expResult.add(new SkillModel(1,"competenza1"));
+        List<SkillModel> result = instance.getProcedureSkill(nomeprocedura);
+        assertEquals(expResult, result);
+
+    }
 
     /**
      * Test of addCompetence method, of class ProcedureModel.
@@ -106,26 +100,35 @@ public class ProcedureModelTest {
     @Test
     public void testAddCompetence1() {
         System.out.println("AddCompetence1");
-        assertEquals(true, instance.addCompetence("proc2", 29)); //proc2 non ha già la competenza con id 23
+        assertEquals(true, instance.addCompetence("proc2", 2)); //proc2 non ha già la competenza con id 2
     }
     
-   
+    /**
+     * Test of addCompetence method, of class ProcedureModel.
+     */
     @Test
     public void addCompetence2(){
        System.out.println("AddCompetence2");
        assertEquals(false, instance.addCompetence("proc2",1));   //proc2 ha già la competenza con id 1
     }
-    
- 
-    
-    
+
     /**
      * Test of removeCompetence method, of class ProcedureModel.
      */
     @Test
     public void testRemoveCompetence() {
         System.out.println("removeCompetence");
-        boolean result = instance.removeCompetence("proc2", 1);
+        boolean result = instance.removeCompetence("proc2", 1); //la proc2 ha questa competenza
+        assertEquals(true, result);
+    }
+    
+    /**
+     * Test of removeCompetence method, of class ProcedureModel.
+     */
+    @Test
+    public void testRemoveCompetence1() {
+        System.out.println("removeCompetence1");
+        boolean result = instance.removeCompetence("proc2", 2); //la proc2 non ha questa competenza
         assertEquals(true, result);
     }
 
@@ -167,9 +170,10 @@ public class ProcedureModelTest {
      * provo ad aliminare una procedura che  esiste
      */
     @Test
-    public void testDeleteProcedure2(){
+    public void testDeleteProcedure2(){ //devo cancellare una procedura che non sia assosciata ad un'attività
+        //altrimenti violato vincolo di integrità referenziale
         System.out.println("deleteprocedure2");
-        assertEquals(true, instance.deleteProcedure("proc2"));
+        assertEquals(true, instance.deleteProcedure("proceduratest"));
     }
 
 
@@ -232,7 +236,7 @@ public class ProcedureModelTest {
     @Test
     public void testHasCompetenceNO() {
         System.out.println("hasCompetenceNO");
-        assertEquals(false, instance.hasCompetence("proc2",22));
+        assertEquals(false, instance.hasCompetence("proc2",4));
        
     }
 

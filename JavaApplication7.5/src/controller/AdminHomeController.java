@@ -8,6 +8,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import model.AdminModel;
+import model.PlannerModel;
 import model.ProcedureModel;
 import view.AdminHomeView;
 import view.AdminSkillView;
@@ -43,7 +44,7 @@ public class AdminHomeController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            UsersListView usersview = new UsersListView();
+            UsersListView usersview = new UsersListView(new PlannerModel("ProvaPlanner",""));
             UsersListController controllerUsers = new UsersListController(view, usersview, model);
             controllerUsers.populateTables();
             usersview.setVisible(true);

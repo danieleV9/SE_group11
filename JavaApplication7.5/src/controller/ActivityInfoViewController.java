@@ -70,9 +70,10 @@ public class ActivityInfoViewController {
         public void actionPerformed(ActionEvent e) {
             String note = view.getNotesArea().getText();
             int id = Integer.valueOf(view.getId().getText());
-            ma.aggiornaNote(note, id);
-            view.displayMessage("Notes updated succesfully");
-
+            if(ma.aggiornaNote(note, id))
+                view.displayMessage("Notes updated succesfully");
+            else 
+                view.displayMessage("Cannot update notes, try again!");
         }
     }
     public class OpenListener implements ActionListener {

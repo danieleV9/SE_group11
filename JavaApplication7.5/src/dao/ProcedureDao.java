@@ -22,19 +22,21 @@ import model.SkillModel;
  */
 public class ProcedureDao {
 
-    private List<ProcedureModel> listProcedure;
-    private Connection con;
-    private Statement st;
-    private ResultSet rs;
-    private PreparedStatement pst;
-    private static SkillModel skill;
+    private Connection conn;
+    private static Statement st;
+    private static ResultSet rs;
+    private static PreparedStatement pst;
+    
+    
+    public ProcedureDao() {
+        conn=ConnectionDatabase.getConnection();
+    }
    
 
     public List<ProcedureModel> getAllProcedures() {
         List<ProcedureModel> list = new ArrayList<>();
         try {
-            con=ConnectionDatabase.getConnection();
-            st = con.createStatement();
+            st = conn.createStatement();
             String query = "select * from procedure_manutenzione";
             rs = st.executeQuery(query);
             while (rs.next()) {
@@ -47,7 +49,7 @@ public class ProcedureDao {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { st.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return list;
     }
@@ -59,9 +61,9 @@ public class ProcedureDao {
       }
       else {
             try {
-            con=ConnectionDatabase.getConnection();
+            
             String query = "insert into competenze_proc(idcompetenza,nomeprocedura) values(?,?)";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             pst.setString(2, nomeprocedura);
             pst.executeUpdate();
@@ -71,7 +73,7 @@ public class ProcedureDao {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
       }      
             
@@ -79,9 +81,9 @@ public class ProcedureDao {
 
     public boolean removeCompetence(String nomeprocedura, int id) {
         try {
-            con=ConnectionDatabase.getConnection();
+            
             String query = "delete from competenze_proc where idcompetenza=? and nomeprocedura=?";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             pst.setString(2, nomeprocedura);
             pst.executeUpdate();
@@ -91,17 +93,17 @@ public class ProcedureDao {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
     }
 
     public List<SkillModel> getProcedureSkill(String nomeprocedura) {
         List<SkillModel> list = new ArrayList<>();
-        skill=new SkillModel(0,"");
+        SkillModel skill=new SkillModel(0,"");
         try {
-            con=ConnectionDatabase.getConnection();
+            
             String query = "select * from competenze_proc where nomeprocedura=?";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setString(1, nomeprocedura);
             rs = pst.executeQuery();
             while (rs.next()) {
@@ -114,7 +116,7 @@ public class ProcedureDao {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return list;
     }
@@ -126,9 +128,9 @@ public class ProcedureDao {
             return false;
         } else {
             try {
-                con=ConnectionDatabase.getConnection();
+                
                 String query = "insert into procedure_manutenzione(nomeprocedura,path) values(?,?)";
-                pst = con.prepareStatement(query);
+                pst = conn.prepareStatement(query);
                 pst.setString(1, nomeprocedura);
                 pst.setString(2, path);
                 pst.executeUpdate();
@@ -139,7 +141,7 @@ public class ProcedureDao {
                 return false;
             } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         }
     }
@@ -152,27 +154,29 @@ public class ProcedureDao {
             return false;
         } else {
         try {
-            con=ConnectionDatabase.getConnection();
-            pst = con.prepareStatement(query);
+            
+            pst = conn.prepareStatement(query);
             pst.setString(1, name);
             pst.execute();
             return true;
         } catch (SQLException ex) {
-            System.out.println("Errore nell'eliminazione");
+            System.out.println(ex.getMessage());
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
       }
     }
 
     public String getPath(String name) {
+        if(name==null)
+            return null;
         String path = null;
         try {
-            con=ConnectionDatabase.getConnection();
+            
             String query = "select path from procedure_manutenzione where nomeprocedura=?";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setString(1, name);
             rs = pst.executeQuery();
             while (rs.next()) {
@@ -183,7 +187,7 @@ public class ProcedureDao {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
 
         return path;
@@ -191,9 +195,9 @@ public class ProcedureDao {
 
     public boolean proceduraExists(String name) {
         try {
-            con=ConnectionDatabase.getConnection();
+            
             String query = "select count(*) from procedure_manutenzione where nomeprocedura=?";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setString(1, name);
             rs = pst.executeQuery();
             int risultato = 0;
@@ -213,17 +217,15 @@ public class ProcedureDao {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return false;
     }
 
     public boolean hasCompetence(String nomeprocedura, int idcompetenza){
         String query="select count(*) from competenze_proc where nomeprocedura=? and idcompetenza=?";
-        
         try{
-            con=ConnectionDatabase.getConnection();
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setString(1,nomeprocedura);
             pst.setInt(2,idcompetenza);
             rs=pst.executeQuery();
@@ -240,9 +242,14 @@ public class ProcedureDao {
         }finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return false;
     } 
+
+    public Connection getConn() {
+        return conn;
+    }
+    
 
 }

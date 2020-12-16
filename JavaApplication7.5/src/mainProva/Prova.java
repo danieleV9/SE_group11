@@ -21,7 +21,6 @@ public class Prova {
     public static void main(String[] args) {
         // TODO code application logic here
         LoginView login = new LoginView();
-        UsersListView users = new UsersListView();
         LoginController contr = new LoginController(login);
 
     }

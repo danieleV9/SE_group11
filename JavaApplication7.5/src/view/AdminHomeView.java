@@ -6,6 +6,7 @@
 package view;
 
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,13 +14,15 @@ import javax.swing.JOptionPane;
  * @author dava9
  */
 public class AdminHomeView extends javax.swing.JFrame {
-
+    
+    ImageIcon utente = new ImageIcon("systemAdmin.png");
+    
     /**
      * Creates new form AdminHomePage
      */
     public AdminHomeView() {
         initComponents();
-
+        IMG.setIcon(utente);
     }
 
     /**
@@ -35,6 +38,7 @@ public class AdminHomeView extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jButton8 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        IMG = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -56,10 +60,12 @@ public class AdminHomeView extends javax.swing.JFrame {
         jButton8.setText("Logout");
         jButton8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel1.setFont(new java.awt.Font("MV Boli", 3, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("MV Boli", 3, 30)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Welcome to your Area");
+
+        IMG.setPreferredSize(new java.awt.Dimension(100, 100));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -71,14 +77,18 @@ public class AdminHomeView extends javax.swing.JFrame {
                 .addGap(45, 45, 45))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(IMG, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(97, 97, 97)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(IMG, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53))
@@ -108,7 +118,7 @@ public class AdminHomeView extends javax.swing.JFrame {
         jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButton6.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jButton6.setText("Competences");
+        jButton6.setText("Skills");
         jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButton7.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -221,6 +231,7 @@ public class AdminHomeView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel IMG;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -274,5 +285,5 @@ public class AdminHomeView extends javax.swing.JFrame {
     public void addLogoutListener(ActionListener listener) {
         jButton8.addActionListener(listener);
     }
-
+    
 }

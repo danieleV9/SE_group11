@@ -6,8 +6,6 @@
 package model.factory;
 
 import model.UserModel;
-import model.factory.ManagerFactory;
-import model.factory.EmployeeFactory;
 
 /**
  *

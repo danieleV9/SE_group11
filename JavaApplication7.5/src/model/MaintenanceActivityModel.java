@@ -27,6 +27,7 @@ public class MaintenanceActivityModel {
     private List<Materiali> materiali;
     private String area;
     private String Fabbrica;
+    private ActivityDAO1 dao;
 
     public MaintenanceActivityModel(int WeekNum, boolean interuptible, int id_Activity, String description,
             String tipology, String type, int EstimatedTime, String workspaceNotes,
@@ -43,6 +44,7 @@ public class MaintenanceActivityModel {
         this.materiali = materiali;
         this.area = area;
         this.Fabbrica = fabbrica;
+        this.dao = new ActivityDAO1();
     }
 
     public MaintenanceActivityModel(int WeekNum, int id_Activity, String tipology, String description, String workspaceNotes, String area, int estimatedTime, String fabbrica,ProcedureModel proc) {
@@ -55,9 +57,11 @@ public class MaintenanceActivityModel {
         this.EstimatedTime = estimatedTime;
         this.Fabbrica = fabbrica;
         this.procedura=proc;
+        this.dao = new ActivityDAO1();
     }
 
     public MaintenanceActivityModel() {
+        this.dao = new ActivityDAO1();
     }
 
     public String getFabbrica() {
@@ -157,32 +161,32 @@ public class MaintenanceActivityModel {
     }
 
     public boolean deleteActivity(int id) {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         return dao.deleteActivity(id);
     }
 
     public MaintenanceActivityModel viewActivity(int id) {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         return dao.viewActivity(id);
     }
 
-    public void aggiornaNote(String note, int id) {
-        ActivityDAO1 dao = new ActivityDAO1();
-        dao.aggiornaNote(note, id);
+    public boolean aggiornaNote(String note, int id) {
+        
+        return dao.aggiornaNote(note, id);
     }
 
     public List<MaintenanceActivityModel> getAllActivity() {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         return dao.getAllActivity();
     }
 
     public List<MaintenanceActivityModel> getAllActivity(int numWeek) {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         return dao.getAllActivity(numWeek);
     }
 
     public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible,ProcedureModel proc) {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         boolean ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible,proc);
         return ad;
     }
@@ -193,18 +197,22 @@ public class MaintenanceActivityModel {
     }
 
     public String findProcedura(int id) {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         return dao.findProcedura(id);
     }
 
     public boolean assignedActivity(int id) {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         return dao.assignedActivity(id);
     }
 
     public boolean assignNewActivity(int id, String username, String data) {
-        ActivityDAO1 dao = new ActivityDAO1();
+        
         return dao.assignNewActivity(id, username, data);
+    }
+
+    public Connection getDaoConnection() {
+        return dao.getConn();
     }
 
     

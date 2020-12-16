@@ -29,17 +29,20 @@ import model.ProcedureModel;
  * @author HP
  */
 public class ActivityDAO1 {
-
-    private List<MaintenanceActivityModel> listActivity;
+    
     private Connection conn;
-    private Statement st;
-    private ResultSet rs;
-    private PreparedStatement pst;
+    private static PreparedStatement pst;
+    private static ResultSet rs;
+    private static Statement st;
+
+    public ActivityDAO1() {
+        conn = ConnectionDatabase.getConnection();
+    }
 
     public List<MaintenanceActivityModel> getAllActivity() {
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
-            conn = ConnectionDatabase.getConnection();
+            //conn = ConnectionDatabase.getConnection();
             st = conn.createStatement();
             String query = "select * from attivita_manutenzione order by settimana";
             rs = st.executeQuery(query);
@@ -53,8 +56,12 @@ public class ActivityDAO1 {
                 String fabbrica = rs.getString("fabbrica");
                 int tempostimato = rs.getInt("tempostimato");
                 String nomeproc = rs.getString("nomeprocedura");
+                String path ="";
                 ProcedureModel proc = new ProcedureModel("","");
-                String path =proc.getPath(nomeproc);
+                if(nomeproc!=null){
+                    path=proc.getPath(nomeproc);
+                }else 
+                    nomeproc="";
                 list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica,new ProcedureModel(nomeproc,path)));
             }
         } catch (SQLException ex) {
@@ -63,15 +70,17 @@ public class ActivityDAO1 {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { st.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return list;
     }
 
     public List<MaintenanceActivityModel> getAllActivity(int numWeek) {
+        if(numWeek<=0 || numWeek>52)
+            return null;
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
-            conn = ConnectionDatabase.getConnection();
+            //conn = ConnectionDatabase.getConnection();
             String query = "select * from attivita_manutenzione where settimana=?";
             pst = conn.prepareStatement(query);
             pst.setInt(1, numWeek);
@@ -95,14 +104,14 @@ public class ActivityDAO1 {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return list;
     }
 
     public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible,ProcedureModel proc) {
         try {
-            conn = ConnectionDatabase.getConnection();
+            //conn = ConnectionDatabase.getConnection();
             String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
                     + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
                     + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)),?,?,?,?,?,?,?,?,?)";
@@ -127,7 +136,7 @@ public class ActivityDAO1 {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return true;
     }
@@ -135,7 +144,7 @@ public class ActivityDAO1 {
     public MaintenanceActivityModel viewActivity(int id) {
         String query = "select * from attivita_manutenzione where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
+            //conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -158,7 +167,7 @@ public class ActivityDAO1 {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return null;
     }
@@ -166,7 +175,7 @@ public class ActivityDAO1 {
     public String findProcedura(int id) {
         String query = "select nomeprocedura from attivita_manutenzione where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
+            //conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -180,26 +189,33 @@ public class ActivityDAO1 {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return null;
     }
 
-    public void aggiornaNote(String note, int id) {
+    public boolean aggiornaNote(String note, int id) {
+        if(note==null || note.equals(""))
+            return false;
+        if (this.viewActivity(id) == null) {
+                return false;
+            }
         String query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
         try {
-            conn = ConnectionDatabase.getConnection();
+            //conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setString(1, note);
             pst.setInt(2, id);
             pst.executeUpdate();
+            return true;
         } catch (SQLException ex) {
             System.out.println("Errore nell'aggiornamento delle note");
             System.out.println(ex.getMessage());
+            return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
-            }
+                //try { conn.close(); } catch (SQLException e) { }
+        }
     }
 
     public boolean deleteActivity(int id) {
@@ -208,7 +224,7 @@ public class ActivityDAO1 {
             if (this.viewActivity(id) == null) {
                 return false;
             }
-            conn = ConnectionDatabase.getConnection();
+            //conn = ConnectionDatabase.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             pst.execute();
@@ -219,7 +235,7 @@ public class ActivityDAO1 {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
     }
 
@@ -229,7 +245,7 @@ public class ActivityDAO1 {
             if (this.viewActivity(id) == null) {
                 return false;
             } else {
-                conn = ConnectionDatabase.getConnection();
+                //conn = ConnectionDatabase.getConnection();
                 pst = conn.prepareStatement(query);
                 pst.setInt(1, id);
                 pst.execute();
@@ -252,18 +268,20 @@ public class ActivityDAO1 {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return false;
     }
 
     public boolean assignNewActivity(int id, String username, String data) {
+        if(username.equals("") || data.equals(""))
+            return false;
         String query = "update attivita_manutenzione set usernamema=?,dataattivita=? where idattivita=?";
         try {
             if (this.viewActivity(id) == null) {
                 return false;
             } else {
-                conn = ConnectionDatabase.getConnection();
+                //conn = ConnectionDatabase.getConnection();
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, data);
@@ -276,8 +294,12 @@ public class ActivityDAO1 {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { conn.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
     }
 
+    public Connection getConn() {
+        return conn;
+    }
+    
 }

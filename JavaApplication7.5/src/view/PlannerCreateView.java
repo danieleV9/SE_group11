@@ -10,19 +10,12 @@ import javax.swing.JOptionPane;
  *
  * @author HP
  */
-public class PlannerCreateView extends javax.swing.JDialog {
+public class PlannerCreateView extends javax.swing.JFrame{
 
     Connection conn = null;
     PreparedStatement pst = null;
     PreparedStatement pst1 = null;
 
-    /**
-     * Creates new form CreateActivity
-     */
-    public PlannerCreateView(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-    }
 
     public PlannerCreateView() {
         initComponents();
@@ -403,14 +396,14 @@ public class PlannerCreateView extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                PlannerCreateView dialog = new PlannerCreateView(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+               // PlannerCreateView dialog = new PlannerCreateView(new javax.swing.JFrame(), true);
+                /*dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
-                });
-                dialog.setVisible(true);
+                });*/
+                new PlannerCreateView().setVisible(true);
             }
         });
     }

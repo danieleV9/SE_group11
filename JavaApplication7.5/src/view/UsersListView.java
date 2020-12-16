@@ -7,20 +7,24 @@ package view;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import model.PlannerModel;
 
 /**
  *
  * @author dava9
  */
-public class UsersListView extends javax.swing.JFrame {
+public class UsersListView extends javax.swing.JFrame implements PropertyChangeListener{
 
+    // The view needs a reference to the model
+    private static PlannerModel model;
     /**
      * Creates new form UsersListView
      */
@@ -36,8 +40,14 @@ public class UsersListView extends javax.swing.JFrame {
             return false;//This causes all cells to be not editable
         }
     };
-
-    public UsersListView() {
+    
+    public UsersListView(PlannerModel model) {
+        UsersListView.model = model;
+        
+        // The view listens for changes to the model
+        //UsersListView.model.addPropertyChangeListener(this);
+        //System.out.println(UsersListView.model.getUsername()+"prova");
+        
         modeltab.addColumn("Username");
         modeltab.addColumn("Password");
         modeltab1.addColumn("Username");
@@ -88,9 +98,9 @@ public class UsersListView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(102, 153, 255));
-        setPreferredSize(new java.awt.Dimension(1200, 800));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1153, 693));
 
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
 
@@ -296,7 +306,7 @@ public class UsersListView extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(52, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -369,8 +379,9 @@ public class UsersListView extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new UsersListView().setVisible(true);
+                new UsersListView(UsersListView.model).setVisible(true);
             }
         });
     }
@@ -495,4 +506,18 @@ public class UsersListView extends javax.swing.JFrame {
     public void addChangedListener(ChangeListener listener){
         jTabbedPane1.addChangeListener(listener);
     }
+    
+    public void setModel(PlannerModel model){
+        UsersListView.model = model;
+        // The view listens for changes to the model
+        UsersListView.model.addPropertyChangeListener(this);
+    }
+    
+    // Called by the model when its state changes
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        System.out.println("Sto cambiando");
+        
+    }
 }
+

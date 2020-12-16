@@ -22,10 +22,15 @@ import model.UserModel;
  */
 public class PlannerDAO implements EmployeeDAO {
 
-    private Connection con;
+    private Connection conn;
     private static PreparedStatement pst;
     private static ResultSet rs;
     private static Statement st;
+    
+    public PlannerDAO() {
+        conn = ConnectionDatabase.getConnection();
+    }
+
 
     @Override
     public UserModel findUser(String username, String password) {
@@ -34,9 +39,9 @@ public class PlannerDAO implements EmployeeDAO {
         }
         if (!username.equals("") && !password.equals("")) {
             try {
-                con = ConnectionDatabase.getConnection();
+                
                 String query = "select * from pianificatore where usernamepl=? and passwordpl=?";
-                pst = con.prepareStatement(query);
+                pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
                 rs = pst.executeQuery();
@@ -44,10 +49,10 @@ public class PlannerDAO implements EmployeeDAO {
                     String user = rs.getString("usernamepl");
                     String pass = rs.getString("passwordpl");
                     PlannerModel pl = new PlannerModel(user, pass);
-                   // con.close();
+                   // conn.close();
                     return pl;
                 } else {
-                   // con.close();
+                   // conn.close();
                     return null;
                 }
             } catch (SQLException ex) {
@@ -59,7 +64,7 @@ public class PlannerDAO implements EmployeeDAO {
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         } else {
             return null;
@@ -73,9 +78,9 @@ public class PlannerDAO implements EmployeeDAO {
         }
         if (!username.equals("")) {
             try {
-                con = ConnectionDatabase.getConnection();
+                
                 String query = "select * from pianificatore where usernamepl=?";
-                pst = con.prepareStatement(query);
+                pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 rs = pst.executeQuery();
                 if (rs.next()) {
@@ -92,7 +97,7 @@ public class PlannerDAO implements EmployeeDAO {
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         }
         return null;
@@ -106,16 +111,16 @@ public class PlannerDAO implements EmployeeDAO {
         }
         try {
             if (!usernameExists(username)) { //se username non è già utilizzato
-                con = ConnectionDatabase.getConnection();
+                
                 String query = "insert into pianificatore(usernamepl, passwordpl) values (?,?)";
-                pst = con.prepareStatement(query);
+                pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
                 pst.execute();
 
                 PlannerModel pl = new PlannerModel(username, password);
                 //con.close();
-                return true;// "Planner creato con successo";
+                return true;// "Planner creato conn successo";
             } else {
                 //con.close();
                 return false; //"Username già utilizzato";
@@ -125,7 +130,7 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
     }
 
@@ -138,9 +143,9 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         }
         try {
-            con = ConnectionDatabase.getConnection();
+            
             String query = "update pianificatore set passwordpl=? where usernamepl=?";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setString(2, username);
             pst.setString(1, password);
             pst.execute();
@@ -151,16 +156,16 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
     }
 
     @Override
     public boolean usernameExists(String username) {// in usernames ci sono tutti gli username utilizzati
         try {
-            con = ConnectionDatabase.getConnection();
+            
             String query = "select count(*) from usernames where username=?";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setString(1, username);
             rs = pst.executeQuery();
             int risultato = 0;
@@ -185,16 +190,16 @@ public class PlannerDAO implements EmployeeDAO {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
     }
 
     public List<PlannerModel> listPlanners() {
         List<PlannerModel> list = new ArrayList<>();
         try {
-            con = ConnectionDatabase.getConnection();
+            
             String query = "select * from pianificatore";
-            st = con.createStatement();
+            st = conn.createStatement();
             rs = st.executeQuery(query);
             while (rs.next()) {
                 String username = rs.getString("usernamepl");
@@ -208,7 +213,7 @@ public class PlannerDAO implements EmployeeDAO {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { st.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         return list;
     }
@@ -222,9 +227,9 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         }
         try {
-            con = ConnectionDatabase.getConnection();
+            
             String query = "delete from pianificatore where usernamepl=?";
-            pst = con.prepareStatement(query);
+            pst = conn.prepareStatement(query);
             pst.setString(1, username);
             pst.executeUpdate();
             //con.close();
@@ -234,9 +239,12 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
     }
 
+    public Connection getConn() {
+        return conn;
+    }
 
 }

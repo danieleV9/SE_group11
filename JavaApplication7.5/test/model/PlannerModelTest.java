@@ -5,7 +5,6 @@
  */
 package model;
 
-import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,18 +22,7 @@ public class PlannerModelTest {
     private static PlannerModel instance;
     private static Connection connection;
     
-    public Connection getConnection() {
-        return connection = ConnectionDatabase.getConnection();
-    }
     
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
 
     public PlannerModelTest() {
     }
@@ -42,7 +30,7 @@ public class PlannerModelTest {
     @Before
     public void setUp() {
         instance = new PlannerModel("", "");
-        connection = this.getConnection();
+        connection = instance.getDaoConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -55,7 +43,7 @@ public class PlannerModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            this.closeConnection();
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -103,7 +91,7 @@ public class PlannerModelTest {
     /**
      * Test of findPlanner method, of class PlannerModel.
      */
-    @Test(expected = AssertionError.class)
+    @Test
     public void testFindPlanner_2args5() throws Exception {
         System.out.println("findPlanner5");
         String username = "Benedetta";

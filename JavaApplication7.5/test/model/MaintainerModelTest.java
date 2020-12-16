@@ -5,7 +5,6 @@
  */
 package model;
 
-import connectionDB.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,30 +24,26 @@ public class MaintainerModelTest {
     private static Connection connection;
 
     
-    public Connection getConnection() {
-        return connection = ConnectionDatabase.getConnection();
-    }
-    
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
     
     public MaintainerModelTest() {
     }
 
-    @Before
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
+@Before
     public void setUp() {
         instance = new MaintainerModel("", "");
-        connection = this.getConnection();
+        connection = instance.getDaoConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -57,12 +52,11 @@ public class MaintainerModelTest {
         try {
             connection.rollback();
             connection.setAutoCommit(true);
-            this.closeConnection();
+            connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     /**
      * Test of findMaintainer method, of class MaintainerModel.
      */
@@ -166,9 +160,10 @@ public class MaintainerModelTest {
      * Test of deleteMaintainer method, of class MaintainerModel.
      */
     @Test
-    public void testDeleteMaintainer2() { //mi aspetto true se ho cancellato
+    public void testDeleteMaintainer2() { //mi aspetto true se ho cancellato, posso cancellare solo un maintainer che non è associato 
+        //a nessuna attività altrimenti viola vincolo integrità referenziale
         System.out.println("deleteMaintainer2");
-        String username = "maintainer6";
+        String username = "jennifer";
         boolean result = instance.deleteUser(username);
         assertTrue(result);
     }
@@ -299,4 +294,95 @@ public class MaintainerModelTest {
         System.out.println("removeCompetence2");
         assertEquals(false, instance.hasCompetences("main",6)); //provo a rimuovere una competenza che non ha.
     }
+
+    /**
+     * Test of getDisponibilitaGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testGetDisponibilitaGiorno() {
+        System.out.println("getDisponibilitaGiorno");
+        String username = "";
+        int week = 0;
+        int day = 0;
+        String expResult = "";
+        String result = instance.getDisponibilitaGiorno(username, week, day);
+        assertEquals(expResult, result);
+       
+    }
+    
+    /**
+     * Test of getDisponibilitaGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testGetDisponibilitaGiorno1() {
+        System.out.println("getDisponibilitaGiorno1");
+        String username = "";
+        int week = 55;
+        int day = 0;
+        String expResult = "";
+        String result = instance.getDisponibilitaGiorno(username, week, day);
+        assertEquals(expResult, result);
+       
+    }
+    
+    /**
+     * Test of getDisponibilitaGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testGetDisponibilitaGiorno2() {
+        System.out.println("getDisponibilitaGiorno2");
+        String username = "maintainer3";
+        int week = 1;
+        int day = 2;
+        String expResult = "60 60 60 60 60 60 60";
+        String result = instance.getDisponibilitaGiorno(username, week, day);
+        assertEquals(expResult, result);
+       
+    }
+
+
+
+    /**
+     * Test of getNumGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testGetNumGiorno() {
+        System.out.println("getNumGiorno");
+        String username = "";
+        int week = 0;
+        int day = 0;
+        int expResult = 0;
+        int result = instance.getNumGiorno(username, week, day);
+        assertEquals(expResult, result);
+        
+    }
+    
+    /**
+     * Test of getNumGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testGetNumGiorno1() {
+        System.out.println("getNumGiorno1");
+        String username = "maintainer3";
+        int week = 1;
+        int day = 3;
+        int expResult = 9;
+        int result = instance.getNumGiorno(username, week, day);
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of listMaintainersDisponibili method, of class MaintainerModel.
+     */
+    @Test
+    public void testListMaintainersDisponibili() {
+        System.out.println("listMaintainersDisponibili");
+        List<MaintainerModel> expResult = null;
+        List<MaintainerModel> result = instance.listMaintainersDisponibili();
+        assertNotNull(result);
+       
+    }
+
+ 
 }

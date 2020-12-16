@@ -26,12 +26,12 @@ public class ProcedureModel {
     }
 
     public List<ProcedureModel> getAllProcedure() {
-        //ProcedureDao dao = new ProcedureDao();
+        
         return dao.getAllProcedures();
     }
 
     public List<SkillModel> getProcedureSkill(String nomeprocedura) {
-        //ProcedureDao dao = new ProcedureDao();
+        
         return dao.getProcedureSkill(nomeprocedura);
     }
 
@@ -71,5 +71,14 @@ public class ProcedureModel {
         return dao.hasCompetence(nomeprocedura, idcompetenza);
     }
 
+    public Connection getDaoConnection() {
+        return dao.getConn();
+    }
 
+    @Override
+    public String toString() {
+        return "ProcedureModel{" + "nomeProc=" + nomeProc + ", path=" + path + '}';
+    }
+    
+    
 }

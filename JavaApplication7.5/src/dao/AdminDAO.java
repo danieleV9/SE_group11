@@ -18,17 +18,23 @@ import connectionDB.ConnectionDatabase;
  */
 public class AdminDAO implements UserDAO {
 
-    private Connection con;
+    private Connection conn;
     private static PreparedStatement pst;
     private static ResultSet rs;
+
+    public AdminDAO() {
+        conn = ConnectionDatabase.getConnection();
+    }
+    
+    
 
     @Override
     public AdminModel findUser(String username, String password) {
         if (!username.equals("") && !password.equals("")) {
             try {
-                con = ConnectionDatabase.getConnection();
+                
                 String query = "select * from amministratore where usernamesa=? and passwordsa=?";
-                pst = con.prepareStatement(query);
+                pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, password);
                 rs = pst.executeQuery();
@@ -46,10 +52,15 @@ public class AdminDAO implements UserDAO {
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                try { con.close(); } catch (SQLException e) { }
+                //try { con.close(); } catch (SQLException e) { }
             }
         }
         return null;
     }
+
+    public Connection getConn() {
+        return conn;
+    }
+    
 
 }

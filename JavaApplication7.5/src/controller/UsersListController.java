@@ -109,7 +109,7 @@ public class UsersListController {
                     viewmod.setVisible(true);
                     controllermod.fillTextField();
                     controllermod.populateCompetences(username);
-                    //controllermod.populateCompetences();
+                    controllermod.populateCompetences();
                 }
             }   else if(view.getTabbed().getSelectedIndex()==0){
                     if (selezionatopl != -1) {

@@ -6,6 +6,7 @@
 package model;
 
 import dao.MaintainerDAO;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,4 +87,7 @@ public class MaintainerModel extends EmployeeModel {
         return "MaintainerModel{" + super.toString()+'}';
     }
 
+    public Connection getDaoConnection() {
+        return dao.getConn();
+    }
 }

@@ -6,6 +6,10 @@
 package model;
 
 import dao.PlannerDAO;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +17,20 @@ import java.util.List;
  *
  * @author lyuba
  */
-public class PlannerModel extends EmployeeModel {
+public class PlannerModel extends EmployeeModel implements Serializable{
+    
+    // Used when notifying listeners so they know what has changed
+    public static final String PASSWORD_CHANGE = "password";
 
     private PlannerDAO dao;
+    
+    // This class is observable
+    private PropertyChangeSupport changeSupport;
 
     public PlannerModel(String username, String password) {
         super(username, password);
         dao = new PlannerDAO();
+        changeSupport = new PropertyChangeSupport(this);
     }
 
     @Override
@@ -47,6 +58,15 @@ public class PlannerModel extends EmployeeModel {
 
     @Override
     public boolean updateUserPassword(String username, String newpass) {
+        System.out.println(this.getPassword()+"password iniziale");
+        if (!this.getPassword().equals(newpass) ) {
+            String previousPassword = this.getPassword();
+            this.setPassword(newpass);
+            changeSupport.firePropertyChange(PASSWORD_CHANGE,previousPassword,this.getPassword()); //questa è la nuova password
+            System.out.println("Cambio password"+this.getPassword());
+        }
+        else
+            System.out.println("Non Cambio password"+this.getPassword());
         return dao.updateUserPassword(username, newpass);
     }
 
@@ -60,5 +80,16 @@ public class PlannerModel extends EmployeeModel {
     @Override
     public String toString() {
         return "PlannerModel{" + super.toString() + '}';
+    }
+    
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        changeSupport.addPropertyChangeListener(pcl);
+    }
+    
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        changeSupport.removePropertyChangeListener(pcl);
+    }
+    public Connection getDaoConnection() {
+        return dao.getConn();
     }
 }

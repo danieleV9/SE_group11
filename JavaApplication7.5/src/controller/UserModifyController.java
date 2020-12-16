@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import model.EmployeeModel;
 import model.MaintainerModel;
 import model.PlannerModel;
 import model.SkillModel;
@@ -26,9 +27,8 @@ public class UserModifyController {
 
     ModifyUserView view;
     UsersListView prev;
-    PlannerModel modelpl;
-    MaintainerModel modelma;
-    private String username = "";
+    EmployeeModel model;
+    private String username;
     private String role;
 
     public UserModifyController(ModifyUserView view, UsersListView prev, String username, String role) {
@@ -37,14 +37,14 @@ public class UserModifyController {
         this.username = username;
         this.role = role;
         UserFactory employeeFactory = new EmployeeFactory();
-        this.modelpl =  (PlannerModel) employeeFactory.build(UserFactory.Role.PLANNER,"","");
-        this.modelma = (MaintainerModel) employeeFactory.build(UserFactory.Role.MAINTAINER,"","");
         if(getSelRole().equals("Planner")){
-            modelpl=(PlannerModel) modelpl.findUsername(username);
-            System.out.println(modelpl.toString());
+            this.model =  (PlannerModel) employeeFactory.build(UserFactory.Role.PLANNER,"","");
+            model =(PlannerModel) model.findUsername(username);
+            System.out.println(model.toString());
         }else if(getSelRole().equals("Maintainer")){
-            modelma = (MaintainerModel) modelma.findUsername(username);
-            System.out.println(modelma.toString());
+            this.model = (MaintainerModel) employeeFactory.build(UserFactory.Role.MAINTAINER,"","");
+            model = (MaintainerModel) model.findUsername(username);
+            System.out.println(model.toString());
         }
         this.view.addModifyPassListener(new ModifyPassListener());//voglio modificare la pass
         this.view.addConfirmModListener(new ConfirmModListener()); //conferma modifica password
@@ -61,15 +61,11 @@ public class UserModifyController {
     }
 
     public void fillTextField() {
-        view.setUsername("");
-        view.setPassword("");
+        view.setUsername(this.username);
+        view.setPassword(this.model.getPassword());
         if (getSelRole().equals("Planner")) {
             view.showMaintainerStuff(false);
-            view.setUsername(this.username);
-            view.setPassword(this.modelpl.getPassword());
         } else if (getSelRole().equals("Maintainer")){
-            view.setUsername(this.username); //se sei maintainer
-            view.setPassword(this.modelma.getPassword());
             view.showMaintainerStuff(true);
         }
     }
@@ -87,23 +83,20 @@ public class UserModifyController {
         @Override
         public void actionPerformed(ActionEvent e) {
             String newpass = view.getNewPassword();
+            prev.setModel((PlannerModel)model);
             if (newpass.equals("")) {
                 view.displayErrorMessage("Password can not be empty");
             } else if (newpass.equals(view.getPassword())) {
                 view.displayErrorMessage("The new password must be different from the previous!");
             } else {
-                if (getSelRole().equals("Planner")) {
-                    if (modelpl.updateUserPassword(username, newpass)) {
+                if (model.updateUserPassword(username, newpass)) {
+                        System.out.println(model.getUsername()+model.getPassword());
                         view.showNewPassword(false);
                         view.displayErrorMessage("Password updated succesfully!");
                         view.setPassword(newpass);
-                    }
-                } else { //sei un maintainer
-                    if (modelma.updateUserPassword(username, newpass)) {
-                        view.showNewPassword(false);
-                        view.displayErrorMessage("Password updated succesfully!");
-                        view.setPassword(newpass);
-                    }
+                }
+                else{
+                    view.displayErrorMessage("Cannot update password, try again");
                 }
             }
         }
@@ -124,14 +117,14 @@ public class UserModifyController {
         public void actionPerformed(ActionEvent e) {
             JTable table = view.getjTable1();
             SkillModel skill = new SkillModel(0, "");
-            MaintainerModel m = new MaintainerModel("", "");
-            DefaultTableModel model = view.getModeltab();
+            MaintainerModel m = (MaintainerModel)model;
+            DefaultTableModel modelt = view.getModeltab();
             int selezionato = table.getSelectedRow();
             if (selezionato != -1) {
                 String descrizione = table.getValueAt(selezionato, 0).toString();
                 int id = skill.findSkill(descrizione).getIdSkill();
-                if (m.removeCompetence(modelma.getUsername(), id)) {
-                    model.removeRow(selezionato);
+                if (m.removeCompetence(model.getUsername(), id)) {
+                    modelt.removeRow(selezionato);
                 }
             } else {
                 view.displayErrorMessage("Select A Skill !");
@@ -152,6 +145,7 @@ public class UserModifyController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            MaintainerModel modelma = (MaintainerModel)model;
             SkillModel skill = new SkillModel(0, "");
             String description = view.getjComboBox1().getSelectedItem().toString();
             int id = skill.findSkill(description).getIdSkill();
@@ -170,29 +164,25 @@ public class UserModifyController {
     public void populateCompetences() {
         SkillModel skill = new SkillModel(0, "");
         List<SkillModel> list = skill.listSkills();
-        for (int i = 0; i < list.size(); i++) {
-            String competenza = list.get(i).toString();
-            view.getjComboBox1().addItem(competenza);
-            //System.out.println(competenza);
+        if(!list.isEmpty()){
+            for (int i = 0; i < list.size(); i++) {
+                String competenza = list.get(i).toString();
+                view.getjComboBox1().addItem(competenza);
+                //System.out.println(competenza);
+            }
         }
     }
 
     public void populateCompetences(String username) {
         SkillModel skill = new SkillModel(0, "");
         List<SkillModel> list = skill.listSkillsMA(username);
-        /*for (int i = 0; i < list.size(); i++) {
-            String descrizioneCompetenza = list.get(i).getDescription();
-            System.out.println(descrizioneCompetenza);
-            String idcompetenza = String.valueOf(list.get(i).getIdSkill());
-            String[] row = {descrizioneCompetenza};
-            view.getModeltab().addRow(row);
-            
-        }*/
-        for(SkillModel sk: list){
-            String descr=sk.getDescription();
-            String[] row = {descr};
-            view.getModeltab().addRow(row);
-            System.out.println(descr);
+        if(!list.isEmpty()){
+            for(SkillModel sk: list){
+                String descr=sk.getDescription();
+                String[] row = {descr};
+                view.getModeltab().addRow(row);
+                //System.out.println(descr);
+            }
         }
     }
 }
