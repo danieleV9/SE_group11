@@ -13,7 +13,5 @@ public abstract class ManagerModel extends UserModel{
 
     public ManagerModel(String username, String password) {
         super(username, password);
-    }
-
-    
+    }  
 }

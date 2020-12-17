@@ -143,29 +143,6 @@ public class MaintenanceActivityModelTest {
     }
 
     /**
-     * Test of insertActivity method, of class MaintenanceActivityModel.
-     */
-    @Test
-    public void testInsertActivity() {
-        System.out.println("insertActivity");
-        int numberWeek = 10;
-        String workNotes = "";
-        String type = "planned";
-        String factory = "Fisciano";
-        String area = "Carpenteria";
-        String tipology = "elettronica";
-        boolean interruptible = true;
-        int time = 10;
-        String description = "Conoscenza del robot XP";
-        boolean expResult = true;
-        ProcedureModel proc = new ProcedureModel("proc2","path");
-        boolean result = instance.insertActivity1(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible,proc);
-        
-        assertEquals(expResult, result);
-    }
-
-
-    /**
      * Test of getAllActivity method, of class MaintenanceActivityModel.
      */
     @Test

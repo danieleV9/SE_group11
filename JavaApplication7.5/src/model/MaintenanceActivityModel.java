@@ -143,13 +143,6 @@ public class MaintenanceActivityModel {
         this.procedura = procedura;
     }
 
-    /*public List<Materiali> getMateriali() {
-        return materiali;
-    }
-
-    public void setMateriali(List<Materiali> materiali) {
-        this.materiali = materiali;
-    }*/
     public String getArea() {
         return area;
     }
@@ -180,11 +173,6 @@ public class MaintenanceActivityModel {
 
     public int insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
         int ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, proc);
-        return ad;
-    }
-
-    public boolean insertActivity1(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
-        boolean ad = dao.insertActivity1(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, proc);
         return ad;
     }
 

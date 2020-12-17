@@ -122,10 +122,10 @@ public class ActivityDAO1 {
         return list;
     }
 
-    public int selectMaxId() {
+    public int insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
         try {
-            conn =ConnectionSingleton.getInstance();
-            int maxId=0;
+            conn = ConnectionSingleton.getInstance();
+            int maxId;
             String query = "select max(idattivita) from attivita_manutenzione";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -134,67 +134,14 @@ public class ActivityDAO1 {
             } else {
                 maxId = 0;
             }
-            return maxId;
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            return 0;
-        }
-
-    }
-
-    public int insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
-        try {
-            conn =ConnectionSingleton.getInstance();
-            String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
+            String query1 = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
                     + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
                     + "dataattivita,statoticket) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            pst = conn.prepareStatement(query);
+            pst = conn.prepareStatement(query1);
             pst.setInt(1, numberWeek);
             pst.setString(2, workNotes);
             pst.setString(3, type);
             pst.setBoolean(4, interruptible);
-            int maxId = selectMaxId();
-            maxId=maxId + 1;
-            pst.setInt(5, maxId);
-            pst.setString(6, factory);
-            pst.setString(7, area);
-            pst.setNull(8, Types.NULL);
-            pst.setString(9, tipology);
-            pst.setString(10, proc.getNomeProc());
-            pst.setInt(11, time);
-            pst.setString(12, description);
-            pst.setNull(13, Types.NULL);
-            pst.setNull(14, Types.NULL);
-            int res = pst.executeUpdate();
-            if (res == 1) {
-                return maxId;
-            } else {
-                return 0;
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            return 0;
-        } finally {
-            try {
-                pst.close();
-            } catch (SQLException e) {
-            }
-            //try { conn.close(); } catch (SQLException e) { }
-        }
-    }
-
-    public boolean insertActivity1(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
-        try {
-            conn =ConnectionSingleton.getInstance();
-            String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
-                    + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
-                    + "dataattivita,statoticket) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            pst = conn.prepareStatement(query);
-            pst.setInt(1, numberWeek);
-            pst.setString(2, workNotes);
-            pst.setString(3, type);
-            pst.setBoolean(4, interruptible);
-            int maxId = selectMaxId();
             pst.setInt(5, maxId + 1);
             pst.setString(6, factory);
             pst.setString(7, area);
@@ -207,19 +154,19 @@ public class ActivityDAO1 {
             pst.setNull(14, Types.NULL);
             int res = pst.executeUpdate();
             if (res == 1) {
-                return true;
+                return maxId + 1;
             } else {
-                return false;
+                return 0;
             }
         } catch (SQLException ex) {
+            //System.out.println("Errore nell'inserimento dell'attività");
             System.out.println(ex.getMessage());
-            return false;
+            return 0;
         } finally {
             try {
                 pst.close();
             } catch (SQLException e) {
             }
-            //try { conn.close(); } catch (SQLException e) { }
         }
     }
 

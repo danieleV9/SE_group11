@@ -74,7 +74,9 @@ public class PlannerCreateController {
                     int numberWeek = Integer.parseInt(weekNumber);
                     ProcedureModel p = new ProcedureModel("","");
                     String path= p.getPath(procedure);
+                    System.out.println("pippo");
                     int idattivita = mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, new ProcedureModel(procedure,path));
+                    System.out.println("pluto");
                     for (MaterialModel l:list) // lista dei materiali selezionati dutante creazione attività
                         mmodel.insertMaterial(l.getMaterialName(), idattivita);
                     view.displaySuccessfullyMessage("Activity Created Succesfully!");
@@ -104,6 +106,7 @@ public class PlannerCreateController {
             MaterialModel ma = view.displayMessage();
             if (ma!=null && !list.contains(ma)) {
                 list.add(ma);
+                System.out.println(list);
             }
         }
     }
