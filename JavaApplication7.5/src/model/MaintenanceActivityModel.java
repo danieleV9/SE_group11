@@ -24,14 +24,14 @@ public class MaintenanceActivityModel {
     private int EstimatedTime;
     private String workspaceNotes;
     private ProcedureModel procedura;
-    private List<Materiali> materiali;
+    private List<MaterialModel> materiali;
     private String area;
     private String Fabbrica;
     private ActivityDAO1 dao;
 
     public MaintenanceActivityModel(int WeekNum, boolean interuptible, int id_Activity, String description,
             String tipology, String type, int EstimatedTime, String workspaceNotes,
-            ProcedureModel procedura, List<Materiali> materiali, String area, String fabbrica) {
+            ProcedureModel procedura, List<MaterialModel> materiali, String area, String fabbrica) {
         this.WeekNum = WeekNum;
         this.interuptible = interuptible;
         this.id_Activity = id_Activity;
@@ -47,7 +47,7 @@ public class MaintenanceActivityModel {
         this.dao = new ActivityDAO1();
     }
 
-    public MaintenanceActivityModel(int WeekNum, int id_Activity, String tipology, String description, String workspaceNotes, String area, int estimatedTime, String fabbrica,ProcedureModel proc) {
+    public MaintenanceActivityModel(int WeekNum, int id_Activity, String tipology, String description, String workspaceNotes, String area, int estimatedTime, String fabbrica, ProcedureModel proc) {
         this.WeekNum = WeekNum;
         this.id_Activity = id_Activity;
         this.description = description;
@@ -56,7 +56,7 @@ public class MaintenanceActivityModel {
         this.area = area;
         this.EstimatedTime = estimatedTime;
         this.Fabbrica = fabbrica;
-        this.procedura=proc;
+        this.procedura = proc;
         this.dao = new ActivityDAO1();
     }
 
@@ -144,14 +144,13 @@ public class MaintenanceActivityModel {
         this.procedura = procedura;
     }
 
-    public List<Materiali> getMateriali() {
+    /*public List<Materiali> getMateriali() {
         return materiali;
     }
 
     public void setMateriali(List<Materiali> materiali) {
         this.materiali = materiali;
-    }
-
+    }*/
     public String getArea() {
         return area;
     }
@@ -161,33 +160,32 @@ public class MaintenanceActivityModel {
     }
 
     public boolean deleteActivity(int id) {
-        
         return dao.deleteActivity(id);
     }
 
     public MaintenanceActivityModel viewActivity(int id) {
-        
         return dao.viewActivity(id);
     }
 
     public boolean aggiornaNote(String note, int id) {
-        
         return dao.aggiornaNote(note, id);
     }
 
     public List<MaintenanceActivityModel> getAllActivity() {
-        
         return dao.getAllActivity();
     }
 
     public List<MaintenanceActivityModel> getAllActivity(int numWeek) {
-        
         return dao.getAllActivity(numWeek);
     }
 
-    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible,ProcedureModel proc) {
-        
-        boolean ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible,proc);
+    public int insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
+        int ad = dao.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, proc);
+        return ad;
+    }
+
+    public boolean insertActivity1(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
+        boolean ad = dao.insertActivity1(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, proc);
         return ad;
     }
 
@@ -197,23 +195,18 @@ public class MaintenanceActivityModel {
     }
 
     public String findProcedura(int id) {
-        
         return dao.findProcedura(id);
     }
 
     public boolean assignedActivity(int id) {
-        
         return dao.assignedActivity(id);
     }
 
     public boolean assignNewActivity(int id, String username, String data) {
-        
         return dao.assignNewActivity(id, username, data);
     }
 
     public Connection getDaoConnection() {
         return dao.getConn();
     }
-
-    
 }
