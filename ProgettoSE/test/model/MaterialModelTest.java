@@ -73,24 +73,6 @@ public class MaterialModelTest {
     }
 
     /**
-     * Test of listSkills method, of class SkillModel.
-     */
-    @Test
-    public void testListMaterials1() {
-        System.out.println("listMaterials1");
-        List<MaterialModel> first=instance.listMaterials();
-        int firstSize = first.size();
-        System.out.println(firstSize);
-        String materialName = "rame";
-        int idattivita= 12;
-        List<MaterialModel> second = instance.listMaterials();
-        int secondSize = second.size();
-        System.out.println(secondSize);
-        int expResult = firstSize + 1;
-        assertEquals(expResult, secondSize);  // dalla stampa delle size risulta che sono uguali, ma assertEquals non la pensa allo stesso modo...
-    }
-
-    /**
      * Test of insertMaterial method, of class MaterialModel.
      */
     @Test
