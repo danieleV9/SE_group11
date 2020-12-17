@@ -154,7 +154,7 @@ public class MaintenanceActivityModelTest {
         String description = "Conoscenza del robot XP";
         boolean expResult = true;
         ProcedureModel proc = new ProcedureModel("proc2","path");
-        boolean result = instance.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible,proc);
+        boolean result = instance.insertActivity1(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible,proc);
         
         assertEquals(expResult, result);
     }
