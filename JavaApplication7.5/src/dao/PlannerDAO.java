@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 import java.util.ArrayList;
 import java.util.List;
 import model.PlannerModel;
@@ -28,7 +28,7 @@ public class PlannerDAO implements EmployeeDAO {
     private static Statement st;
     
     public PlannerDAO() {
-        conn = ConnectionDatabase.getConnection();
+        
     }
 
 
@@ -39,6 +39,7 @@ public class PlannerDAO implements EmployeeDAO {
         }
         if (!username.equals("") && !password.equals("")) {
             try {
+                conn =ConnectionSingleton.getInstance();
                 String query = "select * from pianificatore where usernamepl=? and passwordpl=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -48,10 +49,8 @@ public class PlannerDAO implements EmployeeDAO {
                     String user = rs.getString("usernamepl");
                     String pass = rs.getString("passwordpl");
                     PlannerModel pl = new PlannerModel(user, pass);
-                   // conn.close();
                     return pl;
                 } else {
-                   // conn.close();
                     return null;
                 }
             } catch (SQLException ex) {
@@ -63,7 +62,7 @@ public class PlannerDAO implements EmployeeDAO {
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+               // try { conn.close(); } catch (SQLException e) { }
             }
         } else {
             return null;
@@ -77,7 +76,7 @@ public class PlannerDAO implements EmployeeDAO {
         }
         if (!username.equals("")) {
             try {
-                
+                conn =ConnectionSingleton.getInstance();
                 String query = "select * from pianificatore where usernamepl=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -86,10 +85,8 @@ public class PlannerDAO implements EmployeeDAO {
                     String user = rs.getString("usernamepl");
                     String pass = rs.getString("passwordpl");
                     PlannerModel ma = new PlannerModel(user, pass);
-                    //con.close();
                     return ma;
                 }
-                //con.close();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
                 return null;
@@ -109,6 +106,7 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             if (!usernameExists(username)) { //se username non è già utilizzato
                 String query = "insert into pianificatore(usernamepl, passwordpl) values (?,?)";
                 pst = conn.prepareStatement(query);
@@ -127,7 +125,7 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+               // try { conn.close(); } catch (SQLException e) { }
             }
     }
 
@@ -140,6 +138,7 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "update pianificatore set passwordpl=? where usernamepl=?";
             pst = conn.prepareStatement(query);
             pst.setString(2, username);
@@ -162,6 +161,7 @@ public class PlannerDAO implements EmployeeDAO {
     @Override
     public boolean usernameExists(String username) {// in usernames ci sono tutti gli username utilizzati
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "select count(*) from usernames where username=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
@@ -177,7 +177,6 @@ public class PlannerDAO implements EmployeeDAO {
                     return true;
                 } //query va a buon fine e trova username
             } else {
-                //con.close();
                 return true;
             }
         } catch (SQLException ex) {
@@ -186,14 +185,14 @@ public class PlannerDAO implements EmployeeDAO {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+               // try { conn.close(); } catch (SQLException e) { }
             }
     }
 
     public List<PlannerModel> listPlanners() {
         List<PlannerModel> list = new ArrayList<>();
         try {
-            
+            conn =ConnectionSingleton.getInstance();
             String query = "select * from pianificatore";
             st = conn.createStatement();
             rs = st.executeQuery(query);
@@ -203,7 +202,6 @@ public class PlannerDAO implements EmployeeDAO {
                 PlannerModel planner = new PlannerModel(username, password);
                 list.add(planner);
             }
-            //con.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {
@@ -223,6 +221,7 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "delete from pianificatore where usernamepl=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
@@ -236,12 +235,9 @@ public class PlannerDAO implements EmployeeDAO {
             return false;
         } finally {
                 try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+               // try { conn.close(); } catch (SQLException e) { }
             }
     }
 
-    public Connection getConn() {
-        return conn;
-    }
 
 }

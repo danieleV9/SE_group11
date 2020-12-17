@@ -5,6 +5,7 @@
  */
 package model;
 
+import connectionDB.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,9 +13,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 
 
 /**
@@ -32,11 +35,25 @@ public class ProcedureModelTest {
         
     }
 
+    @AfterClass
+    public static void afterclass(){
+        try {
+           
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    @BeforeClass
+    public static void beforeclass(){
+        connection = ConnectionSingleton.getInstance();
+    }
+    
     @Before
     public void setUp() {
         instance = new ProcedureModel("", "");
-        connection = instance.getDaoConnection();
+        
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -46,12 +63,11 @@ public class ProcedureModelTest {
 
     @After
     public void tearDown() {
-        try {
+       try {
             connection.rollback();
             connection.setAutoCommit(true);
-            connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -5,7 +5,7 @@
  */
 package model;
 
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -21,42 +21,42 @@ public class AdminModelTest {
 
     private static AdminModel instance;
     private static Connection connection;
-    
-    public Connection getConnection() {
-        return connection = ConnectionDatabase.getConnection();
-    }
-    
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println("CHIUSURA DEL DATABASE FALLITA.");
-            System.err.println(e.getMessage());
-        }
-    }
 
     public AdminModelTest() {
     }
+    
+    @AfterClass
+    public static void afterclass(){
+        try {
+           
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    @BeforeClass
+    public static void beforeclass(){
+        connection = ConnectionSingleton.getInstance();
+    }
+    
     @Before
     public void setUp() {
         instance = new AdminModel("", "");
-        connection =this.getConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @After
     public void tearDown() {
-        try {
+       try {
             connection.rollback();
             connection.setAutoCommit(true);
-            this.closeConnection();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

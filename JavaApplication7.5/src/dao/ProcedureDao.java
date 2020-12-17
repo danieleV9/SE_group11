@@ -5,7 +5,7 @@
  */
 package dao;
 
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,13 +29,14 @@ public class ProcedureDao {
     
     
     public ProcedureDao() {
-        conn=ConnectionDatabase.getConnection();
+       
     }
    
 
     public List<ProcedureModel> getAllProcedures() {
         List<ProcedureModel> list = new ArrayList<>();
         try {
+            conn =ConnectionSingleton.getInstance();
             st = conn.createStatement();
             String query = "select * from procedure_manutenzione";
             rs = st.executeQuery(query);
@@ -61,29 +62,30 @@ public class ProcedureDao {
       }
       else {
             try {
-            String query = "insert into competenze_proc(idcompetenza,nomeprocedura) values(?,?)";
-            pst = conn.prepareStatement(query);
-            pst.setInt(1, id);
-            pst.setString(2, nomeprocedura);
-            int res = pst.executeUpdate();
-            if(res == 1)
-                return true;
-            else
+                conn =ConnectionSingleton.getInstance();
+                String query = "insert into competenze_proc(idcompetenza,nomeprocedura) values(?,?)";
+                pst = conn.prepareStatement(query);
+                pst.setInt(1, id);
+                pst.setString(2, nomeprocedura);
+                int res = pst.executeUpdate();
+                if(res == 1)
+                    return true;
+                else
+                    return false;
+            } catch (SQLException ex) {
+                System.out.println("Errore nell'aggiunta nuova competenza" + ex.getMessage());
                 return false;
-        } catch (SQLException ex) {
-            System.out.println("Errore nell'aggiunta nuova competenza" + ex.getMessage());
-            return false;
-        } finally {
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
-            }
+            } finally {
+                    try { pst.close(); } catch (SQLException e) { }
+                    //try { conn.close(); } catch (SQLException e) { }
+                }
       }      
             
     }
 
     public boolean removeCompetence(String nomeprocedura, int id) {
         try {
-            
+            conn =ConnectionSingleton.getInstance();
             String query = "delete from competenze_proc where idcompetenza=? and nomeprocedura=?";
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
@@ -103,7 +105,7 @@ public class ProcedureDao {
         List<SkillModel> list = new ArrayList<>();
         SkillModel skill=new SkillModel(0,"");
         try {
-            
+            conn =ConnectionSingleton.getInstance();
             String query = "select * from competenze_proc where nomeprocedura=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, nomeprocedura);
@@ -129,6 +131,7 @@ public class ProcedureDao {
             return false;
         } else {
             try {
+                conn =ConnectionSingleton.getInstance();
                 String query = "insert into procedure_manutenzione(nomeprocedura,path) values(?,?)";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, nomeprocedura);
@@ -154,6 +157,7 @@ public class ProcedureDao {
             return false;
         } else {
         try {
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setString(1, name);
             pst.execute();
@@ -173,6 +177,7 @@ public class ProcedureDao {
             return null;
         String path = null;
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "select path from procedure_manutenzione where nomeprocedura=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, name);
@@ -193,6 +198,7 @@ public class ProcedureDao {
 
     public boolean proceduraExists(String name) {
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "select count(*) from procedure_manutenzione where nomeprocedura=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, name);
@@ -222,6 +228,7 @@ public class ProcedureDao {
     public boolean hasCompetence(String nomeprocedura, int idcompetenza){
         String query="select count(*) from competenze_proc where nomeprocedura=? and idcompetenza=?";
         try{
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setString(1,nomeprocedura);
             pst.setInt(2,idcompetenza);
@@ -243,9 +250,5 @@ public class ProcedureDao {
         return false;
     } 
 
-    public Connection getConn() {
-        return conn;
-    }
-    
 
 }

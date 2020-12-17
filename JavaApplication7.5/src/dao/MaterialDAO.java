@@ -5,7 +5,7 @@
  */
 package dao;
 
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,16 +21,14 @@ import model.MaterialModel;
  */
 public class MaterialDAO {
 
-    private Connection con;
+    private Connection conn;
     private ResultSet rs;
     private Statement st;
     private PreparedStatement pst;
-    private String query;
     private MaterialModel material;
 
     public MaterialDAO() {
-        con = ConnectionDatabase.getConnection();
-        material = new MaterialModel("");
+       
     }
 
     public boolean deleteMaterial(String nomeMaterial) {
@@ -38,72 +36,68 @@ public class MaterialDAO {
             return false;
         }
         try {
-            query = "delete from materiali where nomemateriale=?";
-            pst = con.prepareStatement(query);
+            conn =ConnectionSingleton.getInstance();
+            String query = "delete from materiali where nomemateriale=?";
+            pst = conn.prepareStatement(query);
             pst.setString(1, nomeMaterial);
-            pst.executeUpdate();
-            return true;
+            int res=pst.executeUpdate();
+            if(res==1)
+                return true;
+            else 
+                return false;
         } catch (SQLException ex) {
-            System.out.println("" + ex);
+            System.out.println("" + ex.getMessage());
             return false;
         }
-        /*finally {
-            try {
-                pst.close();
-            } catch (SQLException e) {
-            }
-            try {
-                con.close();
-            } catch (SQLException e) {
-            }
-        }*/
+        finally {
+            //try {rs.close();} catch (SQLException e) {}
+            try {pst.close();} catch (SQLException e) {}
+            //try {conn.close();} catch (SQLException e) {}
+        }
     }
 
 public boolean insertMaterial(String materialName,int idattivita) {
         try {
-            query = "INSERT INTO materiali_per_attivita(idattivita, nomemateriale) values (?,?)";
-            pst = con.prepareStatement(query);
+            conn =ConnectionSingleton.getInstance();
+            String query = "INSERT INTO materiali_per_attivita(idattivita, nomemateriale) values (?,?)";
+            pst = conn.prepareStatement(query);
             pst.setInt(1, idattivita);
             pst.setString(2, materialName);
-            pst.executeUpdate();
-            return true;
+            int res=pst.executeUpdate();
+            if(res==1)
+                return true;
+            else 
+                return false;
         } catch (SQLException ex) {
             System.out.println("" + ex);
             return false;
+        }finally {
+            //try {rs.close();} catch (SQLException e) {}
+            try {pst.close();} catch (SQLException e) {}
+            //try {conn.close();} catch (SQLException e) {}
         }
     }
 
     public List<MaterialModel> getAllMaterials() {
         List<MaterialModel> list = new ArrayList<>();
         try {
-            con = ConnectionDatabase.getConnection();
-            st = con.createStatement();
-            String query = "select * from materiali_per_attivita";
+            conn =ConnectionSingleton.getInstance();
+            st = conn.createStatement();
+            String query = "select * from materiali";
             rs = st.executeQuery(query);
             while (rs.next()) {
                 String materialName = rs.getString("nomemateriale");
+                list.add( new MaterialModel(materialName));
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        /*finally {
-            try {
-                rs.close();
-            } catch (SQLException e) {
-            }
-            try {
-                pst.close();
-            } catch (SQLException e) {
-            }
-            try {
-                con.close();
-            } catch (SQLException e) {
-            }
-        }*/
+        finally {
+            try {rs.close();} catch (SQLException e) {}
+            //try {pst.close();} catch (SQLException e) {}
+            //try {conn.close();} catch (SQLException e) {}
+        }
         return list;
     }
 
-    public Connection getConn() {
-        return con;
-    }
 }

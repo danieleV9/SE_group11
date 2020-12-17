@@ -5,9 +5,9 @@
  */
 package model;
 
+import connectionDB.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,34 +26,39 @@ public class MaintenanceActivityModelTest {
     public MaintenanceActivityModelTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void afterclass(){
+        try {
+           
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    @BeforeClass
+    public static void beforeclass(){
+        connection = ConnectionSingleton.getInstance();
+    }
+    
     @Before
     public void setUp() {
         ProcedureModel proceduras = new ProcedureModel("","");
         instance = new MaintenanceActivityModel(0, 0, "", "", "", "", 0, "",proceduras);
-        connection = instance.getDaoConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @After
     public void tearDown() {
-        try {
+       try {
             connection.rollback();
             connection.setAutoCommit(true);
-            connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

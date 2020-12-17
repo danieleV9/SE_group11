@@ -6,8 +6,6 @@
 package model;
 
 import dao.MaintainerDAO;
-import java.io.Serializable;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  *
  * @author lyuba
  */
-public class MaintainerModel extends EmployeeModel implements Serializable {
+public class MaintainerModel extends EmployeeModel {
 
     private MaintainerDAO dao;
 
@@ -94,9 +92,4 @@ public class MaintainerModel extends EmployeeModel implements Serializable {
         return "MaintainerModel{" + super.toString()+'}';
     }
 
-    public Connection getDaoConnection() {
-        return dao.getConn();
-    }
-    
-    
 }

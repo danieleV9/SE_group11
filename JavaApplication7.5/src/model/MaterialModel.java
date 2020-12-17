@@ -6,7 +6,6 @@
 package model;
 
 import dao.MaterialDAO;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +32,7 @@ public class MaterialModel {
     }
 
     public List<MaterialModel> listMaterials() {
-        List<MaterialModel> list = new ArrayList<>();
-        list = dao.getAllMaterials();
-        return list;
+        return dao.getAllMaterials();
     }
 
     public boolean deleteMaterial(String materialName) {
@@ -48,10 +45,7 @@ public class MaterialModel {
 
     @Override
     public String toString() {
-        return "MaterialModel{" + "materialName=" + materialName + '}';
+        return ""+ materialName ;
     }
 
-    public Connection getDaoConnection() {
-        return dao.getConn();
-    }
 }

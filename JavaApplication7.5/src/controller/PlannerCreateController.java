@@ -15,7 +15,7 @@ import model.PlannerModel;
 import model.ProcedureModel;
 import view.PlannerCreateView;
 import view.PlannerHomeView;
-import view.PlannerMaterialView;
+
 
 /**
  *
@@ -75,8 +75,8 @@ public class PlannerCreateController {
                     ProcedureModel p = new ProcedureModel("","");
                     String path= p.getPath(procedure);
                     int idattivita = mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, new ProcedureModel(procedure,path));
-                    for (MaterialModel l:list)
-                    mmodel.insertMaterial(mmodel.getMaterialName(), idattivita);
+                    for (MaterialModel l:list) // lista dei materiali selezionati dutante creazione attività
+                        mmodel.insertMaterial(l.getMaterialName(), idattivita);
                     view.displaySuccessfullyMessage("Activity Created Succesfully!");
                 }
             } catch (Exception ex) {

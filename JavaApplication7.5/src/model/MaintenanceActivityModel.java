@@ -1,7 +1,6 @@
 package model;
 
 import dao.ActivityDAO1;
-import java.sql.Connection;
 import java.util.List;
 
 /*
@@ -206,7 +205,4 @@ public class MaintenanceActivityModel {
         return dao.assignNewActivity(id, username, data);
     }
 
-    public Connection getDaoConnection() {
-        return dao.getConn();
-    }
 }

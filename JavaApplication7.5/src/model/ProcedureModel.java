@@ -71,10 +71,6 @@ public class ProcedureModel {
         return dao.hasCompetence(nomeprocedura, idcompetenza);
     }
 
-    public Connection getDaoConnection() {
-        return dao.getConn();
-    }
-
     @Override
     public String toString() {
         return "ProcedureModel{" + "nomeProc=" + nomeProc + ", path=" + path + '}';

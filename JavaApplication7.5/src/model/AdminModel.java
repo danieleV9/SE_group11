@@ -6,7 +6,6 @@
 package model;
 
 import dao.AdminDAO;
-import java.sql.Connection;
 
 /**
  *
@@ -31,8 +30,6 @@ public class AdminModel extends ManagerModel {
     public String toString() {
         return "AdminModel{" + super.toString() + '}';
     }
-    public Connection getDaoConnection() {
-        return dao.getConn();
-    }
+
 
 }

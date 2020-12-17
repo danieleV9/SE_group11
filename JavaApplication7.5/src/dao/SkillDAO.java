@@ -5,7 +5,7 @@
  */
 package dao;
 
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,13 +27,14 @@ public class SkillDAO {
     private PreparedStatement pst;
 
     public SkillDAO() {
-        conn = ConnectionDatabase.getConnection();
+
     }
 
 
     public List<SkillModel> listSkills() {
         List<SkillModel> list = new ArrayList<>();
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "select * from competenze";
             st = conn.createStatement();
             rs = st.executeQuery(query);
@@ -57,6 +58,7 @@ public class SkillDAO {
             return false;
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "delete from competenze where idcompetenza=?";
             pst = conn.prepareStatement(query);
             pst.setInt(1, idSkill);
@@ -76,6 +78,7 @@ public class SkillDAO {
 
     public boolean modifySkill(int idSkill, String description) {
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "update competenze set descrizione=? where idcompetenza=?";
             pst = conn.prepareStatement(query);
             pst.setInt(2, idSkill);
@@ -97,7 +100,7 @@ public class SkillDAO {
     public boolean insertSkill(String description) {
         try {
             String query = "INSERT INTO COMPETENZE (idcompetenza,descrizione) values ((NEXTVAL(idcompetenza)),?)";
-            
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setString(1, description);
             int res = pst.executeUpdate();
@@ -122,7 +125,7 @@ public class SkillDAO {
         List<SkillModel> list = new ArrayList<>();
         try {
             String query = "select * from competenze_ma where usernamema=?";
-            
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
             rs = pst.executeQuery();
@@ -145,6 +148,7 @@ public class SkillDAO {
         
         if (id != 0) {
             try {
+                conn =ConnectionSingleton.getInstance();
                 String query = "select * from competenze where idcompetenza=?";
                 String description="";
                 pst = conn.prepareStatement(query);
@@ -171,6 +175,7 @@ public class SkillDAO {
         
         if (description != null && !description.equals("")) {
             try {
+                conn =ConnectionSingleton.getInstance();
                 String query = "select * from competenze where descrizione=?";
                 int id = 0;
                 pst = conn.prepareStatement(query);
@@ -191,10 +196,6 @@ public class SkillDAO {
         } else {
             return null;
         }
-    }
-
-    public Connection getConn() {
-        return conn;
     }
 
    

@@ -44,7 +44,7 @@ public class PlannerHomeView extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1153, 693));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 51));
-        jLabel1.setFont(new java.awt.Font("MV Boli", 0, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("MV Boli", 0, 30)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Welcome to your area");
 

@@ -6,7 +6,6 @@
 package model;
 
 import dao.SkillDAO;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -97,10 +96,6 @@ public class SkillModel {
             return false;
         }
         return true;
-    }
-
-    public Connection getDaoConnection() {
-        return dao.getConn();
     }
 
 }

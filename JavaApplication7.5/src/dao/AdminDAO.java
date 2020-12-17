@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.AdminModel;
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 
 /**
  *
@@ -23,7 +23,7 @@ public class AdminDAO implements UserDAO {
     private static ResultSet rs;
 
     public AdminDAO() {
-        conn = ConnectionDatabase.getConnection();
+        
     }
     
 
@@ -31,7 +31,7 @@ public class AdminDAO implements UserDAO {
     public AdminModel findUser(String username, String password) {
         if (!username.equals("") && !password.equals("")) {
             try {
-                
+                conn =ConnectionSingleton.getInstance();
                 String query = "select * from amministratore where usernamesa=? and passwordsa=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -50,15 +50,11 @@ public class AdminDAO implements UserDAO {
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                //try { con.close(); } catch (SQLException e) { }
+                //try { conn.close(); } catch (SQLException e) { }
             }
         }
         return null;
     }
 
-    public Connection getConn() {
-        return conn;
-    }
-    
 
 }

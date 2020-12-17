@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 import java.util.ArrayList;
 import java.util.List;
 import model.MaintainerModel;
@@ -28,7 +28,7 @@ public class MaintainerDAO implements EmployeeDAO {
     private static Statement st;
 
     public MaintainerDAO() {
-        conn = ConnectionDatabase.getConnection();
+      
     }
 
     @Override
@@ -37,6 +37,7 @@ public class MaintainerDAO implements EmployeeDAO {
             return null; //se l'username non esiste
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             if (!username.equals("") && !password.equals("")) {
                 String query = "select * from manutentore where usernamema=? and passwordma=?";
                 pst = conn.prepareStatement(query);
@@ -47,7 +48,6 @@ public class MaintainerDAO implements EmployeeDAO {
                     String user = rs.getString("usernamema");
                     String pass = rs.getString("passwordma");
                     MaintainerModel ma = new MaintainerModel(user, pass);
-                    //con.close();
                     return ma;
                 } else {
                     return null;
@@ -61,7 +61,7 @@ public class MaintainerDAO implements EmployeeDAO {
         } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+              //  try { conn.close(); } catch (SQLException e) { }
             }
     }
 
@@ -72,6 +72,7 @@ public class MaintainerDAO implements EmployeeDAO {
         }
         if (!username.equals("")) {
             try {
+                conn =ConnectionSingleton.getInstance();
                 String query = "select * from manutentore where usernamema=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -80,10 +81,8 @@ public class MaintainerDAO implements EmployeeDAO {
                     String user = rs.getString("usernamema");
                     String pass = rs.getString("passwordma");
                     MaintainerModel ma = new MaintainerModel(user, pass);
-                    //con.close();
                     return ma;
                 }
-               // conn.close();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
                 return null;
@@ -102,6 +101,7 @@ public class MaintainerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             if (!usernameExists(username)) { //se username non è già utilizzato
                 String query = "insert into manutentore(usernamema, passwordma) values (?,?)";
                 pst = conn.prepareStatement(query);
@@ -134,6 +134,7 @@ public class MaintainerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             if (!usernameExists(username)) {
                 return false;
             } else {
@@ -163,6 +164,7 @@ public class MaintainerDAO implements EmployeeDAO {
             return false;
         }
         try {
+            conn =ConnectionSingleton.getInstance();
             String query = "select count(*) from usernames where username=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
@@ -178,7 +180,6 @@ public class MaintainerDAO implements EmployeeDAO {
                     return true;
                 } //query va a buon fine e trova username
             } else {
-               // conn.close();
                 return true;
             }
         } catch (SQLException ex) {
@@ -194,7 +195,7 @@ public class MaintainerDAO implements EmployeeDAO {
     public List<MaintainerModel> listMaintainers() {
         List<MaintainerModel> list = new ArrayList<>();
         try {
-            //conn = ConnectionDatabase.getConnection();
+           conn =ConnectionSingleton.getInstance();
             String query = "select * from manutentore";
             st = conn.createStatement();
             rs = st.executeQuery(query);
@@ -204,7 +205,6 @@ public class MaintainerDAO implements EmployeeDAO {
                 MaintainerModel maintainer = new MaintainerModel(username, password);
                 list.add(maintainer);
             }
-            //con.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return list;
@@ -225,7 +225,7 @@ public class MaintainerDAO implements EmployeeDAO {
             return false;
         }
         try {
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             String query = "delete from manutentore where usernamema=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
@@ -247,7 +247,7 @@ public class MaintainerDAO implements EmployeeDAO {
         MaintainerModel m = new MaintainerModel("","");
         if(m.hasCompetences(username, id)==false){
             try {
-                //conn = ConnectionDatabase.getConnection();
+                conn =ConnectionSingleton.getInstance();
                 String query = "insert into competenze_ma(usernamema,idcompetenza) values(?,?)";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -271,7 +271,7 @@ public class MaintainerDAO implements EmployeeDAO {
         MaintainerModel m = new MaintainerModel("","");
         if(m.hasCompetences(username, id)){
             try {
-                //conn = ConnectionDatabase.getConnection();
+                conn =ConnectionSingleton.getInstance();
                 String query = "delete from competenze_ma where usernamema=? and idcompetenza=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -293,7 +293,7 @@ public class MaintainerDAO implements EmployeeDAO {
 
     public boolean hasCompetences(String username, int id) {
         try {
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             String query = "select count(*) from competenze_ma where usernamema=? and idcompetenza=?";
             pst = conn.prepareStatement(query);
             pst.setString(1, username);
@@ -308,7 +308,6 @@ public class MaintainerDAO implements EmployeeDAO {
                     return true;
                 }
             } else {
-                //con.close();
                 return true;
             }
         } catch (SQLException ex) {
@@ -324,7 +323,7 @@ public class MaintainerDAO implements EmployeeDAO {
     public List<MaintainerModel> listMaintainersDisponibili() {
         List<MaintainerModel> list = new ArrayList<>();
         try {
-            //conn = ConnectionDatabase.getConnection();
+           conn =ConnectionSingleton.getInstance();
             String query = "select distinct manutentore from disponibilita_giorno";
             st = conn.createStatement();
             rs = st.executeQuery(query);
@@ -333,7 +332,6 @@ public class MaintainerDAO implements EmployeeDAO {
                 MaintainerModel maintainer = new MaintainerModel(username, "");
                 list.add(maintainer);
             }
-           // conn.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return list;
@@ -349,7 +347,7 @@ public class MaintainerDAO implements EmployeeDAO {
         String fasce = "";
         if (usernameExists(username) && week > 0 && week < 53 && day > 0 && day < 8) { //se username valido e giorno valido e settimana valida
             try {
-                //conn = ConnectionDatabase.getConnection();
+                conn =ConnectionSingleton.getInstance();
                 String query = "select fasce_orarie from disponibilita_giorno where manutentore=? and week=? and day=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -361,7 +359,6 @@ public class MaintainerDAO implements EmployeeDAO {
                 } else {
                     fasce = "";
                 }
-                //con.close();
                 return fasce;
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -369,7 +366,7 @@ public class MaintainerDAO implements EmployeeDAO {
             } finally {
                 try { rs.close(); } catch (SQLException e) { }
                 try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+               // try { conn.close(); } catch (SQLException e) { }
             }
         } else {
             return fasce;
@@ -380,7 +377,7 @@ public class MaintainerDAO implements EmployeeDAO {
         int numGiorno = 0;
         if (usernameExists(username) && week > 0 && week < 53 && day > 0 && day < 8) { //se username valido e giorno valido e settimana valida
             try {
-                //conn = ConnectionDatabase.getConnection();
+                conn =ConnectionSingleton.getInstance();
                 String query = "select numgiorno from disponibilita_giorno where manutentore=? and week=? and day=?";
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
@@ -389,10 +386,8 @@ public class MaintainerDAO implements EmployeeDAO {
                 rs = pst.executeQuery();
                 if (rs.next()) {
                     numGiorno = rs.getInt("numgiorno");
-                   // conn.close();
                 } else {
                     numGiorno = 0;
-                    //con.close();
                 }
                 return numGiorno;
             } catch (SQLException ex) {
@@ -408,10 +403,5 @@ public class MaintainerDAO implements EmployeeDAO {
         }
     }
 
-    public Connection getConn() {
-        return conn;
-    }
-    
-    
 
 }

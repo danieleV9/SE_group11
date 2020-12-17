@@ -5,6 +5,7 @@
  */
 package model;
 
+import connectionDB.ConnectionSingleton;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,10 +23,23 @@ public class SkillModelTest {
     private static SkillModel instance;
     private static Connection connection;
 
+    @AfterClass
+    public static void afterclass(){
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @BeforeClass
+    public static void beforeclass(){
+        connection = ConnectionSingleton.getInstance();
+    }
+    
     @Before
     public void setUp() {
-        instance = new SkillModel(0, "");
-        connection = instance.getDaoConnection();
+        instance = new SkillModel(0, ""); 
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
@@ -35,14 +49,14 @@ public class SkillModelTest {
 
     @After
     public void tearDown() {
-        try {
+       try {
             connection.rollback();
             connection.setAutoCommit(true);
-            connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 
     /**
      * Test of deleteSkill method, of class SkillModel.

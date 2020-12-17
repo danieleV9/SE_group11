@@ -9,7 +9,7 @@ package dao;
  *
  * @author HP
  */
-import connectionDB.ConnectionDatabase;
+import connectionDB.ConnectionSingleton;
 import java.sql.*;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -36,13 +36,12 @@ public class ActivityDAO1 {
     private static Statement st;
 
     public ActivityDAO1() {
-        conn = ConnectionDatabase.getConnection();
     }
 
     public List<MaintenanceActivityModel> getAllActivity() {
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             st = conn.createStatement();
             String query = "select * from attivita_manutenzione order by settimana";
             rs = st.executeQuery(query);
@@ -88,7 +87,7 @@ public class ActivityDAO1 {
         }
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             String query = "select * from attivita_manutenzione where settimana=?";
             pst = conn.prepareStatement(query);
             pst.setInt(1, numWeek);
@@ -125,7 +124,8 @@ public class ActivityDAO1 {
 
     public int selectMaxId() {
         try {
-            int maxId;
+            conn =ConnectionSingleton.getInstance();
+            int maxId=0;
             String query = "select max(idattivita) from attivita_manutenzione";
             pst = conn.prepareStatement(query);
             rs = pst.executeQuery();
@@ -138,6 +138,42 @@ public class ActivityDAO1 {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return 0;
+        }
+
+    }
+
+    public int insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
+        try {
+            conn =ConnectionSingleton.getInstance();
+            String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
+                    + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
+                    + "dataattivita,statoticket) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, numberWeek);
+            pst.setString(2, workNotes);
+            pst.setString(3, type);
+            pst.setBoolean(4, interruptible);
+            int maxId = selectMaxId();
+            maxId=maxId + 1;
+            pst.setInt(5, maxId);
+            pst.setString(6, factory);
+            pst.setString(7, area);
+            pst.setNull(8, Types.NULL);
+            pst.setString(9, tipology);
+            pst.setString(10, proc.getNomeProc());
+            pst.setInt(11, time);
+            pst.setString(12, description);
+            pst.setNull(13, Types.NULL);
+            pst.setNull(14, Types.NULL);
+            int res = pst.executeUpdate();
+            if (res == 1) {
+                return maxId;
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
         } finally {
             try {
                 pst.close();
@@ -145,15 +181,14 @@ public class ActivityDAO1 {
             }
             //try { conn.close(); } catch (SQLException e) { }
         }
-
     }
 
-    public int insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
+    public boolean insertActivity1(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
         try {
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
                     + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
-                    + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)),?,?,?,?,?,?,?,?,?)";
+                    + "dataattivita,statoticket) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             pst = conn.prepareStatement(query);
             pst.setInt(1, numberWeek);
             pst.setString(2, workNotes);
@@ -172,50 +207,11 @@ public class ActivityDAO1 {
             pst.setNull(14, Types.NULL);
             int res = pst.executeUpdate();
             if (res == 1) {
-                return maxId;
-            } else {
-                return 0;
-            }
-        } catch (SQLException ex) {
-            //System.out.println("Errore nell'inserimento dell'attività");
-            System.out.println(ex.getMessage());
-            return 0;
-        } finally {
-            try {
-                pst.close();
-            } catch (SQLException e) {
-            }
-            //try { conn.close(); } catch (SQLException e) { }
-        }
-    }
-
-    public boolean insertActivity1(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
-        try {
-            String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
-                    + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
-                    + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)),?,?,?,?,?,?,?,?,?)";
-            pst = conn.prepareStatement(query);
-            pst.setInt(1, numberWeek);
-            pst.setString(2, workNotes);
-            pst.setString(3, type);
-            pst.setBoolean(4, interruptible);
-            pst.setString(5, factory);
-            pst.setString(6, area);
-            pst.setNull(7, Types.NULL);
-            pst.setString(8, tipology);
-            pst.setString(9, proc.getNomeProc());
-            pst.setInt(10, time);
-            pst.setString(11, description);
-            pst.setNull(12, Types.NULL);
-            pst.setNull(13, Types.NULL);
-            int res = pst.executeUpdate();
-            if (res == 1) {
                 return true;
             } else {
                 return false;
             }
         } catch (SQLException ex) {
-            //System.out.println("Errore nell'inserimento dell'attività");
             System.out.println(ex.getMessage());
             return false;
         } finally {
@@ -230,7 +226,7 @@ public class ActivityDAO1 {
     public MaintenanceActivityModel viewActivity(int id) {
         String query = "select * from attivita_manutenzione where idattivita=?";
         try {
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -267,7 +263,7 @@ public class ActivityDAO1 {
     public String findProcedura(int id) {
         String query = "select nomeprocedura from attivita_manutenzione where idattivita=?";
         try {
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             rs = pst.executeQuery();
@@ -301,6 +297,7 @@ public class ActivityDAO1 {
         }
         String query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
         try {
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setString(1, note);
             pst.setInt(2, id);
@@ -329,7 +326,7 @@ public class ActivityDAO1 {
             if (this.viewActivity(id) == null) {
                 return false;
             }
-            //conn = ConnectionDatabase.getConnection();
+            conn =ConnectionSingleton.getInstance();
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             int res = pst.executeUpdate();
@@ -357,7 +354,7 @@ public class ActivityDAO1 {
             if (this.viewActivity(id) == null) {
                 return false;
             } else {
-                //conn = ConnectionDatabase.getConnection();
+                conn =ConnectionSingleton.getInstance();
                 pst = conn.prepareStatement(query);
                 pst.setInt(1, id);
                 pst.execute();
@@ -400,7 +397,7 @@ public class ActivityDAO1 {
             if (this.viewActivity(id) == null) {
                 return false;
             } else {
-                //conn = ConnectionDatabase.getConnection();
+                conn =ConnectionSingleton.getInstance();
                 pst = conn.prepareStatement(query);
                 pst.setString(1, username);
                 pst.setString(2, data);
@@ -422,10 +419,6 @@ public class ActivityDAO1 {
             }
             //try { conn.close(); } catch (SQLException e) { }
         }
-    }
-
-    public Connection getConn() {
-        return conn;
     }
 
 }

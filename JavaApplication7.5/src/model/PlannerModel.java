@@ -6,8 +6,6 @@
 package model;
 
 import dao.PlannerDAO;
-import java.io.Serializable;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  *
  * @author lyuba
  */
-public class PlannerModel extends EmployeeModel implements Serializable{
+public class PlannerModel extends EmployeeModel {
     
     private PlannerDAO dao;
     
@@ -68,9 +66,5 @@ public class PlannerModel extends EmployeeModel implements Serializable{
     @Override
     public String toString() {
         return "PlannerModel{" + super.toString() + '}';
-    }
-    
-    public Connection getDaoConnection() {
-        return dao.getConn();
     }
 }
