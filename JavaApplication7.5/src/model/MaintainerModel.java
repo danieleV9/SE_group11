@@ -91,5 +91,13 @@ public class MaintainerModel extends EmployeeModel {
     public String toString() {
         return "MaintainerModel{" + super.toString()+'}';
     }
+    
+    public boolean updateDisponibilitaGiorno(String username, int week, int day, String fasce) { 
+        return dao.updateDisponibilitaGiorno(username, week, day, fasce);
+    }
+    
+    public List<MaintenanceActivityModel> getActivities(String username) {
+        return dao.getActivities(username);
+    }
 
 }

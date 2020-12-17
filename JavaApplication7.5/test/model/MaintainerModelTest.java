@@ -51,7 +51,7 @@ public class MaintainerModelTest {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -334,6 +334,55 @@ public class MaintainerModelTest {
        
     }
     
+    
+    /**
+     * Test of updateDisponibilitaGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testUpdateDisponibilitaGiorno() {
+        System.out.println("updateDisponibilitaGiorno");
+        String username = "";
+        int week =0 ;
+        int day = 0;
+        String fasce = "";
+        boolean expResult = false;
+        boolean result = instance.updateDisponibilitaGiorno(username, week, day,fasce);
+        assertEquals(expResult, result);
+       
+    }
+    
+    /**
+     * Test of updateDisponibilitaGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testUpdateDisponibilitaGiorno1() {
+        System.out.println("updateDisponibilitaGiorno1");
+        String username = "maintainer3";
+        int week =3 ;
+        int day = 7;
+        String fasce = "0 30 0 0 0 0 0";
+        boolean expResult = true;
+        boolean result = instance.updateDisponibilitaGiorno(username, week, day,fasce);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of updateDisponibilitaGiorno method, of class MaintainerModel.
+     */
+    @Test
+    public void testUpdateDisponibilitaGiorno2() {
+        System.out.println("updateDisponibilitaGiorno2");
+        String username = "maintainer3";
+        int week =59 ;
+        int day = 0;
+        String fasce = "20 20 20 20 40 30 50";
+        boolean expResult = false;
+        boolean result = instance.updateDisponibilitaGiorno(username, week, day,fasce);
+        assertEquals(expResult, result);
+    }
+    
+    
+    
     /**
      * Test of getDisponibilitaGiorno method, of class MaintainerModel.
      */
@@ -342,14 +391,35 @@ public class MaintainerModelTest {
         System.out.println("getDisponibilitaGiorno2");
         String username = "maintainer3";
         int week = 1;
-        int day = 2;
-        String expResult = "60 60 60 60 60 60 60";
+        int day = 5; 
+        String expResult ="0 0 0 0 0 0 0";
         String result = instance.getDisponibilitaGiorno(username, week, day);
         assertEquals(expResult, result);
        
     }
 
-
+    /**
+     * Test of getActivities method, of class MaintainerModel.
+     */
+    @Test
+    public void testGetActivities() {
+        System.out.println("getActivities");
+        List<MaintenanceActivityModel> expResult = new ArrayList<>();
+        String username= "";
+        List<MaintenanceActivityModel> result = instance.getActivities(username);
+        assertEquals(expResult,result);
+    }
+    
+    /**
+     * Test of getActivities method, of class MaintainerModel.
+     */
+    @Test
+    public void testGetActivities1() {
+        System.out.println("getActivities1");
+        String username= "maintainer6";
+        List<MaintenanceActivityModel> result = instance.getActivities(username);
+        assertTrue(result.isEmpty()==false); // la lista non deve essere vuota perchè so che a questo maintainer nel db sono state assegnate delle attività
+    }
 
     /**
      * Test of getNumGiorno method, of class MaintainerModel.

@@ -28,7 +28,7 @@ public class SkillModelTest {
         try {
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SkillModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -43,7 +43,7 @@ public class SkillModelTest {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SkillModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -53,7 +53,7 @@ public class SkillModelTest {
             connection.rollback();
             connection.setAutoCommit(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SkillModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

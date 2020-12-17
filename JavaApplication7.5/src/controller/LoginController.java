@@ -8,6 +8,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import model.AdminModel;
+import model.MaintainerModel;
 import model.factory.EmployeeFactory;
 import model.PlannerModel;
 import model.UserModel;
@@ -95,7 +96,8 @@ public class LoginController {
                             view.displayErrorMessage("Username or password not matched");
                             
                         } else {
-                            MaintainerHomeView maHome = new MaintainerHomeView(username);
+                            MaintainerHomeView maHome = new MaintainerHomeView();
+                            MaintainerHomeController c = new MaintainerHomeController(maHome,(MaintainerModel)employeeMA);
                             maHome.setVisible(true);
                             view.setVisible(false);
                         }

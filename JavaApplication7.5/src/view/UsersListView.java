@@ -47,9 +47,8 @@ public class UsersListView extends javax.swing.JFrame implements PropertyChangeL
         UsersListView.model = model;
         
         // The view listens for changes to the model
-        //UsersListView.model.addPropertyChangeListener(this);
-        //System.out.println(UsersListView.model.getUsername()+"prova");
-        
+        UsersListView.model.addPropertyChangeListener(this);
+       
         modeltab.addColumn("Username");
         modeltab.addColumn("Password");
         modeltab1.addColumn("Username");

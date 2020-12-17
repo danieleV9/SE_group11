@@ -32,7 +32,7 @@ public class MaintenanceActivityModelTest {
            
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintenanceActivityModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -48,7 +48,7 @@ public class MaintenanceActivityModelTest {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintenanceActivityModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -58,7 +58,7 @@ public class MaintenanceActivityModelTest {
             connection.rollback();
             connection.setAutoCommit(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MaintenanceActivityModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -60,12 +60,20 @@ public class ActivityAssignationController {
             int row = view.getSelectedRow();
             if (row != -1) {
                 if (col != -1 && col != 0 && col != 1) {// se sto cliccando su uno slot temporale
-                    String val = (String) view.getTable().getValueAt(row, col);
+                    String val = (String) view.getTable().getValueAt(row, col); //slot temporale
                     String username = (String) view.getTable().getValueAt(row, 0);
                     String day = view.getDay();
-                    
                     String[] splitString = val.split(" ");
                     int st_val = Integer.parseInt(splitString[0]);
+                    int tempoRichiesto= modelact.getEstimatedTime();
+                    int tempoRimasto = st_val-tempoRichiesto; //tempo rimasto in questo slot al maintainer selezionato
+                    if(tempoRimasto<=0)
+                        tempoRimasto=0;
+                    int week=modelact.getWeekNum();
+                    String fasce = modelma.getDisponibilitaGiorno(username, week, giorno);
+                    String[] ore = scriviFasce(fasce);
+                    String nuovoOrario=newDisponibilita(col,tempoRimasto,ore); // disponibilità aggiornata
+                    modelma.updateDisponibilitaGiorno(username, week, giorno,nuovoOrario);
                     if (st_val == 0) {
                         view.displayErrorMessage("Maintainer " + username + " is not available in this slot of time, \nchoose another one in which availability is not 0 min!");
                     } else { //orario va bene quindi posso assegnare l'attività al maintainer 
@@ -245,5 +253,13 @@ public class ActivityAssignationController {
             return disp;
         }
     }
-
+   
+    public String newDisponibilita(int slotOrario,int tempoRimasto,String[] ore){
+        ore[slotOrario-2]=String.valueOf(tempoRimasto);
+        String nuovoOrario="";
+        for(String x:ore){
+            nuovoOrario=nuovoOrario+x+" ";
+        }
+        return nuovoOrario;
+    }
 }

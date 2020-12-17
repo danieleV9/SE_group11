@@ -31,7 +31,7 @@ public class AdminModelTest {
            
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -46,7 +46,7 @@ public class AdminModelTest {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -56,7 +56,7 @@ public class AdminModelTest {
             connection.rollback();
             connection.setAutoCommit(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

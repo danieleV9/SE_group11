@@ -41,7 +41,7 @@ public class ProcedureModelTest {
            
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -57,7 +57,7 @@ public class ProcedureModelTest {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException ex) {
-            Logger.getLogger(PlannerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -67,7 +67,7 @@ public class ProcedureModelTest {
             connection.rollback();
             connection.setAutoCommit(true);
         } catch (SQLException ex) {
-            Logger.getLogger(MaintainerModelTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcedureModelTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

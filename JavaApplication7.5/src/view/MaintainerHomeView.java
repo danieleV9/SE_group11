@@ -5,22 +5,26 @@
  */
 package view;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author dava9
  */
 public class MaintainerHomeView extends javax.swing.JFrame {
 
+    DefaultTableModel modelTab = new DefaultTableModel();
+    
+    public void setUsername(String username){
+        jLabel1.setText("Welcome to your Maintainer area , " + username);
+    }
+    
     /**
      * Creates new form MaintainerHomePage
      */
     public MaintainerHomeView() {
+        modelTab.addColumn("Assigned Activities");
         initComponents();
-    }
-
-    public MaintainerHomeView(String username) {
-        initComponents();
-        jLabel1.setText("Benvenuto nella tua area Maintainer, " + username);
     }
 
     /**
@@ -47,22 +51,7 @@ public class MaintainerHomeView extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Welcome to your area, Maintainer");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null}
-            },
-            new String [] {
-                "Assigned Activity"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        jTable1.setModel(modelTab);
         jTable1.setRowHeight(50);
         jTable1.setSelectionBackground(new java.awt.Color(204, 255, 204));
         jScrollPane1.setViewportView(jTable1);
@@ -148,4 +137,9 @@ public class MaintainerHomeView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+    
+    public DefaultTableModel getModelTab() {
+        return modelTab;
+    }
+
 }

@@ -25,12 +25,13 @@ public class MaintenanceActivityModel {
     private ProcedureModel procedura;
     private List<MaterialModel> materiali;
     private String area;
+    private String data;
     private String Fabbrica;
     private ActivityDAO1 dao;
 
-    public MaintenanceActivityModel(int WeekNum, boolean interuptible, int id_Activity, String description,
+     public MaintenanceActivityModel(int WeekNum, boolean interuptible, int id_Activity, String description,
             String tipology, String type, int EstimatedTime, String workspaceNotes,
-            ProcedureModel procedura, List<MaterialModel> materiali, String area, String fabbrica) {
+            ProcedureModel procedura, List<MaterialModel> materiali, String area, String fabbrica, String data) {
         this.WeekNum = WeekNum;
         this.interuptible = interuptible;
         this.id_Activity = id_Activity;
@@ -43,6 +44,7 @@ public class MaintenanceActivityModel {
         this.materiali = materiali;
         this.area = area;
         this.Fabbrica = fabbrica;
+        this.data=data;
         this.dao = new ActivityDAO1();
     }
 
@@ -69,6 +71,10 @@ public class MaintenanceActivityModel {
 
     public void setFabbrica(String Fabbrica) {
         this.Fabbrica = Fabbrica;
+    }
+
+    public String getData() {
+        return data;
     }
 
     public int getWeekNum() {
