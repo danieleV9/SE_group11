@@ -5,18 +5,15 @@
  */
 package model;
 
-import dao.UserDAO;
-
-
+import java.io.Serializable;
 /**
  *
  * @author jenni
  */
-public abstract class UserModel {
+public abstract class UserModel implements Serializable{
 
     private String username;
     private String password;
-    UserDAO dao;
 
     public UserModel(String username, String password) {
         this.username = username;

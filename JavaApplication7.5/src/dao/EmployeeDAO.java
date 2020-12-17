@@ -5,7 +5,7 @@
  */
 package dao;
 
-import model.UserModel;
+import model.EmployeeModel;
 
 /**
  *
@@ -13,7 +13,7 @@ import model.UserModel;
  */
 public interface EmployeeDAO extends UserDAO {
 
-    public abstract UserModel findUsername(String username);
+    public abstract EmployeeModel findUsername(String username);
 
     public abstract boolean createUser(String username, String password);
 

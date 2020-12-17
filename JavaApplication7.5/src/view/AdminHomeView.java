@@ -247,7 +247,7 @@ public class AdminHomeView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void setLabel1(String s) {
-        jLabel1.setText("Welcone to your area, " + s);
+        jLabel1.setText("Welcome to your area, " + s);
     }
 
     public void displayErrorMessage(String errorMessage) {

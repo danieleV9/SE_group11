@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import connectionDB.ConnectionSingleton;
 import java.util.ArrayList;
 import java.util.List;
+import model.EmployeeModel;
 import model.MaintainerModel;
 import model.MaintenanceActivityModel;
 import model.ProcedureModel;
@@ -67,8 +68,9 @@ public class MaintainerDAO implements EmployeeDAO {
             }
     }
 
+    
     @Override
-    public UserModel findUsername(String username) {
+    public EmployeeModel findUsername(String username) {
         if (!usernameExists(username)) {
             return null;
         }
