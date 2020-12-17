@@ -29,7 +29,7 @@ import model.ProcedureModel;
  * @author HP
  */
 public class ActivityDAO1 {
-    
+
     private Connection conn;
     private static PreparedStatement pst;
     private static ResultSet rs;
@@ -56,28 +56,36 @@ public class ActivityDAO1 {
                 String fabbrica = rs.getString("fabbrica");
                 int tempostimato = rs.getInt("tempostimato");
                 String nomeproc = rs.getString("nomeprocedura");
-                String path ="";
-                ProcedureModel proc = new ProcedureModel("","");
-                if(nomeproc!=null){
-                    path=proc.getPath(nomeproc);
-                }else 
-                    nomeproc="";
-                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica,new ProcedureModel(nomeproc,path)));
+                String path = "";
+                ProcedureModel proc = new ProcedureModel("", "");
+                if (nomeproc != null) {
+                    path = proc.getPath(nomeproc);
+                } else {
+                    nomeproc = "";
+                }
+                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica, new ProcedureModel(nomeproc, path)));
             }
         } catch (SQLException ex) {
             System.out.println("errore");
             System.out.println(ex.getMessage());
         } finally {
-                try { rs.close(); } catch (SQLException e) { }
-                try { st.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                rs.close();
+            } catch (SQLException e) {
             }
+            try {
+                st.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
         return list;
     }
 
     public List<MaintenanceActivityModel> getAllActivity(int numWeek) {
-        if(numWeek<=0 || numWeek>52)
+        if (numWeek <= 0 || numWeek > 52) {
             return null;
+        }
         List<MaintenanceActivityModel> list = new ArrayList<>();
         try {
             //conn = ConnectionDatabase.getConnection();
@@ -95,23 +103,94 @@ public class ActivityDAO1 {
                 String fabbrica = rs.getString("fabbrica");
                 int tempostimato = rs.getInt("tempostimato");
                 String nomeproc = rs.getString("nomeprocedura");
-                ProcedureModel proc = new ProcedureModel("","");
-                String path =proc.getPath(nomeproc);
-                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica, new ProcedureModel(nomeproc,path)));
+                ProcedureModel proc = new ProcedureModel("", "");
+                String path = proc.getPath(nomeproc);
+                list.add(new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica, new ProcedureModel(nomeproc, path)));
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } finally {
-                try { rs.close(); } catch (SQLException e) { }
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                rs.close();
+            } catch (SQLException e) {
             }
+            try {
+                pst.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
         return list;
     }
 
-    public boolean insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible,ProcedureModel proc) {
+    public int selectMaxId() {
+        try {
+            int maxId;
+            String query = "select max(idattivita) from attivita_manutenzione";
+            pst = conn.prepareStatement(query);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                maxId = rs.getInt(1);
+            } else {
+                maxId = 0;
+            }
+            return maxId;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
+
+    }
+
+    public int insertActivity(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
         try {
             //conn = ConnectionDatabase.getConnection();
+            String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
+                    + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
+                    + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)),?,?,?,?,?,?,?,?,?)";
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, numberWeek);
+            pst.setString(2, workNotes);
+            pst.setString(3, type);
+            pst.setBoolean(4, interruptible);
+            int maxId = selectMaxId();
+            pst.setInt(5, maxId + 1);
+            pst.setString(6, factory);
+            pst.setString(7, area);
+            pst.setNull(8, Types.NULL);
+            pst.setString(9, tipology);
+            pst.setString(10, proc.getNomeProc());
+            pst.setInt(11, time);
+            pst.setString(12, description);
+            pst.setNull(13, Types.NULL);
+            pst.setNull(14, Types.NULL);
+            int res = pst.executeUpdate();
+            if (res == 1) {
+                return maxId;
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            //System.out.println("Errore nell'inserimento dell'attività");
+            System.out.println(ex.getMessage());
+            return 0;
+        } finally {
+            try {
+                pst.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
+    }
+
+    public boolean insertActivity1(int numberWeek, String workNotes, String type, String factory, String tipology, int time, String description, String area, boolean interruptible, ProcedureModel proc) {
+        try {
             String query = "INSERT INTO ATTIVITA_MANUTENZIONE (settimana,notelavoro,tipoattivita,interrompibile,"
                     + "idattivita,fabbrica,area,usernamema,tipotipologia,nomeprocedura,tempostimato,descrizione,"
                     + "dataattivita,statoticket) values (?,?,?,?,(NEXTVAL(idattivita)),?,?,?,?,?,?,?,?,?)";
@@ -124,24 +203,28 @@ public class ActivityDAO1 {
             pst.setString(6, area);
             pst.setNull(7, Types.NULL);
             pst.setString(8, tipology);
-            pst.setString(9,proc.getNomeProc() );
+            pst.setString(9, proc.getNomeProc());
             pst.setInt(10, time);
             pst.setString(11, description);
             pst.setNull(12, Types.NULL);
             pst.setNull(13, Types.NULL);
             int res = pst.executeUpdate();
-            if(res == 1)
+            if (res == 1) {
                 return true;
-            else
+            } else {
                 return false;
+            }
         } catch (SQLException ex) {
             //System.out.println("Errore nell'inserimento dell'attività");
             System.out.println(ex.getMessage());
             return false;
         } finally {
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                pst.close();
+            } catch (SQLException e) {
             }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
     }
 
     public MaintenanceActivityModel viewActivity(int id) {
@@ -160,18 +243,24 @@ public class ActivityDAO1 {
                 String fabbrica = rs.getString("fabbrica");
                 int tempostimato = rs.getInt("tempostimato");
                 String nomeproc = rs.getString("nomeprocedura");
-                ProcedureModel proc = new ProcedureModel("","");
-                String path =proc.getPath(nomeproc);
-                return new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica,new ProcedureModel(nomeproc,path));
+                ProcedureModel proc = new ProcedureModel("", "");
+                String path = proc.getPath(nomeproc);
+                return new MaintenanceActivityModel(settimana, id, tipo, descrizione, notelavoro, area, tempostimato, fabbrica, new ProcedureModel(nomeproc, path));
             }
         } catch (SQLException ex) {
             System.out.println("Errore");
             System.out.println(ex.getMessage());
         } finally {
-                try { rs.close(); } catch (SQLException e) { }
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                rs.close();
+            } catch (SQLException e) {
             }
+            try {
+                pst.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
         return null;
     }
 
@@ -190,36 +279,47 @@ public class ActivityDAO1 {
             System.out.println("Errore");
             System.out.println(ex.getMessage());
         } finally {
-                try { rs.close(); } catch (SQLException e) { }
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                rs.close();
+            } catch (SQLException e) {
             }
+            try {
+                pst.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
         return null;
     }
 
     public boolean aggiornaNote(String note, int id) {
-        if(note==null || note.equals(""))
+        if (note == null || note.equals("")) {
             return false;
+        }
         if (this.viewActivity(id) == null) {
-                return false;
-            }
+            return false;
+        }
         String query = "update attivita_manutenzione set notelavoro=? where idattivita=?";
         try {
             pst = conn.prepareStatement(query);
             pst.setString(1, note);
             pst.setInt(2, id);
             int res = pst.executeUpdate();
-            if(res == 1)
+            if (res == 1) {
                 return true;
-            else
+            } else {
                 return false;
+            }
         } catch (SQLException ex) {
             System.out.println("Errore nell'aggiornamento delle note");
             System.out.println(ex.getMessage());
             return false;
         } finally {
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                pst.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
         }
     }
 
@@ -233,18 +333,22 @@ public class ActivityDAO1 {
             pst = conn.prepareStatement(query);
             pst.setInt(1, id);
             int res = pst.executeUpdate();
-            if(res == 1)
+            if (res == 1) {
                 return true;
-            else
+            } else {
                 return false;
+            }
         } catch (SQLException ex) {
             System.out.println("Errore nell'eliminazione");
             System.out.println(ex.getMessage());
             return false;
         } finally {
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                pst.close();
+            } catch (SQLException e) {
             }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
     }
 
     public boolean assignedActivity(int id) {
@@ -274,16 +378,23 @@ public class ActivityDAO1 {
             System.out.println(ex.getMessage());
             return false;
         } finally {
-                try { rs.close(); } catch (SQLException e) { }
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                rs.close();
+            } catch (SQLException e) {
             }
+            try {
+                pst.close();
+            } catch (SQLException e) {
+            }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
         return false;
     }
 
     public boolean assignNewActivity(int id, String username, String data) {
-        if(username.equals("") || data.equals(""))
+        if (username.equals("") || data.equals("")) {
             return false;
+        }
         String query = "update attivita_manutenzione set usernamema=?,dataattivita=? where idattivita=?";
         try {
             if (this.viewActivity(id) == null) {
@@ -295,22 +406,26 @@ public class ActivityDAO1 {
                 pst.setString(2, data);
                 pst.setInt(3, id);
                 int res = pst.executeUpdate();
-                if(res == 1)
+                if (res == 1) {
                     return true;
-                else
+                } else {
                     return false;
+                }
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
         } finally {
-                try { pst.close(); } catch (SQLException e) { }
-                //try { conn.close(); } catch (SQLException e) { }
+            try {
+                pst.close();
+            } catch (SQLException e) {
             }
+            //try { conn.close(); } catch (SQLException e) { }
+        }
     }
 
     public Connection getConn() {
         return conn;
     }
-    
+
 }

@@ -7,8 +7,10 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.List;
 import model.MaintenanceActivityModel;
+import model.MaterialModel;
 import model.PlannerModel;
 import model.ProcedureModel;
 import view.PlannerCreateView;
@@ -24,6 +26,8 @@ public class PlannerCreateController {
     private final PlannerCreateView view;
     private final PlannerModel model;
     private final MaintenanceActivityModel mamodel;
+    private final MaterialModel mmodel;
+    private LinkedList<MaterialModel> list;
 
     public PlannerCreateController(PlannerCreateView view, PlannerModel model) {
         this.view = view;
@@ -32,6 +36,8 @@ public class PlannerCreateController {
         this.view.CreateListener(new CreateListener());
         this.view.BackHomeListener(new BackHomeListener());
         this.view.InsertMaterialListener(new InsertMaterialListener());
+        this.mmodel = new MaterialModel("");
+        list = new LinkedList<>();
         this.populateProcedures();
     }
 
@@ -68,7 +74,9 @@ public class PlannerCreateController {
                     int numberWeek = Integer.parseInt(weekNumber);
                     ProcedureModel p = new ProcedureModel("","");
                     String path= p.getPath(procedure);
-                    mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, new ProcedureModel(procedure,path));
+                    int idattivita = mamodel.insertActivity(numberWeek, workNotes, type, factory, tipology, time, description, area, interruptible, new ProcedureModel(procedure,path));
+                    for (MaterialModel l:list)
+                    mmodel.insertMaterial(mmodel.getMaterialName(), idattivita);
                     view.displaySuccessfullyMessage("Activity Created Succesfully!");
                 }
             } catch (Exception ex) {
@@ -93,9 +101,10 @@ public class PlannerCreateController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            PlannerMaterialView ad1 = new PlannerMaterialView();
-            ad1.setVisible(true);
-            view.setVisible(true);
+            MaterialModel ma = view.displayMessage();
+            if (ma!=null && !list.contains(ma)) {
+                list.add(ma);
+            }
         }
     }
     

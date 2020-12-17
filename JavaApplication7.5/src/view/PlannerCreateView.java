@@ -5,20 +5,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import model.MaterialModel;
 
 /**
  *
  * @author HP
  */
-public class PlannerCreateView extends javax.swing.JFrame{
+public class PlannerCreateView extends javax.swing.JFrame {
 
-    Connection conn = null;
-    PreparedStatement pst = null;
-    PreparedStatement pst1 = null;
-
+    private MaterialModel model;
 
     public PlannerCreateView() {
         initComponents();
+        model = new MaterialModel("");
     }
 
     /**
@@ -152,7 +151,6 @@ public class PlannerCreateView extends javax.swing.JFrame{
         insertMaterial.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         insertMaterial.setText("Click to add materials");
         insertMaterial.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        insertMaterial.setEnabled(false);
 
         create.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         create.setText("Create activity");
@@ -209,7 +207,7 @@ public class PlannerCreateView extends javax.swing.JFrame{
                                 .addComponent(factoryField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                                 .addComponent(areaField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,7 +394,7 @@ public class PlannerCreateView extends javax.swing.JFrame{
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-               // PlannerCreateView dialog = new PlannerCreateView(new javax.swing.JFrame(), true);
+                // PlannerCreateView dialog = new PlannerCreateView(new javax.swing.JFrame(), true);
                 /*dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -460,14 +458,14 @@ public void CreateListener(ActionListener listener) {
     public String getTipology() {
         return tipologyField.getText();
     }
-    public String getProcedure(){
+
+    public String getProcedure() {
         return procedureField.getSelectedItem().toString();
     }
 
     public JComboBox<String> getProcedureField() {
         return procedureField;
     }
-    
 
     public String getFactory() {
         return factoryField.getText();
@@ -503,10 +501,14 @@ public void CreateListener(ActionListener listener) {
 
     public void displaySuccessfullyMessage(String succesfullyMessage) {
         JOptionPane.showMessageDialog(this, succesfullyMessage);
-
     }
 
     public String TypeActivity() {
         return jComboBox1.getSelectedItem().toString();
+    }
+
+    public MaterialModel displayMessage() {
+        MaterialModel m = (MaterialModel) JOptionPane.showInputDialog(this, "Seleziona un materiale", "Seleziona", JOptionPane.INFORMATION_MESSAGE, null, model.listMaterials().toArray(), JOptionPane.DEFAULT_OPTION);
+        return m;
     }
 }
